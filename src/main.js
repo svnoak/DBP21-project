@@ -13,7 +13,7 @@
 
 
 // Skapa Phaser.Game object men namnet "game"
-let game = Phaser.game(config);
+let game = new Phaser.Game(config);
 
 // Preload game assets 
 // Här laddas alla assets innan spelet är igång

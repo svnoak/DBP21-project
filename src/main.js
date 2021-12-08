@@ -25,3 +25,5 @@ function create(){
 // Uppdaterar spelet var 16 ms
 // Körs kontunierlig efter create() är färdig
 function update(){
+
+}

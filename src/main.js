@@ -21,28 +21,28 @@ let aganju;
 // Här laddas alla assets innan spelet är igång
 function preload() {
     //Laddar spelplanen
-    game.load.image('background', './assets/images/gameObjects/background.png');
+    this.load.image('background', './assets/images/gameObjects/background.png');
 
     //Laddar Aganju och json filen som innehåller all frames för Aganju
-    game.load.atlasJSONHash('aganju', './assets/images/aganju/aganju.png', 'assets/images/aganju/aganjuHash.json');
+    this.load.spritesheet('aganju', './assets/images/aganju/aganju.png', {frameWidth: 32, frameHeight: 32});
 }
 
 // Create game world 
 // Sätts igång när preload() är uppladdad
 function create(){
     //Startar spelet
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    //game.physics.startSystem(Phaser.Physics.ARCADE);
 
 
     //Skapar spelplanen
-    game.add.image(0,0,'background').setOrigin(0);
+    this.add.image(0,0,'background').setOrigin(0);
 
     //Skapar spelets gränser
-    game.world.setBounds(0, 0, 800, 600);
+    //this.world.setBounds(0, 0, 800, 600);
     
     
     //Skapar Aganju
-    aganju = game.add.sprite(350, 400,'aganju');
+    aganju = this.add.sprite(350, 400,'aganju');
 
     //Skapar animationer för Aganju
     aganju.animations.add('down', [0,1,2,0], 10, true);

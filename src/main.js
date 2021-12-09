@@ -25,17 +25,29 @@ function preload() {
 // Create game world 
 // Sätts igång när preload() är uppladdad
 function create(){
+    //Startar spelet
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
     //Skapar spelets gränser
     game.world.setBounds(0, 0, 800, 600);
 
     //Skapar spelplanen
     game.add.image(0,0,'background');
     
-    //Startar spelet
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-
     //Skapar Aganju
-    aganju = game.add.sprite(350, 400,'aganju')
+    aganju = game.add.sprite(350, 400,'aganju');
+
+    //Skapar animationer för Aganju
+    aganju.animations.add('down', [0,1,2,0], 10, true);
+    aganju.animations.add('left', [4,5,6,4], 10, true);
+    aganju.animations.add('right', [7,8,9,7], 10, true);
+    aganju.animations.add('up', [10,11,12,10], 10, true);
+
+    //
+    game.physics.arcade.enable(aganju);
+    
+    //Ger vikt på Aganju
+    aganju.body.mass = 2;
 
 }
 

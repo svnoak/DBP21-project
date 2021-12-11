@@ -1,0 +1,17 @@
+[
+    {
+        "c_id": 1,
+        "name": "aganju",
+        "json": "",
+        "sprite": "DBP21-project/assets/player",
+        "level": 1,
+        "health": 5,
+        "damage": 1,
+        "speed": 2,
+        "weapon": "from items.json",
+        "coins": 0,
+        "history": 0,
+        "highscore": 0,
+        "inventory": 0
+    }
+]

@@ -30,7 +30,7 @@ class MainMenuScene extends Phaser.Scene {
         howToBtn.setInteractive();
 
         startGameBtn.on("pointerdown", ()=> {
-            console.log("START GAME");
+            this.scene.start("GameScene");
         })
 
         signupBtn.on("pointerdown", ()=> {

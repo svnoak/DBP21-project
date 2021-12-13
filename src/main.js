@@ -21,7 +21,7 @@ const config = {
 let game = new Phaser.Game(config);
 
 //Globala variabler
-let aganju, cursor, spacebar, sword, fireballs, speed, keyW, keyA, keyS, keyD;
+let aganju, cursor, spacebar, sword, fireball,fireballs, speed, keyW, keyA, keyS, keyD;
 
 //Variabler för eldbollar
 let lastFired = 0;
@@ -29,14 +29,19 @@ let isDown = false;
 let mouseX = 0;
 let mouseY = 0;
 
+let notHitted;
+
 // Preload game assets 
 // Här laddas alla assets innan spelet är igång
 function preload() {
     //Laddar spelplanen
     this.load.image('background', './assets/tilemap/background.png');
 
-    //Laddar Aganju och json filen som innehåller all frames för Aganju
+    //Laddar Aganju 
     this.load.spritesheet('aganju', './assets/player/aganju.png', {frameWidth: 32, frameHeight: 32});
+
+    //Laddar Hastur 
+    this.load.spritesheet('hastur', './assets/enemy/hastur_leg.png', {frameWidth: 32, frameHeight: 32});
 
     //Laddar eldbollar
     this.load.image('fireball', './assets/player/fireball.png');
@@ -67,8 +72,18 @@ function create(){
     //Definierar variabeln keyS = "D"
     keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-    //Declarerar spacebar
-    // spacebar = this.input.keyboard.addKey(Phaser.KeyCode(32));
+    //Skapar Hastur
+    hastur = this.physics.add.sprite(200, 200,'hastur');
+    //Skalar upp Hastur
+    hastur.setScale(2);
+    //Ger vikt på Hastur
+    hastur.body.mass = 2;
+    //Begränsar Hastur inom spelets gränser
+    hastur.setCollideWorldBounds(true);
+    //Gör Hastur orörlig
+    hastur.body.setImmovable(true);
+    //Hasturs health
+    hastur.health = 100;
 
     //Skapar Aganju
     aganju = this.physics.add.sprite(350, 400,'aganju');
@@ -81,6 +96,9 @@ function create(){
     
     //Begränsar Aganju inom spelets gränser
     aganju.setCollideWorldBounds(true);
+
+    //Kollision mellan Aganju och Hastur
+    this.physics.add.collider(aganju, hastur);
 
     //Skapar svärden
     sword = this.physics.add.sprite(aganju.x, aganju.y,'sword');
@@ -144,9 +162,6 @@ function create(){
         maxSize: 10,
         runChildUpdate: true
     });
-
-   //Ger z-index 1 till eldbollar
-    fireballs.setDepth(1);
 
     //När muspekaren är på
     this.input.on('pointerdown', function (pointer) {
@@ -241,9 +256,8 @@ function create(){
         frameRate: 10,
         repeat: 0
     });
-
 }
-
+notHitted == true;
 // Update gameplay 
 // Uppdaterar spelet var 16 ms
 // Körs kontunierlig efter create() är färdig
@@ -254,19 +268,52 @@ function update(time, delta){
     //Aganju's y positon
     let aganjuY = aganju.y;
 
-    //Gömmer svärden
+ 
+    // Gömmer svärden
     sword.setVisible(false);
+
+    //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
+    this.physics.add.overlap(hastur, sword, hitEnemy, null, this);  
+
+    // När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
+    this.physics.add.overlap(hastur, fireballs, burnEnemy, null, this);
+
+    function hitEnemy(){
+        hastur.health = hastur.health - 1;
+
+        if(hastur.health == 0){
+            hastur.destroy();
+        }
+    }
+    
+    function burnEnemy(){
+        hastur.health = hastur.health - 10;
+
+        if(hastur.health == 0){
+            hastur.destroy();
+        }
+    }
+
+    // this.physics.add.overlap(hastur, aganju, takingDamage);
+
+    // function takingDamage(){
+    //     aganjuHealth = aganjuHealth - 1;
+
+    //     if(aganjuHealth == 0){
+    //         aganju.destroy();
+    //     }
+    // }
 
     //Om vänster pillen trycks, 
     //left animation spelas
-    if (keyA.isDown == true)
+    if (keyA.isDown)
     {
         //Ger Aganju velocity (rörelse) till vänster
         aganju.setVelocity(-100,0);
         //Spelar left animationen av Aganju
         aganju.anims.play('left', true);
 
-        //Ger z-index till eldbollar
+        // Ger z-index till eldbollar
         fireballs.setDepth(1);
 
         //När spacebar trycks
@@ -429,9 +476,8 @@ function update(time, delta){
   
     if (isDown && time > lastFired){
         let fireball = fireballs.get();
-
+    
         if (fireball){
-            // fireball.fire(aganju.x, aganju.y);
             fireball.fire(mouseX, mouseY);
             lastFired = time + 50;
         }

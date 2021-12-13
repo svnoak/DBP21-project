@@ -2,7 +2,7 @@ import LoadingScene from "./scenes/loading.js";
 import MainMenuScene from "./scenes/mainMenu.js";
 import ProfileScene from "./scenes/profile.js";
 import SigninScene from "./scenes/login.js";
-import SignupScene from "./scenes/signUp.js";
+import SignupScene from "./scenes/signup.js";
 import LeaderboardScene from "./scenes/leaderboard.js";
 import GameScene from "./scenes/game.js";
 import PauseScene from "./scenes/pause.js";

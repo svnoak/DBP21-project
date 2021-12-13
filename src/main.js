@@ -37,7 +37,7 @@ const config = {
         VictoryScene,
         AboutScene,
         HowToScene
-    ]
+    ],
 };
 
 let game = new Phaser.Game(config);
@@ -50,8 +50,6 @@ let lastFired = 0;
 let isDown = false;
 let mouseX = 0;
 let mouseY = 0;
-
-let notHitted;
 
 // Preload game assets 
 // Här laddas alla assets innan spelet är igång
@@ -279,7 +277,7 @@ function create(){
         repeat: 0
     });
 }
-notHitted == true;
+
 // Update gameplay 
 // Uppdaterar spelet var 16 ms
 // Körs kontunierlig efter create() är färdig

@@ -23,17 +23,16 @@ const config = {
         }
     },
     scene:[
-        Loading,
-        MainMenu,
-        Profile,
-        Signin,
-        Signup,
-        Leaderboard,
-        Game,
-        Pause,
-        Gameover,
-        Victory
-
+        LoadingScene,
+        MainMenuScene,
+        ProfileScene,
+        SigninScene,
+        SignupScene,
+        LeaderboardScene,
+        GameScene,
+        PauseScene,
+        GameoverScene,
+        VictoryScene
     ]
 };
 

@@ -1,25 +1,13 @@
-class Game extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
     constructor () {
-        super('Game');
+        super('GameScene');
     }
-
-    init(){
-    //Globala variabler
-    let aganju, cursor, spacebar, sword, fireballs, speed, keyW, keyA, keyS, keyD;
-
-    //Variabler för eldbollar
-    let lastFired = 0;
-    let isDown = false;
-    let mouseX = 0;
-    let mouseY = 0;
-    }
-
-
 
     // Preload game assets 
     // Här laddas alla assets innan spelet är igång
     preload() {
+
         //Laddar spelplanen
         this.load.image('background', './assets/tilemap/background.png');
 
@@ -44,37 +32,37 @@ class Game extends Phaser.Scene {
         // cursor = this.input.keyboard.createCursorKeys();
 
         //Definierar variabeln spacebar
-        spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //Definierar variabeln keyS = "W"
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         //Definierar variabeln keyS = "A"
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         //Definierar variabeln keyS = "S"
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         //Definierar variabeln keyS = "D"
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         //Declarerar spacebar
         // spacebar = this.input.keyboard.addKey(Phaser.KeyCode(32));
 
         //Skapar Aganju
-        aganju = this.physics.add.sprite(350, 400,'aganju');
+        this.aganju = this.physics.add.sprite(350, 400,'aganju');
 
         //Skalar upp Aganju
-        aganju.setScale(2);
+        this.aganju.setScale(2);
 
         //Ger vikt på Aganju
-        aganju.body.mass = 2;
+        this.aganju.body.mass = 2;
         
         //Begränsar Aganju inom spelets gränser
-        aganju.setCollideWorldBounds(true);
+        this.aganju.setCollideWorldBounds(true);
 
         //Skapar svärden
-        sword = this.physics.add.sprite(aganju.x, aganju.y,'sword');
+        this.sword = this.physics.add.sprite(this.aganju.x, this.aganju.y,'sword');
 
         //Skapar eldbollar
-        let fireball = new Phaser.Class({
+        this.fireball = new Phaser.Class({
 
             Extends: Phaser.GameObjects.Image,
 
@@ -127,36 +115,36 @@ class Game extends Phaser.Scene {
         });
 
         //Gör eldbollar en group
-        fireballs = this.add.group({
-            classType: fireball,
+        this.fireballs = this.add.group({
+            classType: this.fireball,
             maxSize: 10,
             runChildUpdate: true
         });
 
     //Ger z-index 1 till eldbollar
-        fireballs.setDepth(1);
+        this.fireballs.setDepth(1);
 
         //När muspekaren är på
         this.input.on('pointerdown', function (pointer) {
 
-            isDown = true;
-            mouseX = pointer.x;
-            mouseY = pointer.y;
+            this.isDown = true;
+            this.mouseX = pointer.x;
+            this.mouseY = pointer.y;
 
         });
 
         //När muspekaren rör sig
         this.input.on('pointermove', function (pointer) {
 
-            mouseX = pointer.x;
-            mouseY = pointer.y;
+            this.mouseX = pointer.x;
+            this.mouseY = pointer.y;
 
         });
 
         //När muspekaren släpps
         this.input.on('pointerup', function (pointer) {
 
-            isDown = false;
+            this.isDown = false;
 
         });
 
@@ -238,194 +226,194 @@ class Game extends Phaser.Scene {
     update(time, delta){
 
         //Aganju's x positon
-        let aganjuX = aganju.x;
+        this.aganjuX = this.aganju.x;
         //Aganju's y positon
-        let aganjuY = aganju.y;
+        this.aganjuY = this.aganju.y;
 
         //Gömmer svärden
-        sword.setVisible(false);
+        this.sword.setVisible(false);
 
         //Om vänster pillen trycks, 
         //left animation spelas
-        if (keyA.isDown == true)
+        if (this.keyA.isDown == true)
         {
             //Ger Aganju velocity (rörelse) till vänster
-            aganju.setVelocity(-100,0);
+            this.aganju.setVelocity(-100,0);
             //Spelar left animationen av Aganju
-            aganju.anims.play('left', true);
+            this.aganju.anims.play('left', true);
 
             //Ger z-index till eldbollar
-            fireballs.setDepth(1);
+            this.fireballs.setDepth(1);
 
             //När spacebar trycks
-            if(spacebar.isDown){
+            if(this.spacebar.isDown){
                 //Stoppar Aganju
-                aganju.setVelocity(0);
+                this.aganju.setVelocity(0);
                 //Slutar animationen av Aganju
-                aganju.anims.stop();
+                this.aganju.anims.stop();
                 //Ger z-index 0 till Aganju
-                aganju.setDepth(0);
+                this.aganju.setDepth(0);
 
                 //Gör svärden visible
-                sword.setVisible(true);
+                this.sword.setVisible(true);
                 //Uppdaterar svärdens position
-                sword.setPosition(aganjuX,aganjuY-10);
+                this.sword.setPosition(this.aganjuX, this.aganjuY-10);
                 //Ger z-index till svärden
-                sword.setDepth(1);
+                this.sword.setDepth(1);
                 //Scalar ner svärden
-                sword.setScale(0.50);
+                this.sword.setScale(0.50);
                 //Spelar left animationen av svärd
-                sword.anims.play('sword_left', true);
+                this.sword.anims.play('sword_left', true);
             }
 
         }
 
         //Om höger pillen trycks, 
         //right animation spelas
-        else if (keyD.isDown)
+        else if (this.keyD.isDown)
         {
-            aganju.setVelocity(100,0);
-            aganju.anims.play('right', true);
+            this.aganju.setVelocity(100,0);
+            this.aganju.anims.play('right', true);
 
             //Ger z-index till eldbollar
-            fireballs.setDepth(1);
+            this.fireballs.setDepth(1);
 
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
-                aganju.anims.stop();
-                aganju.setDepth(1);
+            if(this.spacebar.isDown){
+                this.aganju.setVelocity(0);
+                this.aganju.anims.stop();
+                this.aganju.setDepth(1);
 
-                sword.setVisible(true);
-                sword.setPosition(aganjuX,aganjuY-10);
-                sword.setDepth(0);
-                sword.setScale(0.50);
-                sword.anims.play('sword_right', true);
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX,this.aganjuY-10);
+                this.sword.setDepth(0);
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_right', true);
             }
         }
 
         //Om up pillen trycks, 
         //Up animation spelas
-        else if(keyS.isDown)
+        else if(this.keyS.isDown)
         {
-            aganju.setVelocity(0,100);
-            aganju.anims.play('down', true);
+            this.aganju.setVelocity(0,100);
+            this.aganju.anims.play('down', true);
 
             //Ger z-index till eldbollar
-            fireballs.setDepth(1);
+            this.fireballs.setDepth(1);
 
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
-                aganju.anims.stop();
-                aganju.setDepth(0);
+            if(this.spacebar.isDown){
+                this. aganju.setVelocity(0);
+                this.aganju.anims.stop();
+                this.aganju.setDepth(0);
 
-                sword.setVisible(true);
-                sword.setPosition(aganjuX+23,aganjuY-10);
-                sword.setDepth(1);
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
+                this.sword.setDepth(1);
 
-                sword.setScale(0.50);
-                sword.anims.play('sword_down', true);
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_down', true);
             }
         }
 
         //Om up pillen trycks, 
         //Up animation spelas
-        else if(keyW.isDown)
+        else if(this.keyW.isDown)
         {
-            aganju.setVelocity(0,-100);
-            aganju.anims.play('up', true);
+            this.aganju.setVelocity(0,-100);
+            this.aganju.anims.play('up', true);
 
             //Ger z-index till eldbollar
-            fireballs.setDepth(0);
+            this.fireballs.setDepth(0);
 
             //När spacebar trycks
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
-                aganju.anims.stop();
-                aganju.setDepth(1);
+            if(this.spacebar.isDown){
+                this.aganju.setVelocity(0);
+                this.aganju.anims.stop();
+                this.aganju.setDepth(1);
 
-                sword.setVisible(true);
-                sword.setPosition(aganjuX-20,aganjuY-40);
-                sword.setDepth(0);
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);
+                this.sword.setDepth(0);
 
-                sword.setScale(0.50);
-                sword.anims.play('sword_up', true);
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_up', true);
             }
         }
 
         //Annars ingen rörelse
         //Ingen animation
         else{
-            aganju.setVelocity(0,0);
-            aganju.anims.stop();
+            this.aganju.setVelocity(0,0);
+            this.aganju.anims.stop();
         }
 
         //Om left och up pillarna trycks, 
         //Aganju går diagonalt till vänster hörn
-        if(keyA.isDown && keyW.isDown){    
-            aganju.setVelocityY(-100);
-            aganju.setVelocityX(-100);
-            aganju.anims.play('up', true);
-            aganju.setDepth(1);
+        if(this.keyA.isDown && this.keyW.isDown){    
+            this.aganju.setVelocityY(-100);
+            this.aganju.setVelocityX(-100);
+            this.aganju.anims.play('up', true);
+            this.aganju.setDepth(1);
 
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
-                sword.setDepth(0);
+            if(this.spacebar.isDown){
+                this.aganju.setVelocity(0);
+                this.sword.setDepth(0);
             }
         }
 
         //Om höger och up pillarna trycks, 
         //Aganju går diagonalt till höger hörn
-        if(keyD.isDown && keyW.isDown){    
-            aganju.setVelocityY(-100);
-            aganju.setVelocityX(100);
-            aganju.anims.play('up', true);
+        if(this.keyD.isDown && this.keyW.isDown){    
+            this.aganju.setVelocityY(-100);
+            this.aganju.setVelocityX(100);
+            this.aganju.anims.play('up', true);
 
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
+            if(this.spacebar.isDown){
+                this.aganju.setVelocity(0);
             }
         }
 
         //Om höger och ner pillarna trycks, 
         //Aganju går diagonalt till höger hörn
-        if(keyD.isDown && keyS.isDown){    
-            aganju.setVelocityY(100);
-            aganju.setVelocityX(100);
-            aganju.anims.play('down', true);
-            aganju.setDepth(0);
+        if(this.keyD.isDown && this.keyS.isDown){    
+            this.aganju.setVelocityY(100);
+            this.aganju.setVelocityX(100);
+            this.aganju.anims.play('down', true);
+            this.aganju.setDepth(0);
 
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
+            if(this.spacebar.isDown){
+                this.aganju.setVelocity(0);
 
-                sword.setDepth(1);
-                sword.setPosition(aganjuX+20,aganjuY-10);
+                this.sword.setDepth(1);
+                this.sword.setPosition(this.aganjuX+20,this.aganjuY-10);
             }
     
         }
 
         //Om vänster och ner pillarna trycks, 
         //Aganju går diagonalt till höger hörn
-        if(keyA.isDown && keyS.isDown){    
-            aganju.setVelocityY(100);
-            aganju.setVelocityX(-100);
-            aganju.anims.play('down', true);
+        if(this.keyA.isDown && this.keyS.isDown){    
+            this.aganju.setVelocityY(100);
+            this.aganju.setVelocityX(-100);
+            this.aganju.anims.play('down', true);
 
-            if(spacebar.isDown){
-                aganju.setVelocity(0);
-                sword.setPosition(aganjuX+17,aganjuY-5)
+            if(this.spacebar.isDown){
+                this.aganju.setVelocity(0);
+                this.sword.setPosition(this.aganjuX+17,this.aganjuY-5)
             }
         }
     
-        if (isDown && time > lastFired){
-            let fireball = fireballs.get();
+        if (this.isDown && time > this.lastFired){
+            this.fireball = this.fireballs.get();
 
-            if (fireball){
+            if (this.fireball){
                 // fireball.fire(aganju.x, aganju.y);
-                fireball.fire(mouseX, mouseY);
-                lastFired = time + 50;
+                this.fireball.fire(this.mouseX, this.mouseY);
+                this.lastFired = time + 50;
             }
         }
 
     }
 }
 
-export default Game;
+export default GameScene;

@@ -501,12 +501,11 @@ class GameScene extends Phaser.Scene{
                 //Ökar Aganjus health + 10
                 this.aganju.health = this.aganju.health + 10;
 
+                //Aganjus last speed innan regeneration-skillen aktiveras
+                this.lastSpeed = this.basicSpeed;
                 //Regeneration-skillen påverkar Aganjus speed, den sänks 50%
                 //Aganju kan inte röra sig när han läkar sig själv
-                this.lastSpeed = this.basicSpeed;
                 this.basicSpeed = 0;
-                //Sätter tint (blå)
-                this.speedPotion.setTint(0xff00ff);
 
                 //Sätter tint (röd) för att visa att skillen används
                 this.healthPotion.setTint(0xff0000);

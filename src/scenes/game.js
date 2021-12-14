@@ -501,6 +501,12 @@ class GameScene extends Phaser.Scene{
                 //Ökar Aganjus health + 10
                 this.aganju.health = this.aganju.health + 10;
 
+                //Regeneration-skillen påverkar Aganjus speed, den sänks 50%
+                //Aganju kan inte röra sig när han läkar sig själv
+                this.basicSpeed = 0;
+                //Sätter tint (blå)
+                this.speedPotion.setTint(0xff00ff);
+
                 //Sätter tint (röd) för att visa att skillen används
                 this.healthPotion.setTint(0xff0000);
                 
@@ -508,7 +514,10 @@ class GameScene extends Phaser.Scene{
                 setTimeout(() => {
                     this.healthPotion.setTint();
                     this.healthPotion.setAlpha(0.5);
-                }, 1000);
+
+                    //När Aganju läkte sig, han får sin speed tillbaka
+                    this.basicSpeed = 100;
+                }, 2000);
 
                 //Cooldown behövs
                 this.regenerationCoolDown = true;
@@ -531,9 +540,11 @@ class GameScene extends Phaser.Scene{
                 //Sätter tint (blå)
                 this.speedPotion.setTint(0xff00ff);
 
-                // //Sätter tint (röd)
-                // this.speedPotion.setTint(0xff0000);
-            
+                //SpeedBoost skillen påverkar Aganjus health, den sänks 50%
+                this.discreasedHealth = this.aganju.health * 0.5;
+                //här deklareras Aganjus dicreasedHealth
+                this.aganju.health = this.discreasedHealth;
+
                 //Efter 5 sekunder slutar speedboosten
                 setTimeout(() => {
                     //Back to Aganjus normal hastighet
@@ -542,6 +553,9 @@ class GameScene extends Phaser.Scene{
                     this.speedPotion.setTint();
                     //Opacity = 0.5
                     this.speedPotion.setAlpha(0.5);
+
+                    //Uppdaterar Aganjus health
+                    this.aganju.health = this.aganju.health * 2
                 }, 5000);
 
                 //Cooldown behövs

@@ -503,6 +503,7 @@ class GameScene extends Phaser.Scene{
 
                 //Regeneration-skillen påverkar Aganjus speed, den sänks 50%
                 //Aganju kan inte röra sig när han läkar sig själv
+                this.lastSpeed = this.basicSpeed;
                 this.basicSpeed = 0;
                 //Sätter tint (blå)
                 this.speedPotion.setTint(0xff00ff);
@@ -516,7 +517,7 @@ class GameScene extends Phaser.Scene{
                     this.healthPotion.setAlpha(0.5);
 
                     //När Aganju läkte sig, han får sin speed tillbaka
-                    this.basicSpeed = 100;
+                    this.basicSpeed = this.lastSpeed;
                 }, 2000);
 
                 //Cooldown behövs

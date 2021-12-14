@@ -15,6 +15,9 @@ class GameScene extends Phaser.Scene{
         //Laddar svärd
         this.load.spritesheet('sword', 'assets/player/sword.png', {frameWidth: 256, frameHeight: 194});
 
+        //Laddar heart
+        this.load.spritesheet('heart', 'assets/tilemap/heart.png', {frameWidth: 150, frameHeight: 150});
+
         //Laddar eldbollar
         this.load.image('fireball', './assets/player/fireball.png');
 
@@ -43,13 +46,29 @@ class GameScene extends Phaser.Scene{
         this.livescounter.setShadow(2, 2, '#000000', 0);
 
         //Players health
-        this.health =  this.add.text(630,10, 'Health: ', {fontSize: '20px', fill: 'red'});
+        this.health =  this.add.text(690,10, '', {fontSize: '20px', fill: 'red'});
         this.health.setShadow(2, 2, '#000000', 0);
+
+        //Heart
+        this.heart = this.physics.add.sprite(750, 20,'heart');
+        this.heart.setScale(0.20);
+            
+        //Skapar heart animatione
+        this.anims.create({
+            key: 'heartTurn',
+            frames: this.anims.generateFrameNumbers('heart', { 
+                start: 0, 
+                end: 5
+            }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.heart.anims.play('heartTurn');
 
         //Players score 
         this.scoreText = this.add.text(20, 50, 'Score:', { fontSize: '20px', fill: '#ffffff'});
         this.scoreText.setShadow(2, 2, '#000000', 0);
-     
+
         //Skapar regeneration skill image
         this.healthPotion = this.add.image(655,580.5,'healthPotion');
         this.healthPotion.setScale(0.45);
@@ -86,6 +105,9 @@ class GameScene extends Phaser.Scene{
         this.hastur.body.setImmovable(true);
         //Hasturs health
         this.hastur.health = 100;
+
+        ////////////////////////////////////////////////////////////////////
+        //Player
 
         //Skapar Aganju
         this.aganju = this.physics.add.sprite(350, 400,'aganju');
@@ -270,7 +292,7 @@ class GameScene extends Phaser.Scene{
         //Uppdaterar lives Aganju har
         this.livescounter.text = 'Lives: ' + this.lives;
         //Uppdaterar Aganjus health
-        this.health.text = 'Health: ' + this.aganju.health;
+        this.health.text = '' + this.aganju.health;
         
         //Aganju's x positon
         this.aganjuX = this.aganju.x;
@@ -509,13 +531,19 @@ class GameScene extends Phaser.Scene{
 
                 //Sätter tint (röd) för att visa att skillen används
                 this.healthPotion.setTint(0xff0000);
+
+                //Aganju kan inte aktivera speedBoost-skill när han läkar sig själv
+                this.speedCoolDown = true;
                 
                 //Tar bort tint för att visa att skillen har använts
                 setTimeout(() => {
                     this.healthPotion.setTint();
                     this.healthPotion.setAlpha(0.5);
 
-                    //När Aganju läkte sig, han får sin speed tillbaka
+                    //Nu kan speedBoost aktiveras
+                    this.speedCoolDown = false;
+
+                    //Efter regenerationen, Aganju får sin speed tillbaka
                     this.basicSpeed = this.lastSpeed;
                 }, 2000);
 

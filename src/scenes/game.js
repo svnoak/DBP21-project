@@ -532,20 +532,18 @@ class GameScene extends Phaser.Scene{
                 //Sätter tint (röd) för att visa att skillen används
                 this.healthPotion.setTint(0xff0000);
 
-                if(this.speedCoolDown !== true){
+                if(this.speedCoolDown == false){
                     //Aganju kan inte aktivera speedBoost-skill när han läkar sig själv
                     this.speedCoolDown = true;
+                    setTimeout(() => {
+                        this.speedCoolDown = false;
+                    }, 2000);
                 }
                 
                 //Tar bort tint för att visa att skillen har använts
                 setTimeout(() => {
                     this.healthPotion.setTint();
                     this.healthPotion.setAlpha(0.5);
-
-                    if(this.speedCoolDown !== true){
-                    //Nu kan speedBoost aktiveras
-                    this.speedCoolDown = false;
-                    }
 
                     //Efter regenerationen, Aganju får sin speed tillbaka
                     this.basicSpeed = this.lastSpeed;

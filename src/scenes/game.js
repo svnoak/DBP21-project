@@ -26,7 +26,8 @@ class GameScene extends Phaser.Scene{
     // Sätts igång när preload() är uppladdad
     create(){
     //Skapar spelplanen
-    this.add.image(0,0,'background').setOrigin(0);
+    const background = this.add.image(0,0,'background').setOrigin(0);
+    background.setScale(2.1);
     
     // //Definierar variabeln cursor = down,left,up,right
     // cursor = this.input.keyboard.createCursorKeys();
@@ -161,10 +162,7 @@ class GameScene extends Phaser.Scene{
     //Skapar down animationen för Aganju
     this.anims.create({
         key: 'down',
-        frames: this.anims.generateFrameNumbers('aganju', { 
-            start: 0, 
-            end: 2
-        }),
+        frames: this.anims.generateFrameNumbers('aganju', {frames:[1,0,1,2]}),
         frameRate: 10,
         repeat: -1
     });
@@ -172,10 +170,7 @@ class GameScene extends Phaser.Scene{
     //Skapar left animationen för Aganju
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('aganju', { 
-            start: 3, 
-            end: 5
-        }),
+        frames: this.anims.generateFrameNumbers('aganju', {frames:[4,3,4,5]}),
         frameRate: 10,
         repeat: -1
     });
@@ -183,7 +178,7 @@ class GameScene extends Phaser.Scene{
     //Skapar right animationen för Aganju
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('aganju', { start: 6, end: 8}),
+        frames: this.anims.generateFrameNumbers('aganju', {frames:[7,6,7,8]}),
         frameRate: 10,
         repeat: -1
     });
@@ -191,7 +186,7 @@ class GameScene extends Phaser.Scene{
     //Skapar up animationen för Aganju
     this.anims.create({
         key: 'up',
-        frames: this.anims.generateFrameNumbers('aganju', { start: 9, end: 11}),
+        frames: this.anims.generateFrameNumbers('aganju', {frames:[10,9,10,11]}),
         frameRate: 10,
         repeat: -1
     });

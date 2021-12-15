@@ -1,3 +1,6 @@
+import { createHasturAnims } from '../enemies/enemyAnims.js';
+import Hastur  from '../enemies/hastur.js';
+
 class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene');
@@ -50,27 +53,39 @@ class GameScene extends Phaser.Scene{
     this.mouseX = 0;
     this.mouseY = 0;
 
-    //Skapar Hastur
-    this.hastur = this.physics.add.sprite(200, 200,'hastur');
-    //Skalar upp Hastur
-    this.hastur.setScale(2);
-    //Ger vikt på Hastur
-    this.hastur.body.mass = 2;
-    //Begränsar Hastur inom spethiss gränser
-    this.hastur.setCollideWorldBounds(true);
-    //Gör Hastur orörlig
-    this.hastur.body.setImmovable(true);
-    //Hasturs health
-    this.hastur.health = 100;
+    
+
+
+
+    
+    createHasturAnims(this.anims); //skapas i annan fil
+
+    const hasturs = this.physics.add.group({
+        classType: Hastur,
+    });
+    
+    // //Skapar Hastur
+    let aHastur = hasturs.get(Phaser.scene, 200,200,'hastur');
+    // this.hastur = this.physics.add.sprite(200, 200,'hastur');
+    // this.hastur.anims.play('hastur-down');
+
+    aHastur.setScale(2);
+
+
+
+
+
 
     //Skapar Aganju
-    this.aganju = this.physics.add.sprite(350, 400,'aganju');
+    this.aganju = this.physics.add.sprite(380, 400,'aganju');
+    
     //Skalar upp Aganju
     this.aganju.setScale(2);
     //Ger vikt på Aganju
     this.aganju.body.mass = 2;
     //Begränsar Aganju inom spethiss gränser
     this.aganju.setCollideWorldBounds(true);
+
 
     //Kollision mellan Aganju och Hastur
     this.physics.add.collider(this.aganju, this.hastur);

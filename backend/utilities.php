@@ -106,7 +106,7 @@ function getChars($amount){
 }
 
 //7 createUser function, username/email/password argument
-function createUser($username, $email, $password, $avatar) {
+function createUser($username, $password, $email, $avatar) {
     $data = openJSON("databas/user.json");
     //Creating an user
     $addUser = [

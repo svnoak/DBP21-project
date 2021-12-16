@@ -30,6 +30,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
         scene.physics.world.on(Phaser.Physics.Arcade.Events.Tile_COLLIDE, this.handleTileCollision, this);
 
+        console.log(this);
+
     }
 
     handleTileCollision(gameObj, tile) {
@@ -37,10 +39,10 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         if( gameObj !== this){
             return //do nothing if not us colliding
         }
-
+        // else
         const newDirection = Phaser.Math.Between(0,3);
         this.direction = newDirection;
-        
+
     }
 
     preUpdate(t, dt){

@@ -302,6 +302,9 @@ class GameScene extends Phaser.Scene{
         // Gömmer svärden
         this.sword.setVisible(false);
 
+        ///////////////////////////////////////////////////////////////////////////
+        //Objects overlaps and functions
+
         //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
         this.physics.add.overlap(this.hastur, this.sword, hitEnemy, null, this);  
 
@@ -335,6 +338,9 @@ class GameScene extends Phaser.Scene{
         //     }
         // }
 
+        ///////////////////////////////////////////////////////////////////////////
+        //Player movement and animations
+
         //Om vänster pillen trycks, 
         //left animation spelas
         if (this.keyA.isDown)
@@ -349,10 +355,6 @@ class GameScene extends Phaser.Scene{
 
             //När spacebar trycks
             if(this.spacebar.isDown){
-                //Stoppar Aganju
-                this.aganju.setVelocity(0);
-                //Slutar animationen av Aganju
-                this.aganju.anims.stop();
                 //Ger z-index 0 till Aganju
                 this.aganju.setDepth(0);
 
@@ -367,7 +369,6 @@ class GameScene extends Phaser.Scene{
                 //Spelar left animationen av svärd
                 this.sword.anims.play('sword_left', true);
             }
-
         }
 
         //Om höger pillen trycks, 
@@ -381,8 +382,6 @@ class GameScene extends Phaser.Scene{
             this.fireballs.setDepth(1);
 
             if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
-                this.aganju.anims.stop();
                 this.aganju.setDepth(1);
 
                 this.sword.setVisible(true);
@@ -404,8 +403,6 @@ class GameScene extends Phaser.Scene{
             this.fireballs.setDepth(1);
 
             if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
-                this.aganju.anims.stop();
                 this.aganju.setDepth(0);
 
                 this.sword.setVisible(true);
@@ -429,8 +426,6 @@ class GameScene extends Phaser.Scene{
 
             //När spacebar trycks
             if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
-                this.aganju.anims.stop();
                 this.aganju.setDepth(1);
 
                 this.sword.setVisible(true);
@@ -458,7 +453,6 @@ class GameScene extends Phaser.Scene{
             this.aganju.setDepth(1);
 
             if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
                 this.sword.setDepth(0);
             }
         }
@@ -469,10 +463,6 @@ class GameScene extends Phaser.Scene{
             this.aganju.setVelocityY(-this.basicSpeed);
             this.aganju.setVelocityX(this.basicSpeed);
             this.aganju.anims.play('up', true);
-
-            if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
-            }
         }
 
         //Om höger och ner pillarna trycks, 
@@ -484,8 +474,6 @@ class GameScene extends Phaser.Scene{
             this.aganju.setDepth(0);
 
             if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
-
                 this.sword.setDepth(1);
                 this.sword.setPosition(this.aganjuX+20,this.aganjuY-10);
             }
@@ -500,10 +488,12 @@ class GameScene extends Phaser.Scene{
             this.aganju.anims.play('down', true);
 
             if(this.spacebar.isDown){
-                this.aganju.setVelocity(0);
                 this.sword.setPosition(this.aganjuX+17,this.aganjuY-5);
             }
         }
+
+        ///////////////////////////////////////////////////////////////////////////
+        //Players skills and cooldowns
 
         if(this.input.activePointer.isDown && time > this.lastFired){
 

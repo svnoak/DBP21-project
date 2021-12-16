@@ -97,6 +97,14 @@ function getTopCharacters($limit) {
     }
 }
 
+function getChars($amount){
+    $data = openJSON("databas/character.json");
+    $column = array_column($data, "highscore");
+    array_multisort($column, SORT_DESC, $data);
+    array_splice($data, $amount);
+    return $data;
+}
+
 //7 createUser function, username/email/password argument
 function createUser($username, $email, $password, $avatar) {
     $data = openJSON("databas/user.json");

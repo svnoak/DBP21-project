@@ -57,22 +57,26 @@ class GameScene extends Phaser.Scene{
 
 
 
-    createHasturAnims(this.anims); //skapar animation i annan fil
-
-    // används för att skapa hasturer, lägger till dem i en grupp
-    const hasturs = this.physics.add.group({ 
-        classType: Hastur,
-    });
-
     
-    // //Skapa en hastur
-    let aHastur = hasturs.get(this, 200,200,'hastur');
-    // this.hastur = this.physics.add.sprite(200, 200,'hastur');
-    // this.hastur.anims.play('hastur-down');
+    createHasturAnims(this.anims); //skapas i annan fil
+
+    const hasturs = this.physics.add.group({
+        classType: Hastur,
+        createCallback: (gameObj) =>{
+            // const hasGo = gameObj as Hastur;
+            gameObj.body.onCollide = true;
+
+        }
+    });
+    
+    // //Skapar Hastur
+    this.hastur = hasturs.get( 400, 100,'hastur');
+    this.hastur.setCollideWorldBounds(true);
 
 
+    // hasturs.collider.add.collider()
 
-
+    // this.hastur.body.mass = 2;
 
 
     //Skapar Aganju
@@ -87,7 +91,7 @@ class GameScene extends Phaser.Scene{
 
 
     //Kollision mellan Aganju och Hastur
-    this.physics.add.collider(this.aganju, this.hastur);
+    this.physics.add.collider(this.aganju, hasturs);
 
     //Skapar svärden
     this.sword = this.physics.add.sprite(this.aganju.x, this.aganju.y,'sword');

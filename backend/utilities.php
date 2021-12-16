@@ -86,17 +86,6 @@ function getEntryByID($fileName, $id) {
 }
 
 //6 getTopCharacters function, limit argument
-function getTopCharacters($limit) {
-    $data = openJSON("databas/character.json");
-    foreach($data as $character) {
-        $characterName = $character["name"];
-        $highscore = $character["highscore"];
-        if($highscore >= $limit) {
-            echo "$characterName: $highscore </br>";
-        }
-    }
-}
-
 function getChars($amount){
     $data = openJSON("databas/character.json");
     $column = array_column($data, "highscore");

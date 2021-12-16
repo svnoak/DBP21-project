@@ -19,5 +19,12 @@
         "email": "demo@demo.se",
         "avatar": "picture",
         "id": 3
+    },
+    {
+        "username": "buddy",
+        "password": "12345",
+        "email": "buddy@email.com",
+        "avatar": "placeholder",
+        "id": 4
     }
 ]

@@ -1,8 +1,6 @@
 [
     {
-        "l_id": "from user.json",
-        "username": "from user.json",
-        "avatar": "from user.json",
+        "name": "from character.json",
         "highscore": "from character.json"
     }
 ]

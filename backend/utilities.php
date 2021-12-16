@@ -14,6 +14,7 @@ function contentType($type) {
             ["message" => "The API only accepts JSON"],
             400
         );
+        exit();
     }
 }
 
@@ -25,6 +26,7 @@ function requestMethod($method) {
             ["message" => "Method not allowed"],
             405
         );
+        exit();
     }
 }
 

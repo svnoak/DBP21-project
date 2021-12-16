@@ -105,6 +105,8 @@ class GameScene extends Phaser.Scene{
         this.hastur.body.setImmovable(true);
         //Hasturs health
         this.hastur.health = 100;
+        //Sätter body offset
+        this.hastur.setBodySize(0,10,true);
 
         ////////////////////////////////////////////////////////////////////
         //Player
@@ -117,6 +119,8 @@ class GameScene extends Phaser.Scene{
         this.aganju.body.mass = 2;
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
+        //Sätter body offset
+        this.aganju.setBodySize(25,0,true);
 
         //Kollision mellan Aganju och Hastur
         this.physics.add.collider(this.aganju, this.hastur);
@@ -357,6 +361,9 @@ class GameScene extends Phaser.Scene{
             if(this.spacebar.isDown){
                 //Ger z-index 0 till Aganju
                 this.aganju.setDepth(0);
+                //Sätter X body offset 0 för att kunna skada fienden på x axeln(höger/vänster sida)
+                //Y body offset 5 för att inte kunna skada fienden om svärden inte träffar fienden
+                this.sword.setBodySize(0,5,true);
 
                 //Gör svärden visible
                 this.sword.setVisible(true);
@@ -385,6 +392,10 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(1);
 
                 this.sword.setVisible(true);
+                //Sätter X body offset 0 för att kunna skada fienden på x axeln(höger/vänster sida)
+                //Y body offset 5 för att inte kunna skada fienden om svärden inte träffar fienden
+                this.sword.setBodySize(0,5,true);
+
                 this.sword.setPosition(this.aganjuX,this.aganjuY-10);
                 this.sword.setDepth(0);
                 this.sword.setScale(0.50);
@@ -404,8 +415,11 @@ class GameScene extends Phaser.Scene{
 
             if(this.spacebar.isDown){
                 this.aganju.setDepth(0);
-
                 this.sword.setVisible(true);
+                //Sätter Y body offset 0 för att kunna skada fienden på y axeln(fram/bakom sida)
+                //X body offset 5 för att inte kunna skada fienden om svärden inte träffar fienden
+                this.sword.setBodySize(5,0,true);
+
                 this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
                 this.sword.setDepth(1);
 
@@ -427,8 +441,11 @@ class GameScene extends Phaser.Scene{
             //När spacebar trycks
             if(this.spacebar.isDown){
                 this.aganju.setDepth(1);
-
                 this.sword.setVisible(true);
+                //Sätter Y body offset 2 för att kunna skada fienden på y axeln(fram/bakom sida)
+                //X body offset 5 för att inte kunna skada fienden om svärden inte träffar fienden
+                this.sword.setBodySize(5,2,true);
+
                 this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);
                 this.sword.setDepth(0);
 

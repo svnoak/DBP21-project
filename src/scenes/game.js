@@ -57,19 +57,18 @@ class GameScene extends Phaser.Scene{
 
 
 
-    
-    createHasturAnims(this.anims); //skapas i annan fil
+    createHasturAnims(this.anims); //skapar animation i annan fil
 
-    const hasturs = this.physics.add.group({
+    // används för att skapa hasturer, lägger till dem i en grupp
+    const hasturs = this.physics.add.group({ 
         classType: Hastur,
     });
+
     
-    // //Skapar Hastur
-    let aHastur = hasturs.get(Phaser.scene, 200,200,'hastur');
+    // //Skapa en hastur
+    let aHastur = hasturs.get(this, 200,200,'hastur');
     // this.hastur = this.physics.add.sprite(200, 200,'hastur');
     // this.hastur.anims.play('hastur-down');
-
-    aHastur.setScale(2);
 
 
 

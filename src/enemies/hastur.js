@@ -1,8 +1,15 @@
-export default class Hastur extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, texture, frame){
-        super(scene, x, y, texture, frame);
+export default class Hastur extends Phaser.Physics.Arcade.Sprite{ // NÅGOT HÄR FUNGERAR INTE
+    constructor(scene, x, y, texture){ // NÅGOT HÄR FUNGERAR INTE
+        super(scene, x, y, texture); // NÅGOT HÄR FUNGERAR INTE
+
+
+
+
+
+
         // this.anims.play('hastur-down');
     
+
         // // //Skalar upp Hastur
         // this.hastur.setScale(2);
         // // //Ger vikt på Hastur

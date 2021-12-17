@@ -76,7 +76,8 @@ class GameScene extends Phaser.Scene {
                 gameObj.body.onCollide = true;
 
                 gameObj.body.mass = 2;
-                gameObj.setCollideWorldBounds(true);
+                gameObj.body.collideWorldBounds = true;
+                gameObj.body.onWorldBounds = true;
 
                 //Gör Hastur orörlig
                 gameObj.setImmovable(true);
@@ -89,7 +90,9 @@ class GameScene extends Phaser.Scene {
 
         // //Skapar Hastur
         this.hastur = hasturs.get(400, 100, 'hastur');
-        this.hastur.setCollideWorldBounds(true);
+        // this.hastur1 = hasturs.get(600, 200, 'hastur');
+        // this.hastur2 = hasturs.get(500, 15, 'hastur');
+        // this.hastur3 = hasturs.get(350, 4000, 'hastur');
 
         // this.hastur.body.mass = 2;
 
@@ -296,7 +299,7 @@ class GameScene extends Phaser.Scene {
             this.hastur.health = this.hastur.health - 1;
 
             if (this.hastur.health == 0) {
-                this.hastur.destroy();
+                this.hastur.destroy(this.hastur.moveEvent);
             }
         }
 

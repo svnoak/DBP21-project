@@ -3,48 +3,55 @@ const DOWN = 1;
 const LEFT = 2;
 const RIGHT = 3;
 
+let highestID=0;
+
 export default class Hastur extends Phaser.Physics.Arcade.Sprite{  
-    direction = RIGHT;
+    direction = RIGHT; // original walking direction
+    randMoveEvent;  
 
     constructor(scene, x, y, texture){ 
         super(scene, x, y, texture);
 
         let hastur = this;
+        hastur.id = highestID++;
 
         hastur.anims.play('hastur-left');
         hastur.setScale(2);
-        
 
-        // hasturs.body.setMass(2);
-        // hasturs.setCollideWorldBounds(true);
-        // //Ger vikt på Hastur
-        // hasturs.body.mass = 2;
-        // //Begränsar Hastur inom spethiss gränser
-        // hasturs.setCollideWorldBounds(true);
-        // //Gör Hastur orörlig
-        // this.body.setImmovable(true);
-        // //Hasturs health
-        // this.health = 100;
+        scene.physics.world.on('worldbounds', () =>{
+            this.direction = this.randomDirection(this.direction);
+            this.setAnimation();
+        });
 
-        // this.body.onCollide = true;
-
-        scene.physics.world.on('collide', handleTileCollision);
-
-
+        this.randMoveEvent = scene.time.addEvent({
+            delay: Phaser.Math.Between(1000,5000),
+            callback: () => {
+                this.direction = this.randomDirection(this.direction);
+                // console.log('random new direction for hastur: ' + hastur.id);
+                this.setAnimation();
+            },
+            loop:true
+        });
     }
 
-    handleTileCollision(gameObj, tile) {
-        // construtor()
-        if( gameObj !== this){
-            return //do nothing if not us colliding
+    randomDirection = exclude =>{ // exclude == current direction
+        let newDirection = Phaser.Math.Between(0,3);
+        while (newDirection == exclude){ 
+            newDirection = Phaser.Math.Between(0,3);
         }
-        // else
-        const newDirection = Phaser.Math.Between(0,3);
-        this.direction = newDirection;
+        return newDirection; // returns directions that is not current
+    }
 
+    setAnimation = () =>{
+        let dirName = ['up', 'down', 'left', 'right'];
+        console.log('setting animation for hastur: '+ this.id);
+        this.anims.play(`hastur-${dirName[this.direction]}`);
+    }
 
-        console.log('collide');
-
+    destroy(){
+        console.log('hastur '+ this.id +' died');
+        // this.randMoveEvent.destroy();
+        super.destroy(this);
     }
 
     preUpdate(t, dt){

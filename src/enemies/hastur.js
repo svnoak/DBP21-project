@@ -41,7 +41,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         });
 
         hastur.randMoveEvent = scene.time.addEvent({
-            delay: Phaser.Math.Between(2000,7000),
+            delay: Phaser.Math.Between(3000,7000),
             callback: () => {
                 this.direction = randomDirection(hastur.direction);
                 setAnimation(hastur, 'hastur');

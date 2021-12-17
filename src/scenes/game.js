@@ -37,6 +37,7 @@ class GameScene extends Phaser.Scene {
     // Create game world 
     // Sätts igång när preload() är uppladdad
     create() {
+        
         //Skapar spelplanen
         const background = this.add.image(0, 0, 'background').setOrigin(0);
         background.setScale(2.1);
@@ -92,6 +93,8 @@ class GameScene extends Phaser.Scene {
         this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
         this.hastur2 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         this.hastur3 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        this.hastur4 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        this.hastur5 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         // this.hastur1 = hasturs.get(600, 200, 'hastur');
         // this.hastur2 = hasturs.get(500, 15, 'hastur');
         // this.hastur3 = hasturs.get(350, 4000, 'hastur');
@@ -109,7 +112,26 @@ class GameScene extends Phaser.Scene {
 
 
         //Kollision mellan Aganju och Hastur
-        this.physics.add.collider(this.aganju, hasturs);
+        this.physics.add.collider(this.aganju, hasturs, handleHasturCollDamage, undefined, this); // undefined = processCallback
+
+        // time = new Clock(this);
+
+        function handleHasturCollDamage(hero, enemy){
+
+            if( !this.aganju.takeDmgCooldown ){
+                this.aganju.takeDmgCooldown = this.time.now;
+                console.log(this.aganju.takeDmgCooldown);
+
+            } 
+
+            if( this.time.now > this.aganju.takeDmgCooldown + 1000 ){
+                this.aganju.health = this.aganju.health - 25;
+                this.aganju.takeDmgCooldown = this.time.now;
+
+                console.log(this.aganju.health);
+            }
+            
+        };
 
         //Skapar svärden
         this.sword = this.physics.add.sprite(this.aganju.x, this.aganju.y, 'sword');

@@ -8,8 +8,6 @@ class GameScene extends Phaser.Scene {
         super('GameScene');
     }
 
-    // Preload game assets 
-    // Här laddas alla assets innan spethis är igång
     preload() {
         //Laddar spelplanen
         this.load.image('background', './assets/tilemap/background.png');
@@ -76,6 +74,15 @@ class GameScene extends Phaser.Scene {
             createCallback: (gameObj) => {
                 // const hasGo = gameObj as Hastur;
                 gameObj.body.onCollide = true;
+
+                gameObj.body.mass = 2;
+                gameObj.setCollideWorldBounds(true);
+
+                //Gör Hastur orörlig
+                gameObj.setImmovable(true);
+
+                // //Hasturs health
+                gameObj.health = 100;
 
             }
         });

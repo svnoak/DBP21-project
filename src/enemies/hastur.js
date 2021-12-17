@@ -28,9 +28,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
         // this.body.onCollide = true;
 
-        scene.physics.world.on(Phaser.Physics.Arcade.Events.Tile_COLLIDE, this.handleTileCollision, this);
+        scene.physics.world.on('collide', handleTileCollision);
 
-        console.log(this);
 
     }
 
@@ -43,12 +42,15 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         const newDirection = Phaser.Math.Between(0,3);
         this.direction = newDirection;
 
+
+        console.log('collide');
+
     }
 
     preUpdate(t, dt){
         super.preUpdate(t, dt);
 
-        const speed = 50;
+        const speed = 100;
 
         switch(this.direction){
             case UP:

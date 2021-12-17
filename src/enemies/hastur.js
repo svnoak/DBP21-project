@@ -53,6 +53,15 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         scene.physics.world.on('collide', (hero, enemy)=>{
             enemyMove(hastur, 'hastur');
 
+            console.log(hero.timeTakenDmgLast);
+
+            // makes aganju take damage
+            //                                         cooldown
+            if( !hero.timeTakenDmgLast || scene.time.now >= hero.timeTakenDmgLast + 1000){
+                hero.health = hero.health - 25;
+                hero.timeTakenDmgLast = scene.time.now;
+            }
+
         })
 
         hastur.randMoveEvent = scene.time.addEvent({

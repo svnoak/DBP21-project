@@ -139,6 +139,8 @@ class GameScene extends Phaser.Scene{
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
 
+        
+
 
         ////////////////////////////////////////////////////////////////////
         //Vapen

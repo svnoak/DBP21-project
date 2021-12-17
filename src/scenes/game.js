@@ -1,3 +1,8 @@
+import {
+    createHasturAnims
+} from '../enemies/enemyAnims.js';
+import Hastur from '../enemies/hastur.js';
+
 class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene');

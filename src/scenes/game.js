@@ -89,12 +89,12 @@ class GameScene extends Phaser.Scene {
         });
 
         // //Skapar Hastur
-        this.hastur = hasturs.get(400, 100, 'hastur');
+        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
+        this.hastur2 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        this.hastur3 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         // this.hastur1 = hasturs.get(600, 200, 'hastur');
         // this.hastur2 = hasturs.get(500, 15, 'hastur');
         // this.hastur3 = hasturs.get(350, 4000, 'hastur');
-
-        // this.hastur.body.mass = 2;
 
 
         //Skapar Aganju

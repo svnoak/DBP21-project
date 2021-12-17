@@ -5,48 +5,54 @@ const RIGHT = 3;
 
 let highestID=0;
 
+function randomDirection(exclude){ // exclude == current direction
+    let newDirection = Phaser.Math.Between(0,3);
+    if(exclude){
+        while (newDirection == exclude){ 
+            newDirection = Phaser.Math.Between(0,3);
+        }
+    }
+    
+    return newDirection; // returns directions that is not current
+}
+
+function setAnimation(animObj, spriteName){
+    let dirName = ['up', 'down', 'left', 'right']; //index corresponds with directional consts
+    // console.log('setting animation for '+ spriteName+ ': '+ animObj.id);
+    animObj.anims.play(`${spriteName}-${dirName[animObj.direction]}`);
+}
+
 export default class Hastur extends Phaser.Physics.Arcade.Sprite{  
-    direction = RIGHT; // original walking direction
-    randMoveEvent;  
 
     constructor(scene, x, y, texture){ 
+        
         super(scene, x, y, texture);
+        
+        this.id = highestID++;
 
-        let hastur = this;
-        hastur.id = highestID++;
+        let hastur = this; // to make constructor easier to read 
 
         hastur.anims.play('hastur-left');
         hastur.setScale(2);
 
         scene.physics.world.on('worldbounds', () =>{
-            this.direction = this.randomDirection(this.direction);
-            this.setAnimation();
+            hastur.direction = randomDirection(hastur.direction);
+            setAnimation(this, 'hastur');
         });
 
-        this.randMoveEvent = scene.time.addEvent({
-            delay: Phaser.Math.Between(1000,5000),
+        hastur.randMoveEvent = scene.time.addEvent({
+            delay: Phaser.Math.Between(2000,7000),
             callback: () => {
-                this.direction = this.randomDirection(this.direction);
-                // console.log('random new direction for hastur: ' + hastur.id);
-                this.setAnimation();
+                this.direction = randomDirection(hastur.direction);
+                setAnimation(hastur, 'hastur');
             },
             loop:true
         });
     }
 
-    randomDirection = exclude =>{ // exclude == current direction
-        let newDirection = Phaser.Math.Between(0,3);
-        while (newDirection == exclude){ 
-            newDirection = Phaser.Math.Between(0,3);
-        }
-        return newDirection; // returns directions that is not current
-    }
-
-    setAnimation = () =>{
-        let dirName = ['up', 'down', 'left', 'right'];
-        console.log('setting animation for hastur: '+ this.id);
-        this.anims.play(`hastur-${dirName[this.direction]}`);
-    }
+    direction = randomDirection(); // original walking direction
+    animation = setAnimation(this, 'hastur'); 
+    randMoveEvent; 
 
     destroy(){
         console.log('hastur '+ this.id +' died');

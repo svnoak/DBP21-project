@@ -5,22 +5,28 @@ const RIGHT = 3;
 
 let highestID=0;
 
-function randomDirection(exclude){ // exclude == current direction
-    let newDirection = Phaser.Math.Between(0,3);
-    if(exclude){
-        while (newDirection == exclude){ 
-            newDirection = Phaser.Math.Between(0,3);
-        }
-    }
-    
-    return newDirection; // returns directions that is not current
-}
+function enemyMove(obj, type){ // type == sprite name
+    obj.direction = randomDirection(obj.direction);
+    setAnimation(obj, type);
 
-function setAnimation(animObj, spriteName){
-    let dirName = ['up', 'down', 'left', 'right']; //index corresponds with directional consts
-    // console.log('setting animation for '+ spriteName+ ': '+ animObj.id);
-    animObj.anims.play(`${spriteName}-${dirName[animObj.direction]}`);
-}
+    // functions used
+    function randomDirection(exclude){ // exclude == current direction
+        let newDirection = Phaser.Math.Between(0,3);
+        if(exclude){
+            while (newDirection == exclude){ 
+                newDirection = Phaser.Math.Between(0,3);
+            }
+        }
+        
+        return newDirection; // returns directions that is not current
+    }
+
+    function setAnimation(animObj, spriteName){
+        let dirName = ['up', 'down', 'left', 'right']; //index corresponds with directional consts
+        // console.log('setting animation for '+ spriteName+ ': '+ animObj.id);
+        animObj.anims.play(`${spriteName}-${dirName[animObj.direction]}`);
+    };
+};
 
 export default class Hastur extends Phaser.Physics.Arcade.Sprite{  
 
@@ -28,31 +34,37 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         
         super(scene, x, y, texture);
         
-        this.id = highestID++;
-
+        
         let hastur = this; // to make constructor easier to read 
-
-        hastur.anims.play('hastur-left');
+        hastur.id = highestID++;
         hastur.setScale(2);
 
+        enemyMove(hastur, 'hastur'); // makes object more
+
+
+        // Enemey change direction :
+        // - on worldbounds collision
+        // - on aganju collision
+        // - randomly 
+
         scene.physics.world.on('worldbounds', () =>{
-            hastur.direction = randomDirection(hastur.direction);
-            setAnimation(this, 'hastur');
+            enemyMove(hastur, 'hastur');
         });
 
+        scene.physics.world.on('collide', (hero, enemy)=>{
+            enemyMove(hastur, 'hastur');
+
+            
+        })
+
         hastur.randMoveEvent = scene.time.addEvent({
-            delay: Phaser.Math.Between(2000,7000),
+            delay: Phaser.Math.Between(4000,10000),
             callback: () => {
-                this.direction = randomDirection(hastur.direction);
-                setAnimation(hastur, 'hastur');
+                enemyMove(hastur, 'hastur');
             },
             loop:true
         });
     }
-
-    direction = randomDirection(); // original walking direction
-    animation = setAnimation(this, 'hastur'); 
-    randMoveEvent; 
 
     destroy(){
         console.log('hastur '+ this.id +' died');

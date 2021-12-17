@@ -20,7 +20,12 @@ function setAnimation(animObj, spriteName){
     let dirName = ['up', 'down', 'left', 'right']; //index corresponds with directional consts
     // console.log('setting animation for '+ spriteName+ ': '+ animObj.id);
     animObj.anims.play(`${spriteName}-${dirName[animObj.direction]}`);
-}
+};
+
+function enemyMove(obj, type){ // type == sprite name
+    obj.direction = randomDirection(obj.direction);
+    setAnimation(obj, type);
+};
 
 export default class Hastur extends Phaser.Physics.Arcade.Sprite{  
 
@@ -28,12 +33,12 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         
         super(scene, x, y, texture);
         
-        this.id = highestID++;
-
+        
         let hastur = this; // to make constructor easier to read 
-
-        hastur.anims.play('hastur-left');
+        hastur.id = highestID++;
         hastur.setScale(2);
+
+        enemyMove(hastur, 'hastur');
 
         scene.physics.world.on('worldbounds', () =>{
             hastur.direction = randomDirection(hastur.direction);

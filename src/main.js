@@ -39,6 +39,7 @@ const config = {
         AboutScene,
         HowToScene
     ],
+    pixelArt: true,
 };
 
 let game = new Phaser.Game(config);

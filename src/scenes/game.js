@@ -12,7 +12,8 @@ class GameScene extends Phaser.Scene{
     // Här laddas alla assets innan spethis är igång
     preload() {
         //Laddar spelplanen
-        this.load.image('background', './assets/tilemap/background.png');
+        let bg = this.load.image('background', './assets/tilemap/background.png').setScale(2);
+        // bg.setScale(2.1);
 
         //Laddar Aganju 
         this.load.spritesheet('aganju', './assets/player/aganju.png', {frameWidth: 32, frameHeight: 32});
@@ -98,18 +99,33 @@ class GameScene extends Phaser.Scene{
         //Definierar variabeln keyS = "D"
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        //Skapar Hastur
-        this.hastur = this.physics.add.sprite(200, 200,'hastur');
-        //Skalar upp Hastur
-        this.hastur.setScale(2);
-        //Ger vikt på Hastur
-        this.hastur.body.mass = 2;
-        //Begränsar Hastur inom spethiss gränser
-        this.hastur.setCollideWorldBounds(true);
-        //Gör Hastur orörlig
-        this.hastur.body.setImmovable(true);
-        //Hasturs health
-        this.hastur.health = 100;
+        ////////////////////////////////////////////////////////////////////
+        // Hastur
+
+        createHasturAnims(this.anims); //skapas i annan fil
+
+        const hasturs = this.physics.add.group({
+            classType: Hastur,
+            createCallback: (gameObj) => {
+                // const hasGo = gameObj as Hastur;
+                gameObj.body.onCollide = true;
+
+                gameObj.body.mass = 2;
+                gameObj.body.collideWorldBounds = true;
+                gameObj.body.onWorldBounds = true;
+
+                //Gör Hastur orörlig
+                gameObj.setImmovable(true);
+
+                // //Hasturs health
+                gameObj.health = 100;
+            }
+        });
+
+        // //Skapar Hastur
+        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
+        this.hastur2 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        this.hastur3 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
 
         ////////////////////////////////////////////////////////////////////
         //Player

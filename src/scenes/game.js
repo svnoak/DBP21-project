@@ -12,8 +12,7 @@ class GameScene extends Phaser.Scene{
     // Här laddas alla assets innan spethis är igång
     preload() {
         //Laddar spelplanen
-        let bg = this.load.image('background', './assets/tilemap/background.png').setScale(2);
-        // bg.setScale(2.1);
+        this.load.image('background', './assets/tilemap/background.png');
 
         //Laddar Aganju 
         this.load.spritesheet('aganju', './assets/player/aganju.png', {frameWidth: 32, frameHeight: 32});
@@ -45,7 +44,8 @@ class GameScene extends Phaser.Scene{
     // Sätts igång när preload() är uppladdad
     create(){
         //Skapar spelplanen
-        this.add.image(0,0,'background').setOrigin(0);
+        let bg = this.add.image(0,0,'background').setOrigin(0);
+        bg.setScale(2.1);
 
         //Players lives
         this.livescounter = this.add.text(20,10, 'Lives: ', {fontSize: '20px', fill: 'deepskyblue'});

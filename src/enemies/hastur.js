@@ -5,15 +5,18 @@ const RIGHT = 3;
 
 let highestID=0;
 
+let wallCollTime = 0;
+
 function enemyMove(obj, type){ // type == sprite name
     obj.direction = randomDirection(obj.direction);
     setAnimation(obj, type);
 
-    // functions used
-    function randomDirection(exclude){ // exclude == current direction
+    function randomDirection(exclude){
         let newDirection = Phaser.Math.Between(0,3);
-        
-        return newDirection; // returns directions that is not current
+        while(newDirection == exclude){
+            newDirection = Phaser.Math.Between(0,3);
+        }
+        return newDirection;
     }
 
     function setAnimation(animObj, spriteName){
@@ -26,11 +29,11 @@ function enemyMove(obj, type){ // type == sprite name
 export default class Hastur extends Phaser.Physics.Arcade.Sprite{  
 
     constructor(scene, x, y, texture){ 
-        
+
         super(scene, x, y, texture);
         
-        
-        let hastur = this; // to make constructor easier to read 
+        let hastur = this; // only for ease of read 
+
         hastur.id = highestID++;
         hastur.setScale(2);
 
@@ -40,18 +43,21 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         // - on worldbounds collision
         // - on aganju collision
         // - randomly 
-
+        // | | | | | | |
+        // v v v v v v v
+        
         scene.physics.world.on('worldbounds', () =>{
             enemyMove(hastur, 'hastur');
+            wallCollTime = scene.time.now; // saves time for randMoveEvent
+            console.log('bump wall');
+
         });
 
         scene.physics.world.on('collide', (hero, enemy)=>{
             enemyMove(hastur, 'hastur');
 
-            console.log(hero.timeTakenDmgLast);
-
-            // makes aganju take damage
-            //                                         cooldown
+            // makes aganju take damage              |          | 
+            //                                       v cooldown v
             if( !hero.timeTakenDmgLast || scene.time.now >= hero.timeTakenDmgLast + 1000){
                 hero.health = hero.health - 25;
                 hero.timeTakenDmgLast = scene.time.now;
@@ -60,10 +66,13 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         })
 
         hastur.randMoveEvent = scene.time.addEvent({
-            delay: Phaser.Math.Between(4000,10000),
+            // wallCollTime prevents hastur from randomly 
+            // changing direction immediately after bumping wall
+            delay: Phaser.Math.Between(wallCollTime + 4000, wallCollTime + 8000),
             callback: () => {
                 enemyMove(hastur, 'hastur');
-                console.log( 'random direction change of hastur:' + hastur.id );
+                console.log('random turn');
+                // console.log( 'random direction change of hastur:' + hastur.id );
             },
             loop:true
         });
@@ -71,7 +80,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
     destroy(){
         console.log('hastur '+ this.id +' died');
-        // this.randMoveEvent.destroy();
+        this.randMoveEvent.destroy();
         super.destroy(this);
     }
 

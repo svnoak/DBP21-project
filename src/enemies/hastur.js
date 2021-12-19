@@ -12,11 +12,6 @@ function enemyMove(obj, type){ // type == sprite name
     // functions used
     function randomDirection(exclude){ // exclude == current direction
         let newDirection = Phaser.Math.Between(0,3);
-        if(exclude){
-            while (newDirection == exclude){ 
-                newDirection = Phaser.Math.Between(0,3);
-            }
-        }
         
         return newDirection; // returns directions that is not current
     }
@@ -68,6 +63,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
             delay: Phaser.Math.Between(4000,10000),
             callback: () => {
                 enemyMove(hastur, 'hastur');
+                console.log( 'random direction change of hastur:' + hastur.id );
             },
             loop:true
         });

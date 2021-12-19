@@ -124,8 +124,9 @@ class GameScene extends Phaser.Scene{
 
         // //Skapar Hastur
         this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
-        this.hastur2 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
-        this.hastur3 = hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        for (let i = 0; i < 4; i++) {
+            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        }
 
         ////////////////////////////////////////////////////////////////////
         //Player

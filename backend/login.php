@@ -1,43 +1,43 @@
 <?php
-//Hämtar utilities.php
+//Fetching utilities.php
 require_once("utilities.php");
-//Info som skickats till servern
+//The information sent to the server
 $dataPHP = file_get_contents("php://input");
-//Gör JSON till en associativ array
+//Makes JSON to an associativ array
 $requestData = json_decode($dataPHP, true);
 
-//Kollar så att contenttype är rätt
+//Checks the contenttype
 contentType("application/json");
-//Kollar så att metoden är rätt
+//Checks the method
 requestMethod("POST");
-
+//Fetching data from database
 $data = openJSON("databas/user.json");
 
-//Kollar om något kommit in med POST
+//Checks if something was sent through POST
 if(isset($requestData["username"], $requestData["password"])) {
-    //Sparar ner username och password i variabler
+    //Saves username och password in variables
     $username = $requestData["username"];
     $password = $requestData["password"];
-    //Sätter variabeln för foundUser till null
+    //Setting necessary variables
     $foundUser = null;
-    //Loopar user.json och letar efter en användare som matchar med det som skickats med POST
+    //Loops through user.json and looks for a user that has the matching username/password as sent through POST
     foreach($data as $user) {
         if($user["username"] === $username && $user["password"] === $password) {
-            //Läggar den hittade användaren i variabeln foundUser
+            //Puts the found user in the variable foundUser
             $foundUser = $user;
         }
     }
-    //Kollar så att foundUser har fått en användare
+    //Checks that foundUser has been given a user
     if($foundUser !== null) {
-        //Startar en session och sparar $foundUser id't i session id
+        //Starts a session and saves $foundUser ID in session ID
         session_start();
         $_SESSION["id"] = $foundUser["id"];
         $userID = $_SESSION["id"];
-        //Returnerar användarens ID
-        echo $userID;
+        //Returns a user ID
+        echo $userID; //Test for Insomnia
         return $userID;
     } else {
-        //Retunerar ett felmeddelande att inloggningen inte är rätt
+        //Retuns a message that something when wrong when atempting to login
         sendJSON("Login does not exist");
     }
 }

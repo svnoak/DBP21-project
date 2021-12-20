@@ -1,29 +1,28 @@
 <?php
-//Startar session
+//Starts session
 session_start();
-//Hämtar utilities.php
+//Fetching utilities.php
 require_once("utilities.php");
-//Kollar så att användaren är inloggad genom att kolla ifall det finns ett id i sessions
+//Checks if the user is logged in by checking if there is a stored ID in session
 if (!isset($_SESSION["id"])) {
     //header("Location: /login.php");
     exit();
 }
 
-//Kollar så att contenttype är rätt
+//Checks the contenttype
 contentType("application/json");
-//Kollar så att metoden är rätt
+//Checks the method
 requestMethod("GET");
 
-//Sparar det tillfälliga id't från sessions i variabeln id
+//Saving the ID from sessions in a variable
 $id = $_SESSION["id"];
-//Kollar så att det finns ett id
+//Checks if an ID is given in session
 if(isset($id)) {
-    //Sparar användarens information i en variabel
+    //Saving the user information in a variable
     $data = getEntryByID("databas/user.json", $id);
 } else {
-    //Error om att man inte är inloggad
+    //Error if the user is not logged in
     sendJSON("You are not logged in");
 }
-
 
 ?>

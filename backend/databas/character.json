@@ -1,6 +1,6 @@
 [
     {
-        "c_id": 1,
+        "id": 1,
         "name": "Oddball",
         "json": "",
         "sprite": "DBP21-project/assets/player",
@@ -15,7 +15,7 @@
         "inventory": 0
     },
     {
-        "c_id": 2,
+        "id": 2,
         "name": "BoxMan",
         "json": "",
         "sprite": "DBP21-project/assets/player",
@@ -30,7 +30,7 @@
         "inventory": 0
     },
     {
-        "c_id": 3,
+        "id": 3,
         "name": "JukeboxMaster",
         "json": "",
         "sprite": "DBP21-project/assets/player",

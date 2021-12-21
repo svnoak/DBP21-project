@@ -36,9 +36,6 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         hastur.wallCollTime = 0;
         hastur.setScale(2);
 
-        console.log(hastur);
-
-
         enemyMove(hastur, 'hastur'); // makes objects move
 
         // Enemey change direction :
@@ -50,8 +47,6 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
         this.interval = setInterval( () =>{
             enemyMove(hastur,'hastur');
-            console.log('random turn');
-
         },Phaser.Math.Between(hastur.wallCollTime + 3000, hastur.wallCollTime + 16000) )
         
         scene.physics.world.on('worldbounds', (obj) =>{
@@ -60,26 +55,19 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 enemyMove(hastur, 'hastur');
                 hastur.wallCollTime = scene.time.now; // saves time for randMoveEvent
             }
-
         });
 
-        // scene.physics.world.on('collide', (hero, enemy)=>{
-        //     enemyMove(hastur, 'hastur');
+        scene.physics.world.on('collide', (hero, enemy)=>{
+            enemyMove(hastur, 'hastur');
 
-        //     // makes aganju take damage              |          | 
-        //     //                                       v cooldown v
-        //     if( !hero.timeTakenDmgLast || scene.time.now >= hero.timeTakenDmgLast + 1000){
-        //         hero.health = hero.health - 25;
-        //         hero.timeTakenDmgLast = scene.time.now;
-        //     }
+            // makes aganju take damage              |          | 
+            //                                       v cooldown v
+            if( !hero.timeTakenDmgLast || scene.time.now >= hero.timeTakenDmgLast + 1000){
+                hero.health = hero.health - 25;
+                hero.timeTakenDmgLast = scene.time.now;
+            }
 
-        // })
-
-
-
-
-        console.log('this is hastur: ' + hastur.id + ' with interval' + this.interval);
-
+        })
 
         // hastur.randMoveEvent = scene.time.addEvent({
         //     // wallCollTime prevents hastur from randomly 
@@ -96,7 +84,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
     destroy(){
         console.log('hastur '+ this.id +' died');
-        this.randMoveEvent.destroy();
+        this.interval.destroy();
         super.destroy(this);
     }
 

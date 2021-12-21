@@ -106,8 +106,7 @@ class GameScene extends Phaser.Scene{
 
         const hasturs = this.physics.add.group({
             classType: Hastur,
-            createCallback: (gameObj) => {
-                // const hasGo = gameObj as Hastur;
+            createCallback: (gameObj) => { // hastur objects properties
                 gameObj.body.onCollide = true;
 
                 gameObj.body.mass = 2;
@@ -119,6 +118,7 @@ class GameScene extends Phaser.Scene{
 
                 // //Hasturs health
                 gameObj.health = 100;
+
             }
         });
 
@@ -139,8 +139,6 @@ class GameScene extends Phaser.Scene{
         this.aganju.body.mass = 2;
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
-
-        
 
 
         ////////////////////////////////////////////////////////////////////

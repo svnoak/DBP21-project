@@ -103,6 +103,21 @@ function getChars($amount){
     return $data;
 }
 
+//6.5 updateLeaderboard, name/highscore argument
+function updateLeaderboard($name, $highscore) {
+    //Fetching data from database
+    $data = openJSON("databas/leaderboard.json");
+    //Creating a user
+    $updateLeaderboard = [
+        "name" => $name,
+        "highscore" => $highscore
+    ];
+    
+    //Saving the new user
+    array_push($data, $updateLeaderboard);
+    saveToJSON("databas/leaderboard.json", $data);
+}
+
 //7 createUser function, username/email/password argument
 function createUser($username, $password, $email, $avatar) {
     //Fetching data from database
@@ -131,7 +146,6 @@ function createUser($username, $password, $email, $avatar) {
 function updateUser($id, $data) {
     //Fetching data from database
     $json = openJSON("databas/user.json");
-    //$id = $requestData["id"];
     //Setting necessary variables
     $found = false;
     $foundUser = null;
@@ -183,7 +197,6 @@ function getNPCByLevel($level) {
     foreach($data as $npc) {
         $npcLvl = $npc["level"];
         if ($npcLvl == $level) {
-            print_r($npc);
             return $npc;
         }
     }

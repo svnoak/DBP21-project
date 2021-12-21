@@ -7,7 +7,7 @@ contentType("application/json");
 //Kollar så att metoden är rätt
 requestMethod("GET");
 
-//Sätter datan till maximalt 10 characters
+//Saving the top 10 characters in an array
 $data = getChars(10);
 //Skickar tillbaka datan med alla 10 characters i en ny array
 sendJSON(["data" => $data]);

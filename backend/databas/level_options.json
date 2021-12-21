@@ -1,0 +1,8 @@
+[
+    {
+        "id": 1,
+        "monsters": "from monster.json",
+        "items": "from items.json",
+        "background_image": 0
+    }
+]

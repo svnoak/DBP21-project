@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "name": "Oddball",
+        "json": "",
+        "sprite": "DBP21-project/assets/player",
+        "level": 1,
+        "health": 5,
+        "damage": 1,
+        "speed": 2,
+        "weapon": "from items.json",
+        "coins": 0,
+        "history": 0,
+        "highscore": 120,
+        "inventory": 0
+    },
+    {
+        "id": 2,
+        "name": "BoxMan",
+        "json": "",
+        "sprite": "DBP21-project/assets/player",
+        "level": 1,
+        "health": 5,
+        "damage": 1,
+        "speed": 2,
+        "weapon": "from items.json",
+        "coins": 0,
+        "history": 0,
+        "highscore": 210,
+        "inventory": 0
+    },
+    {
+        "id": 3,
+        "name": "JukeboxMaster",
+        "json": "",
+        "sprite": "DBP21-project/assets/player",
+        "level": 1,
+        "health": 5,
+        "damage": 1,
+        "speed": 2,
+        "weapon": "from items.json",
+        "coins": 0,
+        "history": 0,
+        "highscore": 360,
+        "inventory": 0
+    }
+]

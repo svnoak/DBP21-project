@@ -100,35 +100,6 @@ class GameScene extends Phaser.Scene{
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         ////////////////////////////////////////////////////////////////////
-        // Hastur
-
-        createHasturAnims(this.anims); //skapas i annan fil
-
-        const hasturs = this.physics.add.group({
-            classType: Hastur,
-            createCallback: (gameObj) => { // hastur objects properties
-                gameObj.body.onCollide = true;
-
-                gameObj.body.mass = 2;
-                gameObj.body.collideWorldBounds = true;
-                gameObj.body.onWorldBounds = true;
-
-                //Gör Hastur orörlig
-                gameObj.setImmovable(true);
-
-                // //Hasturs health
-                gameObj.health = 100;
-
-            }
-        });
-
-        // //Skapar Hastur
-        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
-        for (let i = 0; i < 7; i++) {
-            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
-        }
-
-        ////////////////////////////////////////////////////////////////////
         //Player
 
         //Skapar Aganju
@@ -213,6 +184,37 @@ class GameScene extends Phaser.Scene{
 
         });
 
+        ////////////////////////////////////////////////////////////////////
+        // Hastur
+
+        createHasturAnims(this.anims); //skapas i annan fil
+
+        const hasturs = this.physics.add.group({
+            classType: Hastur,
+            createCallback: (gameObj) => { // hastur objects properties
+                gameObj.body.onCollide = true;
+
+                gameObj.body.mass = 2;
+                gameObj.body.collideWorldBounds = true;
+                gameObj.body.onWorldBounds = true;
+
+                //Creates collision between Aganju and Hasturs
+                this.physics.add.collider(this.aganju, gameObj);
+                //Gör Hastur orörlig
+                gameObj.setImmovable(true);
+
+                // //Hasturs health
+                gameObj.health = 100;
+
+            }
+        });
+
+        // //Skapar Hastur
+        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
+        for (let i = 0; i < 7; i++) {
+            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        }
+        
         ////////////////////////////////////////////////////////////////////
         //Animationer
 

@@ -126,6 +126,8 @@ class GameScene extends Phaser.Scene{
 
         //Skapar svärden
         this.sword = this.physics.add.sprite(this.aganju.x, this.aganju.y,'sword');
+        //Sword Damage 
+        this.sword.damage = 10;
 
         //Skapar eldbollar
         this.fireball = new Phaser.Class({
@@ -186,11 +188,9 @@ class GameScene extends Phaser.Scene{
 
         //När muspekaren är på
         this.input.on('pointerdown', function (activePointer) {
-
             this.mouseDown = true;
             this.mouseX = activePointer.x;
             this.mouseY = activePointer.y;
-
         });
 
         ////////////////////////////////////////////////////////////////////
@@ -266,6 +266,41 @@ class GameScene extends Phaser.Scene{
             repeat: 0
         });
 
+        ///////////////////////////////////////////////////////////////////////////
+        //Objects overlaps and functions
+        //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
+        // this.overlapSword = this.physics.add.overlap(this.sword, this.hastur, hitEnemy, null, this);  
+        // // this.overlapSword = this.physics.add.overlap(this.sword, this.hastur, goal.bind(this));
+        // this.overlapTriggered = false;
+
+        // När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
+        this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
+
+        this.swordHasturCollider = this.physics.add.overlap(this.sword, this.hastur, null, hitEnemy,this);
+    
+        function hitEnemy(){
+            this.hastur.health = this.hastur.health - this.sword.damage;
+
+            if(this.hastur.health == 0){
+                this.hastur.destroy();
+                this.score = this.score + 10;
+            } 
+
+            //Unactives collide between sword and Hastur
+            this.swordHasturCollider.active = false;
+
+            //Stops propagation
+            this.spacebar.isDown = false;
+        }
+
+        function burnEnemy(){
+            this.hastur.health = this.hastur.health - 10;
+
+            if(this.hastur.health == 0){
+                this.hastur.destroy();
+            }
+        }
+
         ////////////////////////////////////////////////////////////////////
         //Skills 
 
@@ -301,32 +336,6 @@ class GameScene extends Phaser.Scene{
         
         // Gömmer svärden
         this.sword.setVisible(false);
-
-        ///////////////////////////////////////////////////////////////////////////
-        //Objects overlaps and functions
-
-        //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        this.physics.add.overlap(this.hastur, this.sword, hitEnemy, null, this);  
-
-        // När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
-
-        function hitEnemy(){
-            this.hastur.health = this.hastur.health - 1;
-
-            if(this.hastur.health == 0){
-                this.hastur.destroy();
-                this.score = this.score + 10;
-            }
-        }
-        
-        function burnEnemy(){
-            this.hastur.health = this.hastur.health - 10;
-
-            if(this.hastur.health == 0){
-                this.hastur.destroy();
-            }
-        }
 
         // this.physics.add.overlap(hastur, aganju, takingDamage);
 
@@ -368,6 +377,9 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 //Spelar left animationen av svärd
                 this.sword.anims.play('sword_left', true);
+
+                //Makes collide between sword and Hastur active again
+                this.swordHasturCollider.active = true;
             }
         }
 
@@ -389,6 +401,9 @@ class GameScene extends Phaser.Scene{
                 this.sword.setDepth(0);
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_right', true);
+
+                //Makes collide between sword and Hastur active again
+                this.swordHasturCollider.active = true;
             }
         }
 
@@ -411,6 +426,9 @@ class GameScene extends Phaser.Scene{
 
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_down', true);
+
+                //Makes collide between sword and Hastur active again
+                this.swordHasturCollider.active = true;
             }
         }
 
@@ -434,6 +452,9 @@ class GameScene extends Phaser.Scene{
 
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_up', true);
+
+                //Makes collide between sword and Hastur active again
+                this.swordHasturCollider.active = true;
             }
         }
 
@@ -590,7 +611,6 @@ class GameScene extends Phaser.Scene{
             }
         }
     }
-
 }
 
 export default GameScene;

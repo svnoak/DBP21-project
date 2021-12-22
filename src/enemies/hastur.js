@@ -66,9 +66,9 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 hero.health = hero.health - 25;
                 hero.timeTakenDmgLast = scene.time.now;
             }
-
         })
 
+        // CODE FROM TUTORIAL
         // hastur.randMoveEvent = scene.time.addEvent({
         //     // wallCollTime prevents hastur from randomly 
         //     // changing direction immediately after bumping wall
@@ -106,11 +106,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
             case RIGHT:
                 this.body.setVelocity(speed, 0)
                break 
-
         }
-
     }
-
 }
 
 

@@ -104,6 +104,7 @@ class GameScene extends Phaser.Scene{
 
         //Skapar Aganju
         this.aganju = this.physics.add.sprite(350, 400,'aganju');
+        this.aganju.name = 'aganju';
         //Skalar upp Aganju
         this.aganju.setScale(2);
         //Ger vikt på Aganju
@@ -132,6 +133,7 @@ class GameScene extends Phaser.Scene{
                 this.incX = 0;
                 this.incY = 0;
                 this.lifespan = 0;
+                this.name = 'fireball';
 
                 this.speed = Phaser.Math.GetSpeed(300, 1);
             },
@@ -169,7 +171,7 @@ class GameScene extends Phaser.Scene{
         });
 
         //Gör eldbollar en group
-        this.fireballs = this.add.group({
+        this.fireballs = this.physics.add.group({
             classType: this.fireball,
             maxSize: 10,
             runChildUpdate: true
@@ -192,14 +194,20 @@ class GameScene extends Phaser.Scene{
         const hasturs = this.physics.add.group({
             classType: Hastur,
             createCallback: (gameObj) => { // hastur objects properties
+                gameObj.name = 'hastur';
                 gameObj.body.onCollide = true;
 
                 gameObj.body.mass = 2;
                 gameObj.body.collideWorldBounds = true;
                 gameObj.body.onWorldBounds = true;
+                gameObj.onOverlap = true;
 
                 //Creates collision between Aganju and Hasturs
                 this.physics.add.collider(this.aganju, gameObj);
+
+                //creates collision between fireballs and hasturs
+                this.physics.add.collider(this.fireballs, gameObj);
+
                 //Gör Hastur orörlig
                 gameObj.setImmovable(true);
 
@@ -208,6 +216,8 @@ class GameScene extends Phaser.Scene{
 
             }
         });
+
+        this.hasturs = hasturs;
 
         // //Skapar Hastur
         this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
@@ -330,8 +340,10 @@ class GameScene extends Phaser.Scene{
         //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
         this.physics.add.overlap(this.hastur, this.sword, hitEnemy, null, this);  
 
-        // När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
+        // När Aganju träffar hasturen med fireballs, anropas funktionen burnEnemy, 
+        // this.physics.add.overlap(this.hasturs, this.fireballs);
+
+        //                          go1,            go2,        handler,    process, context
 
         function hitEnemy(){
             this.hastur.health = this.hastur.health - 1;
@@ -339,14 +351,6 @@ class GameScene extends Phaser.Scene{
             if(this.hastur.health == 0){
                 this.hastur.destroy();
                 this.score = this.score + 10;
-            }
-        }
-        
-        function burnEnemy(){
-            this.hastur.health = this.hastur.health - 10;
-
-            if(this.hastur.health == 0){
-                this.hastur.destroy();
             }
         }
 

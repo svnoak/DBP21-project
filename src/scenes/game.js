@@ -49,6 +49,20 @@ class GameScene extends Phaser.Scene{
         this.health =  this.add.text(690,10, '', {fontSize: '20px', fill: 'red'});
         this.health.setShadow(2, 2, '#000000', 0);
 
+        //Coins
+        this.coins =  this.add.text(690,50, '', {fontSize: '20px', fill: 'gold'});
+        this.coins.setShadow(2, 2, '#000000', 0);
+            
+        //Skill notification
+        this.info = this.add.text(220,8, '', {fontSize: '25px', fill: 'white'});
+        this.info.setShadow(2, 2, '#000000', 0);
+        this.info.setVisible(false);
+
+        //Skill Recharging..
+        this.skillCoolingDown = this.add.text(290,565, 'Recharging...', {fontSize: '25px', fill: 'red'});
+        this.skillCoolingDown.setShadow(2, 2, '#000000', 0);
+        this.skillCoolingDown.setVisible(false);
+
         //Heart
         this.heart = this.physics.add.sprite(750, 20,'heart');
         this.heart.setScale(0.20);
@@ -76,6 +90,10 @@ class GameScene extends Phaser.Scene{
         //Skapar speedBoost skill image
         this.speedPotion = this.add.image(700,580,'speedPotion');
         this.speedPotion.setScale(0.5);
+
+        //Skapar fireball skill icon
+        this.fireballSkillIcon = this.add.image(745,582.5,'fireball');
+        this.fireballSkillIcon.setScale(1.50);
        
         ////////////////////////////////////////////////////////////////////
         //Kontroller
@@ -92,6 +110,8 @@ class GameScene extends Phaser.Scene{
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         //Definierar variabeln keyS = "D"
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        //Definierar variabeln keyShift = "SHIFT"
+        this.keyShift = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Skapar Hastur
         this.hastur = this.physics.add.sprite(200, 200,'hastur');
@@ -268,14 +288,7 @@ class GameScene extends Phaser.Scene{
 
         ///////////////////////////////////////////////////////////////////////////
         //Objects overlaps and functions
-        //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        // this.overlapSword = this.physics.add.overlap(this.sword, this.hastur, hitEnemy, null, this);  
-        // // this.overlapSword = this.physics.add.overlap(this.sword, this.hastur, goal.bind(this));
-        // this.overlapTriggered = false;
-
-        // När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
-
+        //När Aganju slår på hastur med sin svärd, anropas funktionen hitEnemy, 
         this.swordHasturCollider = this.physics.add.overlap(this.sword, this.hastur, null, hitEnemy,this);
     
         function hitEnemy(){
@@ -284,6 +297,7 @@ class GameScene extends Phaser.Scene{
             if(this.hastur.health == 0){
                 this.hastur.destroy();
                 this.score = this.score + 10;
+                this.totalCoins = this.totalCoins + 100;
             } 
 
             //Unactives collide between sword and Hastur
@@ -293,6 +307,7 @@ class GameScene extends Phaser.Scene{
             this.spacebar.isDown = false;
         }
 
+        this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
         function burnEnemy(){
             this.hastur.health = this.hastur.health - 10;
 
@@ -304,17 +319,43 @@ class GameScene extends Phaser.Scene{
         ////////////////////////////////////////////////////////////////////
         //Skills 
 
+        //Total coins
+        this.totalCoins = 500;
+
         //Aganjus health
         this.aganju.health = 100;
+
+        //Regeneration skill learned
+        this.regenerationLearned = false;
+        //Sätter opacity = 0.5
+        this.healthPotion.setAlpha(0.5);
         //Regeneration skillen behöver inte cooldownas
-        //Skillen har inte använt än
+        //För att den har inte använts än
         this.regenerationCoolDown = false;
+
+        //Level upgrades faktor för regeneration-skill
+        this.regenerationCurrentLevelFactor = 10;
+        //Kostnaden för uppgradering
+        this.baseCostForRegenerationUpgrade = 100;
 
         //Aganjus start hastighet
         this.basicSpeed = 100;
+
+        //SpeedBoost skill learned
+        this.speedBoostLearned = false;
+        //Sätter opacity = 0.5
+        this.speedPotion.setAlpha(0.5);
+
         //SpeedBoost skillen behöver inte cooldownas, 
         //spelaren har inte använt den än
         this.speedCoolDown = false;
+        //Level upgrades faktor för regeneration-skill
+        this.speedBoostCurrentLevelFactor = 1.25;
+        //Kostnaden för uppgradering
+        this.baseCostForSpeedBoostUpgrade = 150;
+
+        //Fireball skill learned 
+        this.fireballSkillLearned = true;
     }
 
     // Update gameplay 
@@ -328,6 +369,8 @@ class GameScene extends Phaser.Scene{
         this.livescounter.text = 'Lives: ' + this.lives;
         //Uppdaterar Aganjus health
         this.health.text = '' + this.aganju.health;
+        //Uppdaterar total coins
+        this.coins.text = '' + this.totalCoins;
         
         //Aganju's x positon
         this.aganjuX = this.aganju.x;
@@ -515,102 +558,301 @@ class GameScene extends Phaser.Scene{
 
         ///////////////////////////////////////////////////////////////////////////
         //Players skills and cooldowns
+        
+        //Learn and upgrade skills
 
+        //Learn and upgrade regeneration skill
+        if(this.keyShift.isDown && this.cursors.left.isDown){
+            if(this.regenerationLearned == true){
+                if(this.totalCoins >= this.baseCostForRegenerationUpgrade){
+                        if(this.regenerationCurrentLevelFactor == 10){
+                            this.totalCoins -= this.baseCostForRegenerationUpgrade;
+                            this.baseCostForRegenerationUpgrade = this.baseCostForRegenerationUpgrade * 2;
+                            this.regenerationCurrentLevelFactor = this.regenerationCurrentLevelFactor * 2;
+
+                            //Display inline "First level reached!"
+                            this.info.text = 'First level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);;
+                            }, 2000);
+                        }
+                        else if(this.regenerationCurrentLevelFactor == 20){
+                            this.totalCoins -= this.baseCostForRegenerationUpgrade;
+                            this.baseCostForRegenerationUpgrade = this.baseCostForRegenerationUpgrade * 2;
+                            this.regenerationCurrentLevelFactor = this.regenerationCurrentLevelFactor * 2;
+
+                             //Display inline "Second level reached!"
+                             this.info.text = 'Second level reached!';
+                             this.info.setVisible(true);
+                             setTimeout(() => {
+                                 //Display none => "Max level reached"
+                                 this.info.setVisible(false);
+                             }, 2000);
+                        }
+                        else if(this.regenerationCurrentLevelFactor == 40){
+                            this.totalCoins -= this.baseCostForRegenerationUpgrade;
+                            this.baseCostForRegenerationUpgrade = this.baseCostForRegenerationUpgrade * 2;
+                            this.regenerationCurrentLevelFactor = this.regenerationCurrentLevelFactor * 2;
+
+                             //Display inline "Max level reached!"
+                             this.info.text = 'Max level reached!';
+                             this.info.setVisible(true);
+                             setTimeout(() => {
+                                 //Display none => "Max level reached"
+                                 this.info.setVisible(false);
+                             }, 2000);
+                        }else{
+                            //Display inline "Max level reached!"
+                            this.info.text = 'Max level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);;
+                            }, 2000);
+                    }
+                }else{
+                    //Display inline "Not enough coins to upgrade!"
+                    this.info.text = 'Not enough coins to upgrade!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to upgrade!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+                }
+            }else{
+                if(this.totalCoins >= 100){
+                    this.totalCoins = this.totalCoins - 100;
+                    this.regenerationLearned = true;
+                    this.healthPotion.setAlpha(1);
+                }else{
+                    //Display inline "Not enough coins to learn this skill!"
+                    this.info.text = 'Not enough coins to learn this skill!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to learn this skill!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+                }
+            }
+            //Stops the propagation
+            this.keyShift.isDown = false;
+            this.cursors.left.isDown = false;
+        }
+        
+        //Learn and upgrade SpeedBoost skill
+        if(this.keyShift.isDown && this.cursors.up.isDown){
+            if(this.speedBoostLearned == true){
+                if(this.totalCoins >= this.baseCostForSpeedBoostUpgrade){
+                         if(this.speedBoostCurrentLevelFactor == 1.25){
+                            this.totalCoins -= this.baseCostForSpeedBoostUpgrade;
+                            this.baseCostForSpeedBoostUpgrade = this.baseCostForSpeedBoostUpgrade * 2;
+                            this.speedBoostCurrentLevelFactor = this.speedBoostCurrentLevelFactor * 2;
+
+                            //Display inline "First level reached!"
+                            this.info.text = 'First level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                            console.log(this.speedBoostCurrentLevelFactor);
+                        }
+                        else if(this.speedBoostCurrentLevelFactor == 2.50){
+                            this.totalCoins -= this.baseCostForSpeedBoostUpgrade;
+                            this.baseCostForSpeedBoostUpgrade = this.baseCostForSpeedBoostUpgrade * 2;
+                            this.speedBoostCurrentLevelFactor = this.speedBoostCurrentLevelFactor * 1.5;
+
+                            //Display inline "Second level reached!"
+                            this.info.text = 'Second level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.speedBoostCurrentLevelFactor == 3.75){
+                            this.totalCoins -= this.baseCostForSpeedBoostUpgrade;
+                            this.baseCostForSpeedBoostUpgrade = this.baseCostForSpeedBoostUpgrade * 2;
+                            this.speedBoostCurrentLevelFactor = this.speedBoostCurrentLevelFactor * 1.5;
+
+                            //Display inline "Max level reached!"
+                            this.info.text = 'Max level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }else{
+                            //Display inline "Max level reached!"
+                            this.info.text = 'Max level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                    }
+                }else{
+                    //Display inline "Not enough coins to upgrade!"
+                    this.info.text = 'Not enough coins to upgrade!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to upgrade!"
+                        this.info.setVisible(false);
+                    }, 2000);
+                }
+            }else{
+                if(this.totalCoins > 500){
+                    this.totalCoins = this.totalCoins - 500;
+                    this.speedBoostLearned = true;
+                    this.speedPotion.setAlpha(1);
+                    
+                }else{
+                    //Display inline "Not enough coins to learn!"
+                    this.info.text = 'Not enough coins to learn!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to learn!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+                }
+            }
+
+            //Stops the propagation
+            this.keyShift.isDown = false;
+            this.cursors.up.isDown = false;
+        }
+
+        //Eldbollar
         if(this.input.activePointer.isDown && time > this.lastFired){
 
             this.fireball = this.fireballs.get();
 
                 if (this.fireball){
                     this.fireball.setPosition(this.aganjuX,this.aganjuY);
-                    this.fireball.fire(this.input.activePointer.x, this.input.activePointer.y);
+                    this.fireball.fire(this.input.x, this.input.y);
                     this.lastFired = time + 50;
                 }
         }
 
         //Skill - Regeneration and Cooldown
-        if(this.regenerationCoolDown == false){
-            if(this.cursors.left.isDown){
+        if(this.cursors.left.isDown && this.keyShift.isUp){
+            if(this.regenerationLearned == true){
+                if(this.regenerationCoolDown == false){
+                    //Ökar Aganjus health + 10
+                    this.aganju.health = this.aganju.health + this.regenerationCurrentLevelFactor;
 
-                //Ökar Aganjus health + 10
-                this.aganju.health = this.aganju.health + 10;
+                    //Aganjus last speed innan regeneration-skillen aktiveras
+                    this.lastSpeed = this.basicSpeed;
+                    //Regeneration-skillen påverkar Aganjus speed, den sänks 50%
+                    //Aganju kan inte röra sig när han läkar sig själv
+                    this.basicSpeed = 0;
 
-                //Aganjus last speed innan regeneration-skillen aktiveras
-                this.lastSpeed = this.basicSpeed;
-                //Regeneration-skillen påverkar Aganjus speed, den sänks 50%
-                //Aganju kan inte röra sig när han läkar sig själv
-                this.basicSpeed = 0;
+                    //Sätter tint (röd) för att visa att skillen används
+                    this.healthPotion.setTint(0xff0000);
 
-                //Sätter tint (röd) för att visa att skillen används
-                this.healthPotion.setTint(0xff0000);
-
-                if(this.speedCoolDown == false){
-                    //Aganju kan inte aktivera speedBoost-skill när han läkar sig själv
-                    this.speedCoolDown = true;
+                    if(this.speedCoolDown == false){
+                        //Aganju kan inte aktivera speedBoost-skill när han läkar sig själv
+                        this.speedCoolDown = true;
+                        setTimeout(() => {
+                            this.speedCoolDown = false;
+                        }, 2000);
+                    }
+                    
+                    //Tar bort tint för att visa att skillen har använts
                     setTimeout(() => {
-                        this.speedCoolDown = false;
+                        this.healthPotion.setTint();
+                        this.healthPotion.setAlpha(0.5);
+
+                        //Efter regenerationen, Aganju får sin speed tillbaka
+                        this.basicSpeed = this.lastSpeed;
+                    }, 2000);
+
+                    //Cooldown behövs
+                    this.regenerationCoolDown = true;
+
+                    //Efter 20 sekunder Regeneration-skillen kan användas igen
+                    setTimeout(() => {
+                        this.regenerationCoolDown = false;
+
+                        //Opacity = 1
+                        this.healthPotion.setAlpha(1);
+                    }, 20000);
+                }else{
+                    this.skillCoolingDown.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Recharging..."
+                        this.skillCoolingDown.setVisible(false);
                     }, 2000);
                 }
-                
-                //Tar bort tint för att visa att skillen har använts
+            }else{
+                //Display inle => "Skill not learned yet"
+                this.info.setVisible(true);
+                this.info.text = 'Skill not learned yet!';
                 setTimeout(() => {
-                    this.healthPotion.setTint();
-                    this.healthPotion.setAlpha(0.5);
-
-                    //Efter regenerationen, Aganju får sin speed tillbaka
-                    this.basicSpeed = this.lastSpeed;
+                    //Display none => "Skill not learned yet"
+                    this.info.setVisible(false);;
                 }, 2000);
-
-                //Cooldown behövs
-                this.regenerationCoolDown = true;
-
-                //Efter 20 sekunder Regeneration-skillen kan användas igen
-                setTimeout(() => {
-                    this.regenerationCoolDown = false;
-
-                    //Opacity = 1
-                    this.healthPotion.setAlpha(1);
-                }, 20000);
             }
         }
 
         //Skill - SpeedBoost and Cooldown
-        if(this.speedCoolDown == false){
-            if(this.cursors.up.isDown){
-                //Höjer Aganju speed till 300
-                this.basicSpeed = 300;
-                //Sätter tint (blå)
-                this.speedPotion.setTint(0xff00ff);
+        if(this.cursors.up.isDown && this.keyShift.isUp){  
+            if(this.speedBoostLearned == true){
+                if(this.speedCoolDown == false){
+                    //Höjer Aganju speed till 300
+                    this.basicSpeed = this.basicSpeed * this.speedBoostCurrentLevelFactor;
+                    //Sätter tint (blå)
+                    this.speedPotion.setTint(0xff00ff);
 
-                //SpeedBoost skillen påverkar Aganjus health, den sänks 50%
-                this.discreasedHealth = this.aganju.health * 0.5;
-                //här deklareras Aganjus dicreasedHealth
-                this.aganju.health = this.discreasedHealth;
+                    //SpeedBoost skillen påverkar Aganjus health, den sänks 50%
+                    this.discreasedHealth = this.aganju.health * 0.5;
+                    //här deklareras Aganjus dicreasedHealth
+                    this.aganju.health = this.discreasedHealth;
 
-                //Efter 5 sekunder slutar speedboosten
+                    //Efter 5 sekunder slutar speedboosten
+                    setTimeout(() => {
+                        //Back to Aganjus normal hastighet
+                        this.basicSpeed = 100;
+                        //Tar bort tint
+                        this.speedPotion.setTint();
+                        //Opacity = 0.5
+                        this.speedPotion.setAlpha(0.5);
+
+                        //Uppdaterar Aganjus health
+                        this.aganju.health = this.aganju.health * 2
+                    }, 5000);
+
+                    //Cooldown behövs
+                    this.speedCoolDown = true;
+
+                    //Efter 20 sekunder SpeedBoost - Skillen kan användas igen
+                    setTimeout(() => {
+                        this.speedCoolDown = false;
+                        //Opacity = 1
+                        this.speedPotion.setAlpha(1);
+                    }, 20000);
+                }else{
+                    this.skillCoolingDown.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Recharging..."
+                        this.skillCoolingDown.setVisible(false);
+                    }, 2000);
+                }
+            }else{
+                //Display inline "Skill not learned yet"
+                this.info.setVisible(true);
+                this.info.text = 'Skill not learned yet!';
                 setTimeout(() => {
-                    //Back to Aganjus normal hastighet
-                    this.basicSpeed = 100;
-                    //Tar bort tint
-                    this.speedPotion.setTint();
-                    //Opacity = 0.5
-                    this.speedPotion.setAlpha(0.5);
-
-                    //Uppdaterar Aganjus health
-                    this.aganju.health = this.aganju.health * 2
-                }, 5000);
-
-                //Cooldown behövs
-                this.speedCoolDown = true;
-
-                //Efter 20 sekunder SpeedBoost - Skillen kan användas igen
-                setTimeout(() => {
-                    this.speedCoolDown = false;
-                    //Opacity = 1
-                    this.speedPotion.setAlpha(1);
-                }, 20000);
+                    //Display none => "Skill not learned yet"
+                    this.info.setVisible(false);;
+                }, 2000);
             }
         }
     }
 }
 
+
 export default GameScene;
+

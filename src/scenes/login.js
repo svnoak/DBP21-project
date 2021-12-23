@@ -4,7 +4,6 @@ class LoginScene extends Phaser.Scene{
     }
 
     create(){
-        let loginSuccess;
         let signupBtn = this.add.text(500, 550, "Don't have an account?");
         let backBtn = this.add.text(100, 550, "Back to Menu");
         let loginBtn = this.add.text(250, 350, "Login");
@@ -62,8 +61,6 @@ function createLoginForm(){
 }
 
 async function login(username, password){
-//let userFetch = "../../backend/databas/user.json";
-//let rqst = new Request("/../backend/login.php");
 
 let rqst = new Request("http://localhost:7000/login.php");
 

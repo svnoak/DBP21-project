@@ -172,7 +172,7 @@ class GameScene extends Phaser.Scene{
                 this.setActive(true);
                 this.setVisible(true);
 
-                this.angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+                this.angle = Phaser.Math.Angle.Between(this.scene.aganju.x, this.scene.aganju.y, x, y);
 
                 //Räknar x vinkeln
                 this.incX = Math.cos(this.angle);
@@ -186,8 +186,8 @@ class GameScene extends Phaser.Scene{
             {
                 this.lifespan -= delta;
 
-                this.x -= this.incX * (this.speed * delta);
-                this.y -= this.incY * (this.speed * delta);
+                this.x -= -this.incX * (this.speed * delta);
+                this.y -= -this.incY * (this.speed * delta);
 
                 if (this.lifespan <= 0)
                 {

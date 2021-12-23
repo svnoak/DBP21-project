@@ -14,10 +14,10 @@ requestMethod("POST");
 $data = openJSON("databas/user.json");
 
 //Checks if something was sent through POST
-if(isset($requestData["username"], $requestData["password"])) {
+if(isset($_POST["username"], $_POST["password"])) {
     //Saves username och password in variables
-    $username = $requestData["username"];
-    $password = $requestData["password"];
+    $username = $_POST["username"];
+    $password = $_POST["password"];
     //Setting necessary variables
     $foundUser = null;
     //Loops through user.json and looks for a user that has the matching username/password as sent through POST
@@ -34,7 +34,7 @@ if(isset($requestData["username"], $requestData["password"])) {
         $_SESSION["id"] = $foundUser["id"];
         $userID = $_SESSION["id"];
         //Returns a user ID
-        echo $userID; //Test for Insomnia
+        //echo $userID; //Test for Insomnia
         return $userID;
     } else {
         //Retuns a message that something when wrong when atempting to login

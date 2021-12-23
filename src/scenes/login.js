@@ -1,3 +1,13 @@
+let userFetch = "../../backend/databas/user.json";
+fetch(userFetch)
+    .then(response => response.json())
+    .then(data => {
+        let {results} = data;
+        results.forEach(user => console.log(user));
+    })
+    .catch(error => console.log(error));
+
+
 class LoginScene extends Phaser.Scene{
     constructor() {
         super('LoginScene');
@@ -26,13 +36,18 @@ class LoginScene extends Phaser.Scene{
 
 function createLoginForm(){
     let form = document.createElement("form");
+    form.action = "../../backend/login.php";
+    form.method = "POST";
+
     let username = document.createElement("input");
     username.type = "text";
+    username.name = "username";
     username.placeholder = "Username";
     username.required;
 
     let password = document.createElement("input");
     password.type = "password";
+    password.name = "password";
     password.placeholder = "Password";
     password.required;
 

@@ -140,6 +140,8 @@ class GameScene extends Phaser.Scene{
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
 
+        const aganju = this.aganju;
+
 
         ////////////////////////////////////////////////////////////////////
         //Vapen
@@ -170,7 +172,9 @@ class GameScene extends Phaser.Scene{
                 this.setActive(true);
                 this.setVisible(true);
 
-                this.angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+                this.angle = Phaser.Math.Angle.Between(x, y, aganju.y, aganju.x);
+
+                console.log(this);
 
                 //Räknar x vinkeln
                 this.incX = Math.cos(this.angle);

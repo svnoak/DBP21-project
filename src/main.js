@@ -21,7 +21,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     scene:[
@@ -38,6 +38,7 @@ const config = {
         AboutScene,
         HowToScene
     ],
+    pixelArt: true,
 };
 
 let game = new Phaser.Game(config);

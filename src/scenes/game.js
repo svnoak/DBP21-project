@@ -1,3 +1,8 @@
+import {
+    createHasturAnims
+} from '../enemies/enemyAnims.js';
+import Hastur from '../enemies/hastur.js';
+
 class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene');
@@ -39,7 +44,8 @@ class GameScene extends Phaser.Scene{
     // Sätts igång när preload() är uppladdad
     create(){
         //Skapar spelplanen
-        this.add.image(0,0,'background').setOrigin(0);
+        let bg = this.add.image(0,0,'background').setOrigin(0);
+        bg.setScale(2.1);
 
         //Players lives
         this.livescounter = this.add.text(20,10, 'Lives: ', {fontSize: '20px', fill: 'deepskyblue'});
@@ -93,18 +99,34 @@ class GameScene extends Phaser.Scene{
         //Definierar variabeln keyS = "D"
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        //Skapar Hastur
-        this.hastur = this.physics.add.sprite(200, 200,'hastur');
-        //Skalar upp Hastur
-        this.hastur.setScale(2);
-        //Ger vikt på Hastur
-        this.hastur.body.mass = 2;
-        //Begränsar Hastur inom spethiss gränser
-        this.hastur.setCollideWorldBounds(true);
-        //Gör Hastur orörlig
-        this.hastur.body.setImmovable(true);
-        //Hasturs health
-        this.hastur.health = 100;
+        ////////////////////////////////////////////////////////////////////
+        // Hastur
+
+        createHasturAnims(this.anims); //skapas i annan fil
+
+        const hasturs = this.physics.add.group({
+            classType: Hastur,
+            createCallback: (gameObj) => { // hastur objects properties
+                gameObj.body.onCollide = true;
+
+                gameObj.body.mass = 2;
+                gameObj.body.collideWorldBounds = true;
+                gameObj.body.onWorldBounds = true;
+
+                //Gör Hastur orörlig
+                gameObj.setImmovable(true);
+
+                // //Hasturs health
+                gameObj.health = 100;
+
+            }
+        });
+
+        // //Skapar Hastur
+        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
+        for (let i = 0; i < 7; i++) {
+            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        }
 
         ////////////////////////////////////////////////////////////////////
         //Player
@@ -118,8 +140,6 @@ class GameScene extends Phaser.Scene{
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
 
-        //Kollision mellan Aganju och Hastur
-        this.physics.add.collider(this.aganju, this.hastur);
 
         ////////////////////////////////////////////////////////////////////
         //Vapen

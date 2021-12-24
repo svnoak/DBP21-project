@@ -25,14 +25,13 @@ const config = {
         }
     },
     scene:[
-        GameScene,
         LoadingScene,
         MainMenuScene,
         ProfileScene,
         SigninScene,
         SignupScene,
         LeaderboardScene,
-       
+        GameScene,
         PauseScene,
         GameoverScene,
         VictoryScene,

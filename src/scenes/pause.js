@@ -6,7 +6,19 @@ class PauseScene extends Phaser.Scene{
     create(){
         let exitBtn = this.add.text(350, 50, "Save and Quit");
         let continueBtn = this.add.text(350, 150, "Continue Game");
+
+        exitBtn.setInteractive();
+        continueBtn.setInteractive();
+
+        exitBtn.on("pointerdown", () => {
+
+        });
+
+        continueBtn.on("pointerdown", () => {
+
+        });
     }
+
 }
 
 export default PauseScene;

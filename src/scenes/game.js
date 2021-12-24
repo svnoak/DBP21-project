@@ -100,39 +100,11 @@ class GameScene extends Phaser.Scene{
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         ////////////////////////////////////////////////////////////////////
-        // Hastur
-
-        createHasturAnims(this.anims); //skapas i annan fil
-
-        const hasturs = this.physics.add.group({
-            classType: Hastur,
-            createCallback: (gameObj) => { // hastur objects properties
-                gameObj.body.onCollide = true;
-
-                gameObj.body.mass = 2;
-                gameObj.body.collideWorldBounds = true;
-                gameObj.body.onWorldBounds = true;
-
-                //Gör Hastur orörlig
-                gameObj.setImmovable(true);
-
-                // //Hasturs health
-                gameObj.health = 100;
-
-            }
-        });
-
-        // //Skapar Hastur
-        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
-        for (let i = 0; i < 7; i++) {
-            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
-        }
-
-        ////////////////////////////////////////////////////////////////////
         //Player
 
         //Skapar Aganju
         this.aganju = this.physics.add.sprite(350, 400,'aganju');
+        this.aganju.name = 'aganju';
         //Skalar upp Aganju
         this.aganju.setScale(2);
         //Ger vikt på Aganju
@@ -163,6 +135,7 @@ class GameScene extends Phaser.Scene{
                 this.incX = 0;
                 this.incY = 0;
                 this.lifespan = 0;
+                this.name = 'fireball';
 
                 this.speed = Phaser.Math.GetSpeed(300, 1);
             },
@@ -200,7 +173,7 @@ class GameScene extends Phaser.Scene{
         });
 
         //Gör eldbollar en group
-        this.fireballs = this.add.group({
+        this.fireballs = this.physics.add.group({
             classType: this.fireball,
             maxSize: 10,
             runChildUpdate: true
@@ -213,6 +186,45 @@ class GameScene extends Phaser.Scene{
             this.mouseY = activePointer.y;
         });
 
+        ////////////////////////////////////////////////////////////////////
+        // Hastur
+
+        createHasturAnims(this.anims); //skapas i annan fil
+
+        const hasturs = this.physics.add.group({
+            classType: Hastur,
+            createCallback: (gameObj) => { // hastur objects properties
+                gameObj.name = 'hastur';
+                gameObj.body.onCollide = true;
+
+                gameObj.body.mass = 2;
+                gameObj.body.collideWorldBounds = true;
+                gameObj.body.onWorldBounds = true;
+                gameObj.onOverlap = true;
+
+                //Creates collision between Aganju and Hasturs
+                this.physics.add.collider(this.aganju, gameObj);
+
+                //creates collision between fireballs and hasturs
+                this.physics.add.collider(this.fireballs, gameObj);
+
+                //Gör Hastur orörlig
+                gameObj.setImmovable(true);
+
+                // //Hasturs health
+                gameObj.health = 100;
+
+            }
+        });
+
+        this.hasturs = hasturs;
+
+        // //Skapar Hastur
+        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
+        for (let i = 0; i < 7; i++) {
+            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        }
+        
         ////////////////////////////////////////////////////////////////////
         //Animationer
 

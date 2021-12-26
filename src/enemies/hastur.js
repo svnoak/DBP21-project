@@ -57,15 +57,42 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
             }
         });
 
-        scene.physics.world.on('collide', (hero, enemy)=>{
-            enemyMove(hastur, 'hastur');
+        scene.physics.world.on('collide', (objOne, objTwo)=>{
+            // console.log(objOne.name + ' ' + objTwo.name);
 
-            // makes aganju take damage              |          | 
-            //                                       v cooldown v
-            if( !hero.timeTakenDmgLast || scene.time.now >= hero.timeTakenDmgLast + 1000){
-                hero.health = hero.health - 25;
-                hero.timeTakenDmgLast = scene.time.now;
+            // if aganju collides with hastur
+            if( objOne.name == 'aganju' ){
+                let thisAganju = objOne;
+                let thisHastur = objTwo;
+
+                // only colliding hastur changes direction
+                if(hastur.id == thisHastur.id){
+                    enemyMove(hastur, 'hastur');
+                }
+    
+                // makes aganju take damage              |          | 
+                //                                       v cooldown v
+                if( !thisAganju.timeTakenDmgLast || scene.time.now >= thisAganju.timeTakenDmgLast + 1000){
+                    thisAganju.health = thisAganju.health - 25;
+                    thisAganju.timeTakenDmgLast = scene.time.now;
+                }
+                
             }
+
+            if( objTwo.name == 'fireball' ){
+                let thisFireball = objTwo;
+                let thisHastur = objOne;
+                
+                if( thisHastur.id ==  hastur.id){
+                    console.log(thisHastur.health);
+                    hastur.health -= 10;
+                    thisFireball.destroy();
+                    if(hastur.health <= 0){
+                        hastur.destroy();
+                    }
+                }
+            }
+
         })
 
         // CODE FROM TUTORIAL
@@ -84,7 +111,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
     destroy(){
         console.log('hastur '+ this.id +' died');
-        this.interval.destroy();
+        clearInterval(this.interval);
         super.destroy(this);
     }
 

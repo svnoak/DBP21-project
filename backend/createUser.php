@@ -12,24 +12,31 @@ contentType("application/json");
 requestMethod("POST");
 
 //Skapar variabler med innehåll från POST
-$username = $requestData["username"];
+/* $username = $requestData["username"];
 $password = $requestData["password"]; 
 $email = $requestData["email"];
-$avatar = $requestData["avatar"];
+$avatar = $requestData["avatar"]; */
+//if(isset($_POST["submit"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"]; 
+    $email = $_POST["email"];
+    $avatar = "placeholder";
 
-//Kollar så att inte något fält är tomt
-if(!empty($username && $password && $email && $avatar)) {
-    //Skapar den nya användaren
-    $data = createUser(
-        $username,
-        $password,
-        $email,
-        $avatar
-    );
-    sendJSON($data); //hm skickar inte tillbaka något men skapar en användare!
-} else {
-    //Error om det inte gick att skapa användaren
-    sendJSON("try again");
-}
+    //Kollar så att inte något fält är tomt
+    if(!empty($username && $password && $email)) {
+        //Skapar den nya användaren
+        $data = createUser(
+            $username,
+            $password,
+            $email,
+            $avatar
+        );
+        sendJSON($data); //hm skickar inte tillbaka något men skapar en användare!
+    } else {
+        //Error om det inte gick att skapa användaren
+        sendJSON("try again");
+    }
+//}
+
 
 ?>

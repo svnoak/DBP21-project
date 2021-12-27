@@ -139,7 +139,7 @@ function createUser($username, $password, $email, $avatar) {
     $addUser["id"] = $highestId + 1;
     //Saving the new user
     array_push($data, $addUser);
-    saveToJSON("databas/user.json", $data);
+    saveToJSON("../../databas/user.json", $data);
 }
 
 //8 updateUser function, id/data argument

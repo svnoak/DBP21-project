@@ -24,9 +24,19 @@ class GameScene extends Phaser.Scene{
         //Laddar Hastur 
         this.load.spritesheet('hastur', './assets/enemy/hastur_leg.png', {frameWidth: 32, frameHeight: 32});
 
-        //Laddar Speed Potion
+        //Laddar health potion
         this.load.image('healthPotion', './assets/player/health_potion.png');
+        //Laddar speed potion
         this.load.image('speedPotion', './assets/player/speed_potion.png');
+        //Laddar lightnings skill icon
+        this.load.image('lightningIcon', './assets/player/lightningSkillIcon.png');
+
+        //Laddar lightning
+        this.load.spritesheet('lightning', 'assets/player/lightning.png', {frameWidth: 184, frameHeight: 184});
+        //Laddar lightningExplosion
+        this.load.spritesheet('lightningExplosion', 'assets/player/lightningExplosion.png', {frameWidth: 184, frameHeight: 184});
+        //Laddar lightning drop image
+        this.load.image('lightningDrop', 'assets/player/lightningDrop.png', {frameWidth: 184, frameHeight: 184});
 
         //Variabel för eldbollar
         this.lastFired = 0;
@@ -52,16 +62,6 @@ class GameScene extends Phaser.Scene{
         //Coins
         this.coins =  this.add.text(690,50, '', {fontSize: '20px', fill: 'gold'});
         this.coins.setShadow(2, 2, '#000000', 0);
-            
-        //Skill notification
-        this.info = this.add.text(220,8, '', {fontSize: '25px', fill: 'white'});
-        this.info.setShadow(2, 2, '#000000', 0);
-        this.info.setVisible(false);
-
-        //Skill Recharging..
-        this.skillCoolingDown = this.add.text(290,565, 'Recharging...', {fontSize: '25px', fill: 'red'});
-        this.skillCoolingDown.setShadow(2, 2, '#000000', 0);
-        this.skillCoolingDown.setVisible(false);
 
         //Heart
         this.heart = this.physics.add.sprite(750, 20,'heart');
@@ -77,23 +77,82 @@ class GameScene extends Phaser.Scene{
             frameRate: 6,
             repeat: -1
         });
+        //Plays heart animation 
         this.heart.anims.play('heartTurn');
 
         //Players score 
         this.scoreText = this.add.text(20, 50, 'Score:', { fontSize: '20px', fill: '#ffffff'});
         this.scoreText.setShadow(2, 2, '#000000', 0);
 
+        //Skill notification
+        this.info = this.add.text(220,8, '', {fontSize: '25px', fill: 'white'});
+        this.info.setShadow(2, 2, '#000000', 0);
+        this.info.setVisible(false);
+
+        //Skill Recharging..
+        this.skillCoolingDown = this.add.text(290,565, 'Recharging...', {fontSize: '25px', fill: 'red'});
+        this.skillCoolingDown.setShadow(2, 2, '#000000', 0);
+        this.skillCoolingDown.setVisible(false);
+
         //Skapar regeneration skill image
-        this.healthPotion = this.add.image(655,580.5,'healthPotion');
+        this.healthPotion = this.add.image(635,580.5,'healthPotion');
         this.healthPotion.setScale(0.45);
 
         //Skapar speedBoost skill image
-        this.speedPotion = this.add.image(700,580,'speedPotion');
+        this.speedPotion = this.add.image(680,580,'speedPotion');
         this.speedPotion.setScale(0.5);
 
         //Skapar fireball skill icon
-        this.fireballSkillIcon = this.add.image(745,582.5,'fireball');
+        this.fireballSkillIcon = this.add.image(725,582.5,'fireball');
         this.fireballSkillIcon.setScale(1.50);
+
+        //Creates lightningSkill icon
+        this.lightningSkillIcon = this.add.image(770, 582.5, 'lightningIcon');
+        this.lightningSkillIcon.setScale(0.25);
+
+        //Lightning drop image
+        this.lightningDrop = this.add.image(300, 400,'lightningDrop');
+        //Hides lightningDrop image
+        this.lightningDrop.setVisible(false);
+
+        //Lightning skill
+        this.lightning = this.physics.add.sprite(350, 400,'lightning');
+        //Hides lightning animation
+        this.lightning.setVisible(false);
+        //Lightning animation image z-index = 1
+        this.lightning.setDepth(1);
+        //Lightning damage 
+        this.lightning.damage = 50;
+        //Skapar lightning animation
+        this.anims.create({
+            key: 'shock',
+            frames: this.anims.generateFrameNumbers('lightning', { 
+                start: 0, 
+                end: 5
+            }),
+            frameRate: 6,
+            repeat: 0
+        });
+
+        //LightningExplosion
+        this.lightningExplosion = this.physics.add.sprite(350, 400,'lightningExplosion');
+        this.lightningExplosion.setScale(0.5);
+        //Hides lightningExplosition animation
+        this.lightningExplosion.setVisible(false);
+        //LightningExplosion animation z-index = 1
+        this.lightningExplosion.setDepth(1);
+
+        //Skapar lightningExplosion animation
+        this.anims.create({
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('lightningExplosion', { 
+                start: 0, 
+                end: 5
+            }),
+            frameRate: 6,
+            repeat: 0
+        })
+        // this.lightningExplosion.anims.play('explode');
        
         ////////////////////////////////////////////////////////////////////
         //Kontroller
@@ -202,7 +261,7 @@ class GameScene extends Phaser.Scene{
         //Gör eldbollar en group
         this.fireballs = this.add.group({
             classType: this.fireball,
-            maxSize: 10,
+            maxSize: this.amountFireballsToFire,
             runChildUpdate: true
         });
 
@@ -293,7 +352,7 @@ class GameScene extends Phaser.Scene{
     
         function hitEnemy(){
             this.hastur.health = this.hastur.health - this.sword.damage;
-
+console.log(this.hastur.health);
             if(this.hastur.health == 0){
                 this.hastur.destroy();
                 this.score = this.score + 10;
@@ -305,6 +364,41 @@ class GameScene extends Phaser.Scene{
 
             //Stops propagation
             this.spacebar.isDown = false;
+        }
+
+        this.lightningHasturCollider = this.physics.add.overlap(this.lightning, this.hastur, null, shockEnemy, this);
+        function shockEnemy(){
+            this.hastur.health = this.hastur.health - this.lightning.damage;
+console.log(this.hastur.health);
+            //Sätter tint (blå)
+            this.hastur.setTint(0xff00ff);
+
+            setTimeout(() => {
+                //Sätter tint (blå)
+                this.hastur.setTint();
+            }, 1000);
+
+            if (this.hastur.health <= 0) {
+
+                setTimeout(() => {
+                    this.lightningExplosion.setVisible(true);
+                    this.lightningExplosion.x = this.hastur.x;
+                    this.lightningExplosion.y = this.hastur.y+10;
+    
+                    this.lightningExplosion.anims.play('explode');
+
+                    setTimeout(() => {
+                        this.hastur.destroy();
+                        this.lightningExplosion.setVisible(false);
+                    }, 1000);
+
+                }, 500);
+
+                this.score = this.score + 10;
+                this.totalCoins = this.totalCoins + 100;
+            }
+            //Unactives collide between lightning and hastur
+            this.lightningHasturCollider.active = false;
         }
 
         this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
@@ -320,7 +414,7 @@ class GameScene extends Phaser.Scene{
         //Skills 
 
         //Total coins
-        this.totalCoins = 500;
+        this.totalCoins = 150000;
 
         //Aganjus health
         this.aganju.health = 100;
@@ -355,7 +449,28 @@ class GameScene extends Phaser.Scene{
         this.baseCostForSpeedBoostUpgrade = 150;
 
         //Fireball skill learned 
-        this.fireballSkillLearned = true;
+        this.fireballSkillLearned = false;
+        this.fireballSkillIcon.setAlpha(0.5);
+
+        //Fireball skill active
+        this.fireballSkillActive = false;
+        this.baseCostForfireballUpgrade = 100;
+        this.fireballCurrentLevelFactor = 1;
+
+        //Amount fireballs to shoot
+        this.amountFireballsToFire = 1;
+
+        //Lightning skill learned
+        this.lightningSkillLearned = false;
+        //Sätter opacity = 0.5
+        this.lightningSkillIcon.setAlpha(0.5);
+
+        //If lightning ability in use
+        this.lightningSkillActive = false;
+
+        //Lightning skillen behöver inte cooldownas, 
+        //spelaren har inte använt den än
+        this.lightningCoolDown = false;
     }
 
     // Update gameplay 
@@ -379,16 +494,6 @@ class GameScene extends Phaser.Scene{
         
         // Gömmer svärden
         this.sword.setVisible(false);
-
-        // this.physics.add.overlap(hastur, aganju, takingDamage);
-
-        // function takingDamage(){
-        //     aganjuHealth = aganjuHealth - 1;
-
-        //     if(aganjuHealth == 0){
-        //         aganju.destroy();
-        //     }
-        // }
 
         ///////////////////////////////////////////////////////////////////////////
         //Player movement and animations
@@ -570,8 +675,8 @@ class GameScene extends Phaser.Scene{
                             this.baseCostForRegenerationUpgrade = this.baseCostForRegenerationUpgrade * 2;
                             this.regenerationCurrentLevelFactor = this.regenerationCurrentLevelFactor * 2;
 
-                            //Display inline "First level reached!"
-                            this.info.text = 'First level reached!';
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +20 health!';
                             this.info.setVisible(true);
                             setTimeout(() => {
                                 //Display none => "Max level reached"
@@ -584,7 +689,7 @@ class GameScene extends Phaser.Scene{
                             this.regenerationCurrentLevelFactor = this.regenerationCurrentLevelFactor * 2;
 
                              //Display inline "Second level reached!"
-                             this.info.text = 'Second level reached!';
+                             this.info.text = 'Skill upgraded +40 health!';
                              this.info.setVisible(true);
                              setTimeout(() => {
                                  //Display none => "Max level reached"
@@ -597,15 +702,15 @@ class GameScene extends Phaser.Scene{
                             this.regenerationCurrentLevelFactor = this.regenerationCurrentLevelFactor * 2;
 
                              //Display inline "Max level reached!"
-                             this.info.text = 'Max level reached!';
+                             this.info.text = 'Skill upgraded +80 health!';
                              this.info.setVisible(true);
                              setTimeout(() => {
                                  //Display none => "Max level reached"
                                  this.info.setVisible(false);
                              }, 2000);
                         }else{
-                            //Display inline "Max level reached!"
-                            this.info.text = 'Max level reached!';
+                            //Display inline "Max skill level reached!"
+                            this.info.text = 'Max skill level reached!';
                             this.info.setVisible(true);
                             setTimeout(() => {
                                 //Display none => "Max level reached"
@@ -626,12 +731,20 @@ class GameScene extends Phaser.Scene{
                     this.totalCoins = this.totalCoins - 100;
                     this.regenerationLearned = true;
                     this.healthPotion.setAlpha(1);
+
+                     //Display inline "Skill learned!"
+                     this.info.text = 'Skill learned!';
+                     this.info.setVisible(true);
+                     setTimeout(() => {
+                         //Display none => "Skill learned!"
+                         this.info.setVisible(false);;
+                     }, 2000);
                 }else{
-                    //Display inline "Not enough coins to learn this skill!"
-                    this.info.text = 'Not enough coins to learn this skill!';
+                    //Display inline "Not enough coins to learn!"
+                    this.info.text = 'Not enough coins to learn!';
                     this.info.setVisible(true);
                     setTimeout(() => {
-                        //Display none => "Not enough coins to learn this skill!"
+                        //Display none => "Not enough coins to learn!"
                         this.info.setVisible(false);;
                     }, 2000);
                 }
@@ -650,22 +763,22 @@ class GameScene extends Phaser.Scene{
                             this.baseCostForSpeedBoostUpgrade = this.baseCostForSpeedBoostUpgrade * 2;
                             this.speedBoostCurrentLevelFactor = this.speedBoostCurrentLevelFactor * 2;
 
-                            //Display inline "First level reached!"
-                            this.info.text = 'First level reached!';
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded *2.5 speed!';
                             this.info.setVisible(true);
                             setTimeout(() => {
                                 //Display none => "Max level reached"
                                 this.info.setVisible(false);
                             }, 2000);
-                            console.log(this.speedBoostCurrentLevelFactor);
+
                         }
                         else if(this.speedBoostCurrentLevelFactor == 2.50){
                             this.totalCoins -= this.baseCostForSpeedBoostUpgrade;
                             this.baseCostForSpeedBoostUpgrade = this.baseCostForSpeedBoostUpgrade * 2;
                             this.speedBoostCurrentLevelFactor = this.speedBoostCurrentLevelFactor * 1.5;
 
-                            //Display inline "Second level reached!"
-                            this.info.text = 'Second level reached!';
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded *3.75 speed!';
                             this.info.setVisible(true);
                             setTimeout(() => {
                                 //Display none => "Max level reached"
@@ -675,18 +788,18 @@ class GameScene extends Phaser.Scene{
                         else if(this.speedBoostCurrentLevelFactor == 3.75){
                             this.totalCoins -= this.baseCostForSpeedBoostUpgrade;
                             this.baseCostForSpeedBoostUpgrade = this.baseCostForSpeedBoostUpgrade * 2;
-                            this.speedBoostCurrentLevelFactor = this.speedBoostCurrentLevelFactor * 1.5;
+                            this.speedBoostCurrentLevelFactor = 5;
 
-                            //Display inline "Max level reached!"
-                            this.info.text = 'Max level reached!';
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded *5 speed!';
                             this.info.setVisible(true);
                             setTimeout(() => {
                                 //Display none => "Max level reached"
                                 this.info.setVisible(false);
                             }, 2000);
                         }else{
-                            //Display inline "Max level reached!"
-                            this.info.text = 'Max level reached!';
+                            //Display inline "Max skill level reached!"
+                            this.info.text = 'Max skill level reached!';
                             this.info.setVisible(true);
                             setTimeout(() => {
                                 //Display none => "Max level reached"
@@ -703,10 +816,18 @@ class GameScene extends Phaser.Scene{
                     }, 2000);
                 }
             }else{
-                if(this.totalCoins > 500){
+                if(this.totalCoins >= 500){
                     this.totalCoins = this.totalCoins - 500;
                     this.speedBoostLearned = true;
                     this.speedPotion.setAlpha(1);
+
+                    //Display inline "Skill learned!"
+                    this.info.text = 'Skill learned!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Skill learned!"
+                        this.info.setVisible(false);;
+                    }, 2000);
                     
                 }else{
                     //Display inline "Not enough coins to learn!"
@@ -724,16 +845,242 @@ class GameScene extends Phaser.Scene{
             this.cursors.up.isDown = false;
         }
 
-        //Eldbollar
-        if(this.input.activePointer.isDown && time > this.lastFired){
+        //Learn and Upgrade Fireball skill
+        if(this.keyShift.isDown && this.cursors.down.isDown){
+            if(this.fireballSkillLearned == true){
+                if(this.totalCoins >= this.baseCostForfireballUpgrade){
+                         if(this.fireballCurrentLevelFactor == 1){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 2;
 
-            this.fireball = this.fireballs.get();
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 2;
 
-                if (this.fireball){
-                    this.fireball.setPosition(this.aganjuX,this.aganjuY);
-                    this.fireball.fire(this.input.x, this.input.y);
-                    this.lastFired = time + 50;
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 2){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 3;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 3;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 3){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 4;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 4;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 4){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 5;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 5;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 5){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 6;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 6;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 6){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 7;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 7;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 7){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 8;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 8;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 8){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 9;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 9;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else if(this.fireballCurrentLevelFactor == 9){
+                            this.totalCoins -= this.baseCostForfireballUpgrade;
+                            this.baseCostForfireballUpgrade = this.baseCostForfireballUpgrade * 2;
+                            this.fireballCurrentLevelFactor = 10;
+
+                            //Amount fireballs to shoot
+                            this.fireballs.maxSize = 10;
+
+                            //Display inline "Skill upgraded!"
+                            this.info.text = 'Skill upgraded +1 fireball!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                        }
+                        else{
+                            //Display inline "Max skill level reached!"
+                            this.info.text = 'Max skill level reached!';
+                            this.info.setVisible(true);
+                            setTimeout(() => {
+                                //Display none => "Max level reached"
+                                this.info.setVisible(false);
+                            }, 2000);
+                    }
+                }else{
+                    //Display inline "Not enough coins to upgrade!"
+                    this.info.text = 'Not enough coins to upgrade!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to upgrade!"
+                        this.info.setVisible(false);
+                    }, 2000);
                 }
+            }else{
+                if(this.totalCoins >= 1000){
+                    this.totalCoins = this.totalCoins - 1000;
+                    this.fireballSkillLearned = true;
+                    this.fireballSkillIcon.setAlpha(1);
+                    this.fireballSkillActive = true;
+
+                    //Amount fireballs to shoot
+                    this.fireballs.maxSize = 1;
+
+                    //Display inline "Skill learned!"
+                    this.info.text = 'Skill learned!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Skill learned!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+
+                }else{
+                    //Display inline "Not enough coins to learn!"
+                    this.info.text = 'Not enough coins to learn!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to learn!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+                }
+            }
+
+            //Stops the propagation
+            this.keyShift.isDown = false;
+            this.cursors.down.isDown = false;
+        }
+
+        //Learn Lightning skill
+        if(this.keyShift.isDown && this.cursors.right.isDown){
+            if(this.lightningSkillLearned == false){
+                if(this.totalCoins >= 1500){
+                    this.totalCoins = this.totalCoins - 1500;
+                    this.lightningSkillLearned = true;
+                    this.lightningSkillIcon.setAlpha(1);
+
+                    //Display inline "Skill learned!"
+                    this.info.text = 'Skill learned!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Skill learned!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+                }else{
+                    //Display inline "Not enough coins to learn!"
+                    this.info.text = 'Not enough coins to learn!';
+                    this.info.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Not enough coins to learn!"
+                        this.info.setVisible(false);;
+                    }, 2000);
+                }
+            }else{
+                //Display inline "Skill already learned!"
+                this.info.text = 'Skill already learned!';
+                this.info.setVisible(true);
+                setTimeout(() => {
+                    //Display none => "Skill already learned!"
+                    this.info.setVisible(false);;
+                }, 2000);
+            }
+            //Stops the propagation
+            this.keyShift.isDown = false;
+            this.cursors.right.isDown = false;
         }
 
         //Skill - Regeneration and Cooldown
@@ -848,6 +1195,145 @@ class GameScene extends Phaser.Scene{
                     //Display none => "Skill not learned yet"
                     this.info.setVisible(false);;
                 }, 2000);
+            }
+        }
+
+        //Skill - Eldbollar
+        if(this.cursors.down.isDown && this.keyShift.isUp){
+            if(this.fireballSkillLearned == false){
+                //Display inline "Skill not learned yet"
+                this.info.setVisible(true);
+                this.info.text = 'Skill not learned yet!';
+                setTimeout(() => {
+                    //Display none => "Skill not learned yet"
+                    this.info.setVisible(false);;
+                }, 2000);
+            }
+        }
+
+        //Skill - Eldbollar and Cooldown
+        if(this.input.activePointer.isDown && time > this.lastFired && this.fireballSkillActive == true){
+           
+            if(this.fireballSkillLearned == true){
+                this.fireball = this.fireballs.get();
+
+                if (this.fireball){
+                    this.fireball.setPosition(this.aganjuX,this.aganjuY);
+                    this.fireball.fire(this.input.x, this.input.y);
+                    this.lastFired = time + 50;
+                }
+            }
+            else{
+                //Display inline "Skill not learned yet"
+                this.info.setVisible(true);
+                this.info.text = 'Skill not learned yet!';
+                setTimeout(() => {
+                    //Display none => "Skill not learned yet"
+                    this.info.setVisible(false);;
+                }, 2000);
+            }
+        }
+
+        //Skill - lightning skill and Cooldown
+        if(this.cursors.right.isDown && this.keyShift.isUp){
+            if(this.lightningSkillLearned == true){
+                if(this.lightningCoolDown == false){
+                    this.lightningSkillActive = true;
+                    
+                    this.fireballSkillActive = false;
+                    this.fireballSkillIcon.setAlpha(0.5);
+
+                    //Opacity 1
+                    this.lightningSkillIcon.setAlpha(1);
+
+                    setTimeout(() => {
+                        this.lightningSkillActive = false;
+                        this.lightningDrop.setVisible(false);
+
+                        this.fireballSkillActive = true;
+                        this.fireballSkillIcon.setAlpha(1);
+
+                        //Tar bort tint
+                        this.lightningSkillIcon.setTint();
+    
+                        this.lightningCoolDown = true;
+                        setTimeout(() => {
+                            this.lightningCoolDown = false;
+                            //Opacity 1
+                            this.lightningSkillIcon.setAlpha(1);
+                        }, 10000);
+    
+                    }, 10000);
+                }else{
+                    this.skillCoolingDown.setVisible(true);
+                    setTimeout(() => {
+                        //Display none => "Recharging..."
+                        this.skillCoolingDown.setVisible(false);
+                    }, 2000);
+                }
+            }else{
+                //Display inline "Skill not learned yet"
+                this.info.setVisible(true);
+                this.info.text = 'Skill not learned yet!';
+                setTimeout(() => {
+                    //Display none => "Skill not learned yet"
+                    this.info.setVisible(false);;
+                }, 2000);
+            }
+        }
+        //Skill - lightning skill and Cooldown
+        if(this.lightningSkillActive == true){
+            this.fireballSkillActive = false;
+            this.fireballSkillIcon.setAlpha(0.5);
+
+            this.lightningDrop.setVisible(true);
+
+            this.lightningDrop.x = this.input.x;
+            this.lightningDrop.y = this.input.y;
+            
+            //Opacity 0.5
+            this.lightningSkillIcon.setAlpha(0.5);
+            //Sätter tint (blå)
+            this.lightningSkillIcon.setTint(0xff00ff);
+
+            if(this.input.activePointer.isDown && this.lightningSkillActive == true){
+                //Makes collide between lightning and hastur active
+                this.lightningHasturCollider.active = true;
+
+                this.lightningDrop.setVisible(false);
+                this.lightning.setVisible(true);
+
+                this.lightning.x = this.input.x;
+                this.lightning.y = this.input.y-80;
+
+                //Plays shock animation
+                this.lightning.anims.play('shock');
+
+                //On click lightning skill will not be active anymore
+                this.lightningSkillActive = false;
+
+                //Lightning skill need to cools down
+                this.lightningCoolDown = true;
+
+                //Opacity 0.5
+                this.lightningSkillIcon.setAlpha(0.5);
+                //Tar bort tint
+                this.lightningSkillIcon.setTint();
+
+                //After animation played hides lightning sprite
+                setTimeout(() => {
+                    this.lightning.setVisible(false);
+
+                    this.fireballSkillActive = true;
+                    this.fireballSkillIcon.setAlpha(1);
+                }, 1000);
+                
+                //After 20s skill can be used again
+                setTimeout(() => {
+                    this.lightningCoolDown = false;
+                    //Opacity 1
+                    this.lightningSkillIcon.setAlpha(1);
+                }, 20000);
             }
         }
     }

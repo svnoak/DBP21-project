@@ -98,6 +98,8 @@ class GameScene extends Phaser.Scene{
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         //Definierar variabeln keyS = "D"
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        //Definierar variabeln keyESC = "ESC"
+        this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         ////////////////////////////////////////////////////////////////////
         //Player
@@ -353,6 +355,12 @@ class GameScene extends Phaser.Scene{
     // Uppdaterar spelet var 16 ms
     // Körs kontunierlig efter create() är färdig
     update(time, delta){
+
+        //On press to ESC, pausing the game
+        if(this.keyESC.isDown){
+            this.scene.launch('PauseScene');
+            this.scene.pause();
+        }
 
         //Uppdaterar score
         this.scoreText.text = 'Score: ' + this.score;

@@ -13,6 +13,8 @@ class GameScene extends Phaser.Scene{
     preload() {
         //Laddar spelplanen
         this.load.image('background', './assets/tilemap/background.png');
+        //Laddar pause icon
+        this.load.image('pauseIcon', './assets/tilemap/pauseIcon.png');
 
         //Laddar Aganju 
         this.load.spritesheet('aganju', './assets/player/aganju.png', {frameWidth: 32, frameHeight: 32});
@@ -47,6 +49,25 @@ class GameScene extends Phaser.Scene{
         let bg = this.add.image(0,0,'background').setOrigin(0);
         bg.setScale(2.1);
 
+        this.pauseIcon = this.add.image(400,30, 'pauseIcon');
+        this.pauseIcon.setScale(0.2);
+        //Opacity = 0.3
+        this.pauseIcon.setAlpha(0.3);
+        this.pauseIcon.setInteractive();
+
+        this.pauseIcon.on('pointerover', ()=>{
+            this.pauseIcon.setAlpha(1);
+        });
+
+        this.pauseIcon.on('pointerout', ()=>{
+            this.pauseIcon.setAlpha(0.3);
+        });
+
+        this.pauseIcon.on('pointerdown', ()=>{
+            this.scene.pause();
+            this.scene.launch('PauseScene');
+        });
+        
         //Players lives
         this.livescounter = this.add.text(20,10, 'Lives: ', {fontSize: '20px', fill: 'deepskyblue'});
         this.livescounter.setShadow(2, 2, '#000000', 0);

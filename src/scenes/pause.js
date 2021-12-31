@@ -3,6 +3,11 @@ class PauseScene extends Phaser.Scene{
         super('PauseScene');
     }
 
+    init(data){
+        console.log(data);
+        this.startData = data;
+        this.skillData = data;
+    }
     preload(){
         this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
     }
@@ -31,7 +36,7 @@ class PauseScene extends Phaser.Scene{
 
         continueBtn.on("pointerdown", () => {
             //Resumes game scene
-            this.scene.resume('GameScene');
+            this.scene.resume('GameScene', this.skillData);
 
             //Stops pause scene
             this.scene.stop();
@@ -39,12 +44,13 @@ class PauseScene extends Phaser.Scene{
 
         restartBtn.on("pointerdown", ()=>{
             //Restarts game scene
-            this.scene.start("GameScene");
+            this.scene.start("GameScene", this.startData);
         });
 
         upgradeBtn.on("pointerdown", ()=>{
             //Restarts game scene
-            this.scene.start("UpgradeScene");
+            this.scene.start("UpgradeScene", this.skillData);
+            this.scene.pause();
         });
     }
 

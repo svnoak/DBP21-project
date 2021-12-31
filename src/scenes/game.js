@@ -7,7 +7,10 @@ class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene');
     }
-
+    init(data){
+        this.startData = data;
+        console.log(this.startData);
+    }
     // Preload game assets 
     // Här laddas alla assets innan spethis är igång
     preload() {
@@ -65,7 +68,7 @@ class GameScene extends Phaser.Scene{
 
         this.pauseIcon.on('pointerdown', ()=>{
             this.scene.pause();
-            this.scene.launch('PauseScene');
+            this.scene.launch('PauseScene', this.startData);
         });
         
         //Players lives
@@ -355,21 +358,12 @@ class GameScene extends Phaser.Scene{
                 this.hastur.destroy();
             }
         }
-
-        ////////////////////////////////////////////////////////////////////
-        //Skills 
-
+        
         //Aganjus health
         this.aganju.health = 100;
-        //Regeneration skillen behöver inte cooldownas
-        //Skillen har inte använt än
-        this.regenerationCoolDown = false;
 
         //Aganjus start hastighet
         this.basicSpeed = 100;
-        //SpeedBoost skillen behöver inte cooldownas, 
-        //spelaren har inte använt den än
-        this.speedCoolDown = false;
     }
 
     // Update gameplay 
@@ -379,7 +373,7 @@ class GameScene extends Phaser.Scene{
 
         //On press to ESC, pausing the game
         if(this.keyESC.isDown){
-            this.scene.launch('PauseScene');
+            this.scene.launch('PauseScene', this.startData);
             this.scene.pause();
         }
 
@@ -589,7 +583,7 @@ class GameScene extends Phaser.Scene{
         }
 
         //Skill - Regeneration and Cooldown
-        if(this.regenerationCoolDown == false){
+        if(this.startData.regenerationCoolDown == false){
             if(this.cursors.left.isDown){
 
                 //Ökar Aganjus health + 10
@@ -604,11 +598,11 @@ class GameScene extends Phaser.Scene{
                 //Sätter tint (röd) för att visa att skillen används
                 this.healthPotion.setTint(0xff0000);
 
-                if(this.speedCoolDown == false){
+                if(this.startData.speedCoolDown == false){
                     //Aganju kan inte aktivera speedBoost-skill när han läkar sig själv
-                    this.speedCoolDown = true;
+                    this.startData.speedCoolDown = true;
                     setTimeout(() => {
-                        this.speedCoolDown = false;
+                        this.startData.speedCoolDown = false;
                     }, 2000);
                 }
                 
@@ -622,11 +616,11 @@ class GameScene extends Phaser.Scene{
                 }, 2000);
 
                 //Cooldown behövs
-                this.regenerationCoolDown = true;
+                this.startData.regenerationCoolDown = true;
 
                 //Efter 20 sekunder Regeneration-skillen kan användas igen
                 setTimeout(() => {
-                    this.regenerationCoolDown = false;
+                    this.startData.regenerationCoolDown = false;
 
                     //Opacity = 1
                     this.healthPotion.setAlpha(1);
@@ -635,7 +629,7 @@ class GameScene extends Phaser.Scene{
         }
 
         //Skill - SpeedBoost and Cooldown
-        if(this.speedCoolDown == false){
+        if(this.startData.speedCoolDown == false){
             if(this.cursors.up.isDown){
                 //Höjer Aganju speed till 300
                 this.basicSpeed = 300;
@@ -661,11 +655,11 @@ class GameScene extends Phaser.Scene{
                 }, 5000);
 
                 //Cooldown behövs
-                this.speedCoolDown = true;
+                this.startData.speedCoolDown = true;
 
                 //Efter 20 sekunder SpeedBoost - Skillen kan användas igen
                 setTimeout(() => {
-                    this.speedCoolDown = false;
+                    this.startData.speedCoolDown = false;
                     //Opacity = 1
                     this.speedPotion.setAlpha(1);
                 }, 20000);

@@ -9,7 +9,6 @@ class GameScene extends Phaser.Scene{
     }
     init(data){
         this.startData = data;
-        console.log(this.startData);
     }
     // Preload game assets 
     // Här laddas alla assets innan spethis är igång

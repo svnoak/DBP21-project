@@ -5,7 +5,6 @@ class UpgradeScene extends Phaser.Scene{
 
     init(data){
         this.skillData = data;
-        console.log(this.skillData);
     }
     preload(){
         //Laddar bakgrund bilden

@@ -17,7 +17,9 @@ class ProfileScene extends Phaser.Scene{
             let form = document.querySelector("#editForm");
             if( form.style.display == "none" ){
                 editBtn.text = "Save";
+            }else{
                 submitChanges(userID);
+                editBtn.text = "Edit Profile";
             }
             toggleForm();
             

@@ -32,14 +32,14 @@ if (!isset($_SESSION["id"])) {
 //Checks the contenttype
 contentType("application/json");
 //Checks the method
-requestMethod("GET");
+requestMethod("POST");
 
 //Saving the ID from sessions in a variable
 $id = $_SESSION["id"];
 //Checks if an ID is given in session
 if(isset($id)) {
     //Saving the user information in a variable
-    $data = getEntryByID("databas/user.json", $id);
+    $data = getEntryByID("/backend/databas/user.json", $id);
     sendJSON(["user" => $data]);
     exit();
 } else {

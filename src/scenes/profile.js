@@ -125,7 +125,7 @@ function submitChanges(userID){
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify(data)
     })
     .then( response => {

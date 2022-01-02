@@ -3,17 +3,20 @@ class ProfileScene extends Phaser.Scene{
         super('ProfileScene');
     }
 
+    preload(){
+        this.userID = sessionStorage["userID"];
+        this.userData = await getInfo(userID, this);
+    }
+
     create(){
         let editBtn = this.add.text(500, 550, "Edit profile");
         let backBtn = this.add.text(100, 550, "Back to Menu");
-
-        let userID = sessionStorage["userID"];
-        let data = await getInfo(userID, this);
-        renderInfo(data, this);
+        
+        renderInfo(this.userData, this);
 
         editBtn.setInteractive();
         editBtn.on("pointerdown", () => {
-            renderEditForm(data);
+            renderEditForm(this.userData);
         })
 
         backBtn.setInteractive();

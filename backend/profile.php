@@ -39,8 +39,8 @@ $id = $_SESSION["id"];
 //Checks if an ID is given in session
 if(isset($id)) {
     //Saving the user information in a variable
-    $data = getEntryByID("/backend/databas/user.json", $id);
-    sendJSON(["user" => $data]);
+    $data = getEntryByID("databas/user.json", $id);
+    sendJSON(["user" => $id]);
     exit();
 } else {
     //Error if the user is not logged in

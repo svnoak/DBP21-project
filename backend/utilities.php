@@ -75,7 +75,7 @@ function getEntryByID($fileName, $id) {
     //Fetching data from database
     $data = openJSON($fileName);
 
-    $column = array_column($data, $id);
+    $column = array_column($data, "id");
     $index = array_search($id, $column);
 
     return $data[$index];

@@ -10,7 +10,13 @@ class ProfileScene extends Phaser.Scene{
         backBtn.on("pointerdown", () =>{
             this.scene.start("MainMenuScene");
         });
+
+        let userID = sessionStorage["userID"];
+        getInfo(userID);
     }
+
+
+    
 
 }
 

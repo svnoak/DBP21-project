@@ -14,7 +14,13 @@ class ProfileScene extends Phaser.Scene{
 
         editBtn.setInteractive();
         editBtn.on("pointerdown", () => {
+            let form = document.querySelector("#editForm");
+            if( form.style.display == "flex" ){
+                editBtn.text = "Save";
+                submitChanges(userID);
+            }
             toggleForm();
+            
         })
 
         backBtn.setInteractive();
@@ -98,6 +104,41 @@ function toggleForm(){
         let formDisplay = form.style.display
         console.log(formDisplay);
         formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
+}
+
+function submitChanges(userID){
+    let username = document.querySelector("#username").value;
+    let email = document.querySelector("#email").value;
+    let password = document.querySelector("#password").value;
+    let avatar = document.querySelector("#avatar").value;
+
+    let rqst = new Request("/backend/updateUser.php");
+    let data = {
+        "userID": userID,
+        "username": username,
+        "email": email,
+        "password": password,
+        "avatar": avatar
+    }
+    fetch( rqst, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then( response => {
+        if( response.status === 200 ){
+            return response.json();
+        }else{
+            alert("Something went wrong, please try again.");
+            return false;
+        }
+    })
+    .then( data => {
+        console.log(data);
+    })
 }
 
 export default ProfileScene;

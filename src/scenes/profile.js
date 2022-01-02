@@ -27,7 +27,7 @@ async function getInfo(userID){
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        method: "POST",
+        method: "GET",
         body: JSON.stringify(data)
     })
         .then( response => {

@@ -12,7 +12,11 @@ class ProfileScene extends Phaser.Scene{
         });
 
         let userID = sessionStorage["userID"];
-        getInfo(userID);
+        let userInfo = await getInfo(userID);
+        for( let [val, key] in userInfo ){
+            let title = this.add.text(350, 100, key);
+            let value = this.add.text(350, 150, val);
+        }
     }
 
 
@@ -45,7 +49,7 @@ async function getInfo(userID){
             }
         })
         .then( data => {
-            console.log(data);
+            return data;
         })
     }
 

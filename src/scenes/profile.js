@@ -33,7 +33,7 @@ async function getInfo(userID){
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        method: "GET",
+        method: "POST",
         body: JSON.stringify(data)
     })
         .then( response => {

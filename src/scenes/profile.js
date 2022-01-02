@@ -15,7 +15,7 @@ class ProfileScene extends Phaser.Scene{
         editBtn.setInteractive();
         editBtn.on("pointerdown", () => {
             let form = document.querySelector("#editForm");
-            if( form.style.display == "flex" ){
+            if( form.style.display == "none" ){
                 editBtn.text = "Save";
                 submitChanges(userID);
             }

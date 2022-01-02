@@ -12,11 +12,7 @@ class ProfileScene extends Phaser.Scene{
         });
 
         let userID = sessionStorage["userID"];
-        let userInfo = await getInfo(userID);
-        for( let [val, key] in userInfo ){
-            let title = this.add.text(350, 100, key);
-            let value = this.add.text(350, 150, val);
-        }
+        renderInfo(userID, this);
     }
 
 
@@ -24,7 +20,7 @@ class ProfileScene extends Phaser.Scene{
 
 }
 
-async function getInfo(userID){
+async function renderInfo(userID, that){
 
     let rqst = new Request("/backend/profile.php");
     
@@ -49,7 +45,11 @@ async function getInfo(userID){
             }
         })
         .then( data => {
-            return data;
+            let user = data["user"];
+            that.add.text(150, 150, "Username:");
+            that.add.text(250, 150, user["username"]);
+            that.add.text(150, 200, "Email:");
+            that.add.text(250, 200, user["email"]);
         })
     }
 

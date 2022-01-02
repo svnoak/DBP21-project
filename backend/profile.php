@@ -20,9 +20,12 @@ $id = $_SESSION["id"];
 if(isset($id)) {
     //Saving the user information in a variable
     $data = getEntryByID("databas/user.json", $id);
+    sendJSON(["user" => $data]);
+    exit();
 } else {
     //Error if the user is not logged in
-    sendJSON("You are not logged in");
+    sendJSON("You are not logged in", 400);
+    exit();
 }
 
 ?>

@@ -88,6 +88,8 @@ fetch(rqst, {
     .then( data => {
         if( data["userID"] != undefined ){
             sessionStorage.setItem("userID", data["userID"]);
+            sessionStorage.setItem("userName", data["username"]);
+            sessionStorage.setItem("email", data["email"]);
             return true;
         }
     })

@@ -3,20 +3,18 @@ class ProfileScene extends Phaser.Scene{
         super('ProfileScene');
     }
 
-    preload(){
-        this.userID = sessionStorage["userID"];
-        this.userData = await getInfo(userID, this);
-    }
+    async create(){
 
-    create(){
+        let userID = sessionStorage["userID"];
+
         let editBtn = this.add.text(500, 550, "Edit profile");
         let backBtn = this.add.text(100, 550, "Back to Menu");
-        
-        renderInfo(this.userData, this);
+
+        await renderInfo(userID, this);
 
         editBtn.setInteractive();
         editBtn.on("pointerdown", () => {
-            renderEditForm(this.userData);
+            toggleForm();
         })
 
         backBtn.setInteractive();
@@ -26,14 +24,13 @@ class ProfileScene extends Phaser.Scene{
     }
 }
 
-async function getInfo(userID, that){
+async function renderInfo(userID, that){
 
     let rqst = new Request("/backend/profile.php");
-    
     let data = {
         "userID": userID,
     }
-    
+
     fetch(rqst, {
         headers: {
             'Accept': 'application/json',
@@ -52,38 +49,39 @@ async function getInfo(userID, that){
         })
         .then( data => {
             let user = data["user"];
-            return user;
+            that.add.text(150, 150, "Username:");
+            that.add.text(250, 150, user["username"]);
+            that.add.text(150, 200, "Email:");
+            that.add.text(250, 200, user["email"]);
+            renderEditForm(user);
         })
     }
 
-function renderInfo(userData){
-    that.add.text(150, 150, "Username:");
-    that.add.text(250, 150, user["username"]);
-    that.add.text(150, 200, "Email:");
-    that.add.text(250, 200, user["email"]);
-}
-
 function renderEditForm(user){
     let form = document.createElement("form");
+    form.id = "editForm";
+    form.style.display = "none";
     form.method = "POST";
 
     let avatar = document.createElement("input");
-    username.type = "file";
-    username.name = "avatar";
-    username.placeholder = user["avatar"];
-    username.id = "avatar";
+    avatar.type = "file";
+    avatar.name = "avatar";
+    avatar.placeholder = user["avatar"];
+    avatar.id = "avatar";
 
     let username = document.createElement("input");
     username.type = "text";
     username.name = "username";
     username.placeholder = user["username"];
     username.id = "username";
+    username.value = user["username"];
 
     let email = document.createElement("input");
     email.type = "email";
     email.name = "email";
     email.placeholder = user["email"];
     email.id = "email";
+    email.value = user["email"];
 
     let password = document.createElement("input");
     password.type = "password";
@@ -93,6 +91,13 @@ function renderEditForm(user){
     form.append(avatar, username, email, password);
 
     document.querySelector("#game").append(form);
+}
+
+function toggleForm(){
+        let form = document.querySelector("#editForm");
+        let formDisplay = form.style.display
+        console.log(formDisplay);
+        formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
 }
 
 export default ProfileScene;

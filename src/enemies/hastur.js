@@ -73,7 +73,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 // makes aganju take damage              |          | 
                 //                                       v cooldown v
                 if( !thisAganju.timeTakenDmgLast || scene.time.now >= thisAganju.timeTakenDmgLast + 1000){
-                    thisAganju.health = thisAganju.health - 25;
+                    thisAganju.health = thisAganju.health - thisHastur.damage;
                     thisAganju.timeTakenDmgLast = scene.time.now;
                 }
                 
@@ -123,6 +123,43 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         setTimeout(() => {
                             hastur.destroy();
                         }, 700);
+                    }
+                }
+                
+            }
+
+            if( objOne.name == 'sword' ){
+           
+                let thisSword = objOne;
+                let thisHastur = objTwo;
+
+                if( thisHastur.id ==  hastur.id){
+                    hastur.health -= thisSword.damage;
+                    thisHastur.damage = 0;
+
+                    enemyMove(hastur, 'hastur');
+
+                    setTimeout(() => {
+                        thisHastur.damage = 25;
+                    }, 2000);
+
+                    console.log(hastur.health);
+
+                    //Sätter tint (blå)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Sätter tint (blå)
+                        hastur.clearTint();
+                    }, 1000);
+    
+                    scene.spacebar.isDown = false;
+
+                    if(hastur.health <= 0){
+                        scene.startData.score = scene.startData.score + 10;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
+                     
+                        hastur.destroy();
                     }
                 }
                 

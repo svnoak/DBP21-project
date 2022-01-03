@@ -25,6 +25,12 @@ class PauseScene extends Phaser.Scene{
         restartBtn.setInteractive();
         upgradeBtn.setInteractive();
 
+        exitBtn.on("pointerover", () => {
+            exitBtn.style.setColor('black');
+        });
+        exitBtn.on("pointerout", () => {
+            exitBtn.style.setColor('white');
+        });
         exitBtn.on("pointerdown", () => {
             //Stops the game scene 
             this.scene.stop("GameScene");
@@ -33,6 +39,12 @@ class PauseScene extends Phaser.Scene{
             this.scene.start("MainMenuScene");
         });
 
+        continueBtn.on("pointerover", () => {
+            continueBtn.style.setColor('black');
+        });
+        continueBtn.on("pointerout", () => {
+            continueBtn.style.setColor('white');
+        });
         continueBtn.on("pointerdown", () => {
             //Resumes game scene
             this.scene.resume('GameScene', this.skillData);
@@ -114,11 +126,23 @@ class PauseScene extends Phaser.Scene{
         }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        restartBtn.on("pointerover", ()=>{
+            restartBtn.style.setColor('black');
+        });
+        restartBtn.on("pointerout", ()=>{
+            restartBtn.style.setColor('white');
+        });
         restartBtn.on("pointerdown", ()=>{
             //Restarts game scene
             this.scene.start("GameScene", this.restartData);
         });
 
+        upgradeBtn.on("pointerover", ()=>{
+            upgradeBtn.style.setColor('black');
+        });
+        upgradeBtn.on("pointerout", ()=>{
+            upgradeBtn.style.setColor('white');
+        });
         upgradeBtn.on("pointerdown", ()=>{
             //Restarts game scene
             this.scene.start("UpgradeScene", this.skillData);

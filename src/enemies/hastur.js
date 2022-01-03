@@ -76,20 +76,65 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                     thisAganju.health = thisAganju.health - thisHastur.damage;
                     thisAganju.timeTakenDmgLast = scene.time.now;
                 }
-                
             }
 
-            // this.addPoints = false;
+            if( objOne.name == 'sword' ){
+           
+                let thisSword = objOne;
+                let thisHastur = objTwo;
+
+                if( thisHastur.id ==  hastur.id){
+                    hastur.health -= thisSword.damage;
+                    thisHastur.damage = 0;
+
+                    enemyMove(hastur, 'hastur');
+
+                    setTimeout(() => {
+                        thisHastur.damage = 25;
+                    }, 2000);
+
+                    //Sätter tint (blå)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Sätter tint (blå)
+                        hastur.clearTint();
+                    }, 1000);
+    
+                    //Disables propogation
+                    scene.spacebar.isDown = false;
+
+                    if(hastur.health <= 0){
+                        scene.startData.score = scene.startData.score + 50;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 150;
+                     
+                        hastur.destroy();
+                    }
+                }
+                
+            }
 
             if( objTwo.name == 'fireball' ){
                 let thisFireball = objTwo;
                 let thisHastur = objOne;
                 
                 if( thisHastur.id ==  hastur.id){
-                    console.log(thisHastur.health);
+
+                    //Sätter tint (blå)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Sätter tint (blå)
+                        hastur.clearTint();
+                    }, 1000);
+
                     hastur.health -= 10;
                     thisFireball.destroy();
+
                     if(hastur.health <= 0){
+                        scene.startData.score = scene.startData.score + 25;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
+                        
                         hastur.destroy();
                     }
                 }
@@ -118,7 +163,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
                     if(hastur.health <= 0){
                         scene.startData.score = scene.startData.score + 10;
-                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 50;
                      
                         setTimeout(() => {
                             hastur.destroy();
@@ -128,42 +173,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 
             }
 
-            if( objOne.name == 'sword' ){
            
-                let thisSword = objOne;
-                let thisHastur = objTwo;
-
-                if( thisHastur.id ==  hastur.id){
-                    hastur.health -= thisSword.damage;
-                    thisHastur.damage = 0;
-
-                    enemyMove(hastur, 'hastur');
-
-                    setTimeout(() => {
-                        thisHastur.damage = 25;
-                    }, 2000);
-
-                    console.log(hastur.health);
-
-                    //Sätter tint (blå)
-                    hastur.setTint(0xff00ff);
-
-                    setTimeout(() => {
-                        //Sätter tint (blå)
-                        hastur.clearTint();
-                    }, 1000);
-    
-                    scene.spacebar.isDown = false;
-
-                    if(hastur.health <= 0){
-                        scene.startData.score = scene.startData.score + 10;
-                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
-                     
-                        hastur.destroy();
-                    }
-                }
-                
-            }
 
         })
 

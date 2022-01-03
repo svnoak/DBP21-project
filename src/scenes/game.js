@@ -177,12 +177,19 @@ class GameScene extends Phaser.Scene{
 
         //Lightning skill
         this.lightning = this.physics.add.sprite(350, 400,'lightning');
+        this.lightning.name = 'lightning';
+        this.lightning.body.mass = 2;
+        //Makes lightning unmovable
+        this.lightning.setImmovable(true);
+        this.lightning.x = -100;
+        this.lightning.y = -100;
+        //Lightning damage 
+        this.lightning.damage = this.startData.lightningDamage;
+
         //Hides lightning animation
         this.lightning.setVisible(false);
         //Lightning animation image z-index = 1
         this.lightning.setDepth(1);
-        //Lightning damage 
-        this.lightning.damage = 50;
         //Skapar lightning animation
         this.anims.create({
             key: 'shock',
@@ -260,6 +267,9 @@ class GameScene extends Phaser.Scene{
         this.sword = this.physics.add.sprite(this.aganju.x, this.aganju.y,'sword');
         //Sword Damage 
         this.sword.damage = 10;
+        this.sword.mass = 2;
+        //Makes sword unmovable
+        this.sword.setImmovable(true);
 
         //Skapar eldbollar
         this.fireball = new Phaser.Class({
@@ -348,6 +358,8 @@ class GameScene extends Phaser.Scene{
                 //creates collision between fireballs and hasturs
                 this.physics.add.collider(this.fireballs, gameObj);
 
+                //creates collision between lightning and hasturs
+                this.physics.add.collider(this.lightning, gameObj);
                 //Gör Hastur orörlig
                 gameObj.setImmovable(true);
 
@@ -441,13 +453,6 @@ class GameScene extends Phaser.Scene{
 
         ///////////////////////////////////////////////////////////////////////////
         //Objects overlaps and functions
-        //När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        // this.overlapSword = this.physics.add.overlap(this.sword, this.hastur, hitEnemy, null, this);  
-        // // this.overlapSword = this.physics.add.overlap(this.sword, this.hastur, goal.bind(this));
-        // this.overlapTriggered = false;
-
-        // När Aganju slår hasturen med sin svärd, anropas funktionen hitWithSword, 
-        this.physics.add.overlap(this.hastur, this.fireballs, burnEnemy, null, this);
 
         this.swordHasturCollider = this.physics.add.overlap(this.sword, this.hastur, null, hitEnemy,this);
     
@@ -467,48 +472,41 @@ class GameScene extends Phaser.Scene{
             this.spacebar.isDown = false;
         }
 
-        function burnEnemy(){
-            this.hastur.health = this.hastur.health - 10;
 
-            if(this.hastur.health == 0){
-                this.hastur.destroy();
-            }
-        }
+        // this.lightningHasturCollider = this.physics.add.overlap(this.lightning, this.hastur, null, shockEnemy, this);
+        // function shockEnemy(){
+        //     this.hastur.health = this.hastur.health - this.startData.lightningDamage;
 
-        this.lightningHasturCollider = this.physics.add.overlap(this.lightning, this.hastur, null, shockEnemy, this);
-        function shockEnemy(){
-            this.hastur.health = this.hastur.health - this.startData.lightningDamage;
+        //     //Sätter tint (blå)
+        //     this.hastur.setTint(0xff00ff);
 
-            //Sätter tint (blå)
-            this.hastur.setTint(0xff00ff);
+        //     setTimeout(() => {
+        //         //Sätter tint (blå)
+        //         this.hastur.setTint();
+        //     }, 1000);
 
-            setTimeout(() => {
-                //Sätter tint (blå)
-                this.hastur.setTint();
-            }, 1000);
+        //     if (this.hastur.health <= 0) {
 
-            if (this.hastur.health <= 0) {
-
-                setTimeout(() => {
-                    this.lightningExplosion.setVisible(true);
-                    this.lightningExplosion.x = this.hastur.x;
-                    this.lightningExplosion.y = this.hastur.y+10;
+        //         setTimeout(() => {
+        //             this.lightningExplosion.setVisible(true);
+        //             this.lightningExplosion.x = this.hastur.x;
+        //             this.lightningExplosion.y = this.hastur.y+10;
     
-                    this.lightningExplosion.anims.play('explode');
+        //             this.lightningExplosion.anims.play('explode');
 
-                    setTimeout(() => {
-                        this.hastur.destroy();
-                        this.lightningExplosion.setVisible(false);
-                    }, 1000);
+        //             setTimeout(() => {
+        //                 this.hastur.destroy();
+        //                 this.lightningExplosion.setVisible(false);
+        //             }, 1000);
 
-                }, 500);
+        //         }, 500);
 
-                this.score = this.score + 10;
-                this.totalCoins = this.totalCoins + 100;
-            }
-            //Unactives collide between lightning and hastur
-            this.lightningHasturCollider.active = false;
-        }
+        //         this.score = this.score + 10;
+        //         this.totalCoins = this.totalCoins + 100;
+        //     }
+        //     //Unactives collide between lightning and hastur
+        //     this.lightningHasturCollider.active = false;
+        // }
     }
 
     // Update gameplay 
@@ -535,7 +533,6 @@ class GameScene extends Phaser.Scene{
         this.aganjuX = this.aganju.x;
         //Aganju's y positon
         this.aganjuY = this.aganju.y;
-        
         // Gömmer svärden
         this.sword.setVisible(false);
 
@@ -969,8 +966,8 @@ class GameScene extends Phaser.Scene{
             this.lightningSkillIcon.setTint(0xff00ff);
 
             if(this.input.activePointer.isDown && this.startData.lightningSkillActive == true){
-                //Makes collide between lightning and hastur active
-                this.lightningHasturCollider.active = true;
+                // //Makes collide between lightning and hastur active
+                // this.lightningHasturCollider.active = true;
 
                 this.lightningDrop.setVisible(false);
                 this.lightning.setVisible(true);
@@ -1005,6 +1002,8 @@ class GameScene extends Phaser.Scene{
                 //After animation played hides lightning sprite
                 setTimeout(() => {
                     this.lightning.setVisible(false);
+                    this.lightning.x = -100;
+                    this.lightning.y = -100;
                 }, 1000);
                 
                 //After 20s skill can be used again
@@ -1014,7 +1013,7 @@ class GameScene extends Phaser.Scene{
                     this.lightningSkillIcon.setAlpha(1);
                 }, 20000);
             }
-        }   
+        }
     }
 }
 

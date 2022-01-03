@@ -93,6 +93,47 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 }
             }
 
+            if( objOne.name == 'lightning' ){
+           
+                let thisLightning = objOne;
+                let thisHastur = objTwo;
+
+                thisLightning.setBodySize(1,1,true);
+
+                if( thisHastur.id ==  hastur.id){
+                    hastur.health -= thisLightning.damage;
+
+                    //Sätter tint (blå)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Sätter tint (blå)
+                        hastur.setTint();
+                    }, 1000);
+
+                    thisLightning.setBodySize(0,0,true);
+
+                    if(hastur.health <= 0){
+                        hastur.stop();
+                        hastur.anims.stop();
+                        
+                        setTimeout(() => {
+                            scene.lightningExplosion.setVisible(true);
+                            scene.lightningExplosion.x = hastur.x;
+                            scene.lightningExplosion.y = hastur.y+10;
+                        
+                            scene.lightningExplosion.anims.play('explode');
+                                      
+                            setTimeout(() => {
+                                hastur.destroy();
+                                scene.lightningExplosion.setVisible(false);
+                            }, 1000);
+        
+                        }, 500);
+                    }
+                }
+            }
+
         })
 
         // CODE FROM TUTORIAL

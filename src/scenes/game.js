@@ -126,7 +126,9 @@ class GameScene extends Phaser.Scene{
         //Player
 
         //Skapar Aganju
-        this.aganju = this.physics.add.sprite(350, 400,'aganju');
+        let config = this.game.config; // to get width ang height of playground
+
+        this.aganju = this.physics.add.sprite(config.width / 2, config.height / 2,'aganju');
         this.aganju.name = 'aganju';
         //Skalar upp Aganju
         this.aganju.setScale(2);
@@ -242,11 +244,50 @@ class GameScene extends Phaser.Scene{
 
         this.hasturs = hasturs;
 
-        // //Skapar Hastur
         this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
-        for (let i = 0; i < 7; i++) {
-            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+        
+        // SPAWN HASTURS CODE
+        this.killedAmount = 0; // how many hasturs killed
+        this.shouldSpawnMore = false; 
+
+        this.spawnAHastur = (x ,y) =>{
+            //initial vals
+            let coordX = Phaser.Math.Between(0,1) == 1 ? 0 : config.width;
+            let coordY = Phaser.Math.Between(0,1) == 1 ? 0 : config.height;         
+
+            if( x !== undefined ){ // if no params
+                coordX = x;
+                coordY = y;
+            } else if( Phaser.Math.Between(0,1) == 1 ){ // else cointoss
+                coordX = Phaser.Math.Between(0, config.width)
+            } else {
+                coordY = Phaser.Math.Between(0, config.height)
+            }
+
+            hasturs.get( coordX, coordY, 'hastur');
         }
+
+        //Skapar spawn coords for initial hasturs
+        let coords = [ 
+            //top
+            [(config.width / 3), 0],
+            [(config.width / 3) * 2, 0],
+
+            //right
+            [config.width, (config.height / 2) ],
+
+            //down
+            [(config.width / 3), config.height],
+            [(config.width / 3) * 2, config.height],
+            
+            //left
+            [0, (config.height / 2) ],
+
+        ];
+        for (let i = 0; i < coords.length; i++) {
+            this.spawnAHastur( coords[i][0], coords[i][1] );
+        }
+        
         
         ////////////////////////////////////////////////////////////////////
         //Animationer
@@ -376,6 +417,16 @@ class GameScene extends Phaser.Scene{
     // Uppdaterar spelet var 16 ms
     // Körs kontunierlig efter create() är färdig
     update(time, delta){
+
+        if(this.shouldSpawnMore){
+            for (let i = 0; i < Math.floor(this.killedAmount * 0.2) ; i++) {
+                // let delay = 
+                setTimeout(()=>{
+                    this.spawnAHastur();
+                }, 500 * i)
+            }
+            this.shouldSpawnMore = false;
+        }
 
         //On press to ESC, pausing the game
         if(this.keyESC.isDown){

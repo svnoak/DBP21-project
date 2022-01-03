@@ -188,12 +188,93 @@ class GameScene extends Phaser.Scene{
             this.mouseY = activePointer.y;
         });
 
+
+
+
+        var HasturProjectile = new Phaser.Class({
+        
+            Extends: Phaser.GameObjects.Image,
+        
+            initialize:
+        
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
+
+                this.incX = 0;
+                this.incY = 0;
+                this.lifespan = 0;
+        
+                this.speed = Phaser.Math.GetSpeed(300, 1);
+            },
+        
+            fire: function (x1, y1, x2, y2)
+            {
+                this.setActive(true);
+                this.setVisible(true);
+                this.id = 'hasturProjectile';
+        
+                //  Bullets fire from the middle of the screen to the given x/y
+                this.setPosition(x1, y1);
+        
+                var angle = Phaser.Math.Angle.Between(x1, y1, x2, y2);
+        
+                this.setRotation(angle);
+        
+                this.incX = Math.cos(angle);
+                this.incY = Math.sin(angle);
+        
+                this.lifespan = 5000;
+            },
+        
+            update: function (time, delta)
+            {
+                this.lifespan -= delta;
+        
+                this.x += this.incX * (this.speed * delta);
+                this.y += this.incY * (this.speed * delta);
+        
+                if (this.lifespan <= 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
+            }
+        
+        
+        });
+        
+        this.hasturProjectiles = this.add.group({
+            classType: HasturProjectile,
+            createCallback:(gameObj) =>{
+                
+                //creates collision between projectile and aganju
+                this.physics.add.collider(this.aganju, gameObj);
+
+            },
+            maxSize: 50,
+            runChildUpdate: true,
+        });
+
+
+        this.physics.world.on('collide', (objOne, objTwo)=>{
+            console.log(objOne.name + ' ' + objTwo.name);
+            
+        })
+
+
+
+
+
+
+
+
         ////////////////////////////////////////////////////////////////////
         // Hastur
 
         createHasturAnims(this.anims); //skapas i annan fil
 
-        const hasturs = this.physics.add.group({
+        this.hasturs = this.physics.add.group({
             classType: Hastur,
             createCallback: (gameObj) => { // hastur objects properties
                 gameObj.name = 'hastur';
@@ -219,12 +300,11 @@ class GameScene extends Phaser.Scene{
             }
         });
 
-        this.hasturs = hasturs;
 
         // //Skapar Hastur
         this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
         for (let i = 0; i < 7; i++) {
-            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
+            this.hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         }
         
         ////////////////////////////////////////////////////////////////////

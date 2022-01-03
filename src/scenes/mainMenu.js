@@ -41,7 +41,11 @@ class MainMenuScene extends Phaser.Scene {
 
         //Total coins
         let totalCoins = 150000;
-    
+        //Score
+        let score = 0;
+        //Lives
+        let lives = 3;
+
         //Regeneration skill learned
         let regenerationLearned = false;
         //Regeneration skillen behöver inte cooldownas
@@ -83,6 +87,8 @@ class MainMenuScene extends Phaser.Scene {
 
         this.data = {
             totalCoins,
+            score,
+            lives,
             regenerationLearned,
             regenerationCurrentLevelFactor,
             baseCostForRegenerationUpgrade,

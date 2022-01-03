@@ -52,9 +52,6 @@ class GameScene extends Phaser.Scene{
 
         //Variabel för eldbollar
         this.lastFired = 0;
-
-        this.lives = 3;
-        this.score = 0;
     }
     
     // Create game world 
@@ -177,15 +174,6 @@ class GameScene extends Phaser.Scene{
 
         //Lightning skill
         this.lightning = this.physics.add.sprite(350, 400,'lightning');
-        this.lightning.name = 'lightning';
-        this.lightning.body.mass = 2;
-        //Makes lightning unmovable
-        this.lightning.setImmovable(true);
-        this.lightning.x = -100;
-        this.lightning.y = -100;
-        //Lightning damage 
-        this.lightning.damage = this.startData.lightningDamage;
-
         //Hides lightning animation
         this.lightning.setVisible(false);
         //Lightning animation image z-index = 1
@@ -200,6 +188,16 @@ class GameScene extends Phaser.Scene{
             frameRate: 6,
             repeat: 0
         });
+
+        this.lightningDropPlace = this.physics.add.sprite(350, 400,'lightning');
+        this.lightningDropPlace.name = 'lightning';
+        this.lightningDropPlace.body.mass = 2;
+        //Makes lightning unmovable
+        this.lightningDropPlace.setImmovable(true);
+        this.lightningDropPlace.x = -100;
+        this.lightningDropPlace.y = -100;
+        
+        this.lightningDropPlace.setVisible(false);
 
         //LightningExplosion
         this.lightningExplosion = this.physics.add.sprite(350, 400,'lightningExplosion');
@@ -359,7 +357,8 @@ class GameScene extends Phaser.Scene{
                 this.physics.add.collider(this.fireballs, gameObj);
 
                 //creates collision between lightning and hasturs
-                this.physics.add.collider(this.lightning, gameObj);
+                this.physics.add.collider(this.lightningDropPlace, gameObj);
+
                 //Gör Hastur orörlig
                 gameObj.setImmovable(true);
 
@@ -377,7 +376,6 @@ class GameScene extends Phaser.Scene{
         for (let i = 0; i < 7; i++) {
             hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         }
-        
         ////////////////////////////////////////////////////////////////////
         //Animationer
 
@@ -507,6 +505,7 @@ class GameScene extends Phaser.Scene{
         //     //Unactives collide between lightning and hastur
         //     this.lightningHasturCollider.active = false;
         // }
+  
     }
 
     // Update gameplay 
@@ -519,11 +518,11 @@ class GameScene extends Phaser.Scene{
             this.scene.launch('PauseScene', this.startData);
             this.scene.pause();
         }
-
+    
         //Uppdaterar score
-        this.scoreText.text = 'Score: ' + this.score;
+        this.scoreText.text = 'Score: ' + this.startData.score;
         //Uppdaterar lives Aganju har
-        this.livescounter.text = 'Lives: ' + this.lives;
+        this.livescounter.text = 'Lives: ' + this.startData.lives;
         //Uppdaterar Aganjus health
         this.health.text = '' + this.aganju.health;
         //Uppdaterar total coins
@@ -887,6 +886,8 @@ class GameScene extends Phaser.Scene{
             }
         }
 
+        //Updates lightning damage
+        this.lightningDropPlace.damage = this.startData.lightningDamage;
         if(this.startData.lightningSkillLearned == true){
             this.lightningIconLocked.destroy();
         }
@@ -966,8 +967,6 @@ class GameScene extends Phaser.Scene{
             this.lightningSkillIcon.setTint(0xff00ff);
 
             if(this.input.activePointer.isDown && this.startData.lightningSkillActive == true){
-                // //Makes collide between lightning and hastur active
-                // this.lightningHasturCollider.active = true;
 
                 this.lightningDrop.setVisible(false);
                 this.lightning.setVisible(true);
@@ -975,6 +974,10 @@ class GameScene extends Phaser.Scene{
                 this.lightning.x = this.input.x;
                 this.lightning.y = this.input.y-80;
 
+                //Lightning dropplace
+                this.lightningDropPlace.x = this.lightningDrop.x;
+                this.lightningDropPlace.y = this.lightningDrop.y;
+                
                 //Plays shock animation
                 this.lightning.anims.play('shock');
 
@@ -1002,9 +1005,19 @@ class GameScene extends Phaser.Scene{
                 //After animation played hides lightning sprite
                 setTimeout(() => {
                     this.lightning.setVisible(false);
-                    this.lightning.x = -100;
-                    this.lightning.y = -100;
                 }, 1000);
+
+                setTimeout(() => {
+                    this.lightningExplosion.x = this.lightningDrop.x;
+                    this.lightningExplosion.y = this.lightningDrop.y;
+
+                    this.lightningExplosion.setVisible(true);
+                    this.lightningExplosion.anims.play('explode');
+
+                    setTimeout(() => {
+                        this.lightningExplosion.setVisible(false);
+                    }, 1000);
+                }, 500);
                 
                 //After 20s skill can be used again
                 setTimeout(() => {

@@ -79,6 +79,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 
             }
 
+            // this.addPoints = false;
+
             if( objTwo.name == 'fireball' ){
                 let thisFireball = objTwo;
                 let thisHastur = objOne;
@@ -97,8 +99,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
            
                 let thisLightning = objOne;
                 let thisHastur = objTwo;
-
-                thisLightning.setBodySize(1,1,true);
+     
+                thisLightning.setBodySize(90,90, true);
 
                 if( thisHastur.id ==  hastur.id){
                     hastur.health -= thisLightning.damage;
@@ -108,30 +110,22 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
                     setTimeout(() => {
                         //Sätter tint (blå)
-                        hastur.setTint();
+                        hastur.clearTint();
                     }, 1000);
 
-                    thisLightning.setBodySize(0,0,true);
+                    thisLightning.x = -150;
+                    thisLightning.y = -150;
 
                     if(hastur.health <= 0){
-                        hastur.stop();
-                        hastur.anims.stop();
-                        
+                        scene.startData.score = scene.startData.score + 10;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
+                     
                         setTimeout(() => {
-                            scene.lightningExplosion.setVisible(true);
-                            scene.lightningExplosion.x = hastur.x;
-                            scene.lightningExplosion.y = hastur.y+10;
-                        
-                            scene.lightningExplosion.anims.play('explode');
-                                      
-                            setTimeout(() => {
-                                hastur.destroy();
-                                scene.lightningExplosion.setVisible(false);
-                            }, 1000);
-        
-                        }, 500);
+                            hastur.destroy();
+                        }, 700);
                     }
                 }
+                
             }
 
         })

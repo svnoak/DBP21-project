@@ -64,6 +64,15 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
             if( objOne.name == 'aganju' ){
                 let thisAganju = objOne;
                 let thisHastur = objTwo;
+    
+                //Gives tint (red)
+                //Red eyes shows that Aganju takes damage
+                thisAganju.setTint(0xff00ff);
+
+                setTimeout(() => {
+                    //Clear tint
+                    thisAganju.clearTint();
+                }, 1000);
 
                 // only colliding hastur changes direction
                 if(hastur.id == thisHastur.id){
@@ -93,11 +102,11 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         thisHastur.damage = 25;
                     }, 2000);
 
-                    //Sätter tint (blå)
+                    //Sätter tint (red)
                     hastur.setTint(0xff00ff);
 
                     setTimeout(() => {
-                        //Sätter tint (blå)
+                        //Clear tint
                         hastur.clearTint();
                     }, 1000);
     
@@ -120,11 +129,11 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 
                 if( thisHastur.id ==  hastur.id){
 
-                    //Sätter tint (blå)
+                    //Sätter tint (red)
                     hastur.setTint(0xff00ff);
 
                     setTimeout(() => {
-                        //Sätter tint (blå)
+                        //Clear tint
                         hastur.clearTint();
                     }, 1000);
 
@@ -150,11 +159,11 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 if( thisHastur.id ==  hastur.id){
                     hastur.health -= thisLightning.damage;
 
-                    //Sätter tint (blå)
+                    //Sätter tint (red)
                     hastur.setTint(0xff00ff);
 
                     setTimeout(() => {
-                        //Sätter tint (blå)
+                        //Clear tint
                         hastur.clearTint();
                     }, 1000);
 

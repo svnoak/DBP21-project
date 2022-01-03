@@ -103,7 +103,7 @@ class GameScene extends Phaser.Scene{
         //Player
 
         //Skapar Aganju
-        this.aganju = this.physics.add.sprite(350, 400,'aganju');
+        this.aganju = this.physics.add.sprite(300, 300,'aganju');
         this.aganju.name = 'aganju';
         //Skalar upp Aganju
         this.aganju.setScale(2);

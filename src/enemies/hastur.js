@@ -50,24 +50,28 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         },Phaser.Math.Between(hastur.wallCollTime + 3000, hastur.wallCollTime + 16000) )
 
 
-        
-        
         this.shoot = setInterval( () =>{
+
+            // amount of hasturs on playground
+            let amount = scene.hasturs.children.entries.length;
+
+            let frequency = amount <= 4 ? 1 : 2;
             
-            let range = 15000;
+            let range = amount <= 5 ? 50 : 150;
 
             // is hastur within range?
             let withinX = hastur.x < scene.aganju.x + range 
             && hastur.x > scene.aganju.x - range 
             ? true : false; 
     
-            let withinY = hastur.y < scene.aganju.y + range 
-            && hastur.y > scene.aganju.y - range 
+            let withinY = hastur.y < scene.aganju.y + range
             ? true : false; 
+            
+            if(withinY && withinY){
+                // do not shoot
+            } else {
 
-    
-            if( withinX && withinY ){
-                let shootProjectile = Phaser.Math.Between(0, 7);
+                let shootProjectile = Phaser.Math.Between(0, frequency);
                 if(shootProjectile == 0){
                     var projectileOne = scene.hasturProjectiles.get();
                     // var projectileTwo = scene.hasturProjectiles.get();
@@ -122,9 +126,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
 
                     }
-                } else {
-                    console.log('sorry');
-                }
+                } 
             }
 
         }, 700);

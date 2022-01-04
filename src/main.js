@@ -10,6 +10,7 @@ import GameoverScene from "./scenes/gameover.js";
 import VictoryScene from "./scenes/victory.js";
 import HowToScene from "./scenes/howTo.js";
 import AboutScene from "./scenes/about.js";
+import UpgradeScene from "./scenes/upgrade.js";
 
 
 //const för Spels konfiguration
@@ -33,6 +34,7 @@ const config = {
         LeaderboardScene,
         GameScene,
         PauseScene,
+        UpgradeScene,
         GameoverScene,
         VictoryScene,
         AboutScene,

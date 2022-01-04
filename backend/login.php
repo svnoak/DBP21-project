@@ -1,29 +1,40 @@
 <?php
+
+    // Allow from any origin
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+    }
+
+    // Access-Control headers are received during OPTIONS requests
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+            header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+        exit(0);
+    }
+
 //Fetching utilities.php
 require_once("utilities.php");
-//The information sent to the server
+
 $dataPHP = file_get_contents("php://input");
-//Makes JSON to an associativ array
 $requestData = json_decode($dataPHP, true);
 
-//Checks the contenttype
+
 contentType("application/json");
-//Checks the method
-requestMethod("POST");
-//Fetching data from database
 $data = openJSON("databas/user.json");
 
-//Checks if something was sent through POST
 if(isset($requestData["username"], $requestData["password"])) {
-    //Saves username och password in variables
     $username = $requestData["username"];
     $password = $requestData["password"];
-    //Setting necessary variables
     $foundUser = null;
-    //Loops through user.json and looks for a user that has the matching username/password as sent through POST
     foreach($data as $user) {
         if($user["username"] === $username && $user["password"] === $password) {
-            //Puts the found user in the variable foundUser
             $foundUser = $user;
         }
     }
@@ -33,13 +44,16 @@ if(isset($requestData["username"], $requestData["password"])) {
         session_start();
         $_SESSION["id"] = $foundUser["id"];
         $userID = $_SESSION["id"];
-        //Returns a user ID
-        echo $userID; //Test for Insomnia
-        return $userID;
+        sendJSON(["userID"=>$userID], 200);
+        exit();
     } else {
         //Retuns a message that something when wrong when atempting to login
-        sendJSON("Login does not exist");
+        sendJSON("User not found", 404);
+        exit();
     }
+} else{
+    sendJSON("PASSWORD OR USERNAME MISSING", 400);
+    exit();
 }
 
 ?>

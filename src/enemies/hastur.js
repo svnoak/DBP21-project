@@ -148,17 +148,71 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
             if( objOne.name == 'aganju' ){
                 let thisAganju = objOne;
                 let thisHastur = objTwo;
+    
+                //Gives tint (red)
+                //Red eyes shows that Aganju takes damage
+                thisAganju.setTint(0xff00ff);
+
+                setTimeout(() => {
+                    //Clear tint
+                    thisAganju.clearTint();
+                }, 1000);
 
                 // only colliding hastur changes direction
                 if(hastur.id == thisHastur.id){
                     enemyMove(hastur, 'hastur');
                 }
+                if(thisAganju.health <= 0){
+                    thisAganju.health = 100;
+                    scene.startData.lives -= 1;
+                }
     
                 // makes aganju take damage              |          | 
                 //                                       v cooldown v
                 if( !thisAganju.timeTakenDmgLast || scene.time.now >= thisAganju.timeTakenDmgLast + 1000){
-                    thisAganju.health = thisAganju.health - 25;
+                    thisAganju.health = thisAganju.health - thisHastur.damage;
                     thisAganju.timeTakenDmgLast = scene.time.now;
+                }
+            }
+
+            function killHastur(){
+                hastur.destroy();
+                scene.shouldSpawnMore = true;
+                scene.killedAmount++;
+            }
+
+            if( objOne.name == 'sword' ){
+           
+                let thisSword = objOne;
+                let thisHastur = objTwo;
+
+                if( thisHastur.id ==  hastur.id){
+                    hastur.health -= thisSword.damage;
+                    thisHastur.damage = 0;
+
+                    enemyMove(hastur, 'hastur');
+
+                    setTimeout(() => {
+                        thisHastur.damage = 25;
+                    }, 2000);
+
+                    //Sätter tint (red)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Clear tint
+                        hastur.clearTint();
+                    }, 1000);
+
+                    //Disables propogation
+                    scene.spacebar.isDown = false;
+
+                    if(hastur.health <= 0){
+                        scene.startData.score = scene.startData.score + 50;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 150;
+                     
+                        killHastur();
+                    }
                 }
                 
             }
@@ -168,13 +222,58 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 let thisHastur = objOne;
                 
                 if( thisHastur.id ==  hastur.id){
-                    console.log(thisHastur.health);
+
+                    //Sätter tint (red)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Clear tint
+                        hastur.clearTint();
+                    }, 1000);
+
                     hastur.health -= 10;
                     thisFireball.destroy();
+
                     if(hastur.health <= 0){
-                        hastur.destroy();
+                        scene.startData.score = scene.startData.score + 25;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
+                        
+                        killHastur();
                     }
                 }
+            }
+
+            if( objOne.name == 'lightning' ){
+           
+                let thisLightning = objOne;
+                let thisHastur = objTwo;
+     
+                thisLightning.setBodySize(90,90, true);
+
+                if( thisHastur.id ==  hastur.id){
+                    hastur.health -= thisLightning.damage;
+
+                    //Sätter tint (red)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Clear tint
+                        hastur.clearTint();
+                    }, 1000);
+
+                    thisLightning.x = -150;
+                    thisLightning.y = -150;
+
+                    if(hastur.health <= 0){
+                        scene.startData.score = scene.startData.score + 10;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 50;
+                     
+                        setTimeout(() => {
+                            killHastur();
+                        }, 700);
+                    }
+                }
+                
             }
 
         })

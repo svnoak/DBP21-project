@@ -22,7 +22,6 @@ class ProfileScene extends Phaser.Scene{
                 editBtn.text = "Edit Profile";
             }
             toggleForm();
-            
         })
 
         backBtn.setInteractive();
@@ -57,7 +56,6 @@ async function renderInfo(userID, that){
         })
         .then( data => {
             let user = data["user"];
-	    console.log(user);
             that.add.text(150, 150, "Username:");
             that.add.text(250, 150, user["username"]);
             that.add.text(150, 200, "Email:");

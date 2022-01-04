@@ -62,7 +62,7 @@ function createLoginForm(){
 
 async function login(username, password){
 
-let rqst = new Request("/backend/login.php");
+let rqst = new Request("backend/login.php");
 
 let data = {
     "username": username,
@@ -88,8 +88,6 @@ fetch(rqst, {
     .then( data => {
         if( data["userID"] != undefined ){
             sessionStorage.setItem("userID", data["userID"]);
-            sessionStorage.setItem("userName", data["username"]);
-            sessionStorage.setItem("email", data["email"]);
             return true;
         }
     })

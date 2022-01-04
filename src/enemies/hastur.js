@@ -78,6 +78,10 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 if(hastur.id == thisHastur.id){
                     enemyMove(hastur, 'hastur');
                 }
+                if(thisAganju.health <= 0){
+                    thisAganju.health = 100;
+                    scene.startData.lives -= 1;
+                }
     
                 // makes aganju take damage              |          | 
                 //                                       v cooldown v
@@ -109,7 +113,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         //Clear tint
                         hastur.clearTint();
                     }, 1000);
-    
+
                     //Disables propogation
                     scene.spacebar.isDown = false;
 
@@ -183,8 +187,6 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 }
                 
             }
-
-           
 
         })
 

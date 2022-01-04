@@ -577,10 +577,15 @@ class GameScene extends Phaser.Scene{
             this.scene.launch('PauseScene', this.startData);
         }
 
-        //Updates sword position to not collide while not on use
-        this.sword.x = -150;
-        this.sword.y = -150;
-    
+        //Gameover scene 
+        if(this.startData.lives == -1){
+            //Stops the game scene
+            this.scene.stop("GameScene");
+            
+            //Starts gameover scene
+            this.scene.start('GameoverScene', this.startData);
+        }
+        
         //Uppdaterar score
         this.scoreText.text = 'Score: ' + this.startData.score;
         //Uppdaterar lives Aganju har
@@ -594,8 +599,12 @@ class GameScene extends Phaser.Scene{
         this.aganjuX = this.aganju.x;
         //Aganju's y positon
         this.aganjuY = this.aganju.y;
+
         // Gömmer svärden
         this.sword.setVisible(false);
+        //Updates sword position to not collide while not on use
+        this.sword.x = -150;
+        this.sword.y = -150;
 
         ///////////////////////////////////////////////////////////////////////////
         //Player movement and animations
@@ -617,6 +626,10 @@ class GameScene extends Phaser.Scene{
                 //Ger z-index 0 till Aganju
                 this.aganju.setDepth(0);
 
+                this.sword.setBodySize(30,125,true);
+                //Sätter X offset 14 och Y  offset 52 för att kunna skada fienden på x axeln(vänster sida)
+                this.sword.setOffset(14,55,true);
+
                 //Gör svärden visible
                 this.sword.setVisible(true);
                 //Uppdaterar svärdens position
@@ -627,9 +640,6 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 //Spelar left animationen av svärd
                 this.sword.anims.play('sword_left', true);
-
-                //Makes collide between sword and Hastur active again
-                this.swordHasturCollider.active = true;
             }
         }
 
@@ -646,14 +656,15 @@ class GameScene extends Phaser.Scene{
             if(this.spacebar.isDown){
                 this.aganju.setDepth(1);
 
+                this.sword.setBodySize(30,125,true);
+                //Sätter X offset 210 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
+                this.sword.setOffset(210,55,true);
+
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX,this.aganjuY-10);
                 this.sword.setDepth(0);
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_right', true);
-
-                //Makes collide between sword and Hastur active again
-                this.swordHasturCollider.active = true;
             }
         }
 
@@ -670,15 +681,16 @@ class GameScene extends Phaser.Scene{
             if(this.spacebar.isDown){
                 this.aganju.setDepth(0);
 
+                this.sword.setBodySize(125,30,true);
+                //Sätter X offset 20 och Y offset 200 för att kunna skada fienden på y axeln(ner)
+                this.sword.setOffset(20,200,true);
+
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
                 this.sword.setDepth(1);
 
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_down', true);
-
-                //Makes collide between sword and Hastur active again
-                this.swordHasturCollider.active = true;
             }
         }
 
@@ -696,15 +708,16 @@ class GameScene extends Phaser.Scene{
             if(this.spacebar.isDown){
                 this.aganju.setDepth(1);
 
+                this.sword.setBodySize(125,30,true);
+                //Sätter X offset 105 och Y offset 60 för att kunna skada fienden på y axeln(upp)
+                this.sword.setOffset(105,60,true);
+
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);
                 this.sword.setDepth(0);
 
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_up', true);
-
-                //Makes collide between sword and Hastur active again
-                this.swordHasturCollider.active = true;
             }
         }
 
@@ -725,6 +738,10 @@ class GameScene extends Phaser.Scene{
 
             if(this.spacebar.isDown){
                 this.sword.setDepth(0);
+
+                this.sword.setBodySize(30,80,true);
+                //Sätter X offset -25 och Y  offset 150 för att kunna skada fienden på x och y axeln(ner och vänster sida)
+                this.sword.setOffset(3,-20,true);
             }
         }
 
@@ -734,6 +751,12 @@ class GameScene extends Phaser.Scene{
             this.aganju.setVelocityY(-this.basicSpeed);
             this.aganju.setVelocityX(this.basicSpeed);
             this.aganju.anims.play('up', true);
+
+            if(this.spacebar.isDown){
+                this.sword.setBodySize(30,80,true);
+                //Sätter X offset 220 och Y  offset -20 för att kunna skada fienden på x och y axeln(upp och höger sida)
+                this.sword.setOffset(220,-20,true);
+            }
         }
 
         //Om höger och ner pillarna trycks, 
@@ -747,6 +770,10 @@ class GameScene extends Phaser.Scene{
             if(this.spacebar.isDown){
                 this.sword.setDepth(1);
                 this.sword.setPosition(this.aganjuX+20,this.aganjuY-10);
+
+                this.sword.setBodySize(30,80,true);
+                //Sätter X offset 175 och Y  offset 160 för att kunna skada fienden på x och y axeln(ner och höger sida)
+                this.sword.setOffset(175,160,true);
             }
     
         }
@@ -760,6 +787,10 @@ class GameScene extends Phaser.Scene{
 
             if(this.spacebar.isDown){
                 this.sword.setPosition(this.aganjuX+17,this.aganjuY-5);
+
+                this.sword.setBodySize(30,80,true);
+                //Sätter X offset -25 och Y  offset 150 för att kunna skada fienden på x och y axeln(ner och vänster sida)
+                this.sword.setOffset(-25,150,true);
             }
         }
 

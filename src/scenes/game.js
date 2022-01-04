@@ -266,10 +266,14 @@ class GameScene extends Phaser.Scene{
         //Skapar svärden
         this.sword = this.physics.add.sprite(this.aganju.x, this.aganju.y,'sword');
         //Sword Damage 
+        this.sword.name = 'sword';
         this.sword.damage = 10;
         this.sword.mass = 2;
         //Makes sword unmovable
         this.sword.setImmovable(true);
+
+        // this.sword.x = -150;
+        // this.sword.y = -150;
 
         //Skapar eldbollar
         this.fireball = new Phaser.Class({
@@ -352,6 +356,8 @@ class GameScene extends Phaser.Scene{
                 gameObj.body.onWorldBounds = true;
                 gameObj.onOverlap = true;
 
+                gameObj.damage = 25;
+
                 //Creates collision between Aganju and Hasturs
                 this.physics.add.collider(this.aganju, gameObj);
 
@@ -360,6 +366,9 @@ class GameScene extends Phaser.Scene{
 
                 //creates collision between lightning and hasturs
                 this.physics.add.collider(this.lightningDropPlace, gameObj);
+
+                //creates collision between sword and hasturs
+                this.physics.add.collider(this.sword, gameObj);
 
                 //Gör Hastur orörlig
                 gameObj.setImmovable(true);
@@ -514,7 +523,6 @@ class GameScene extends Phaser.Scene{
             this.spacebar.isDown = false;
         }
 
-
         // this.lightningHasturCollider = this.physics.add.overlap(this.lightning, this.hastur, null, shockEnemy, this);
         // function shockEnemy(){
         //     this.hastur.health = this.hastur.health - this.startData.lightningDamage;
@@ -572,6 +580,9 @@ class GameScene extends Phaser.Scene{
             this.scene.launch('PauseScene', this.startData);
             this.scene.pause();
         }
+
+        this.sword.x = -150;
+        this.sword.y = -150;
     
         //Uppdaterar score
         this.scoreText.text = 'Score: ' + this.startData.score;

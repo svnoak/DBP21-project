@@ -136,11 +136,11 @@ function submitChanges(userID){
             return response.json();
         }else{
             alert("Something went wrong, please try again.");
-            return false;
+            return response.json();
         }
     })
-    .then( data => {
-        console.log(data);
+    .then( d => {
+        console.log(d);
     })
 }
 

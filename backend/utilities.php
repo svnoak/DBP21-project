@@ -38,9 +38,8 @@ function openJSON($fileName) {
 
 //2 SaveToJSON function, file/data argument
 function saveToJSON($fileName, $data) {
-    $dataSaveJSON = json_encode($data, JSON_PRETTY_PRINT);
-    file_put_contents($fileName, $dataSaveJSON);
-    return true;
+    $json = json_encode($data, JSON_PRETTY_PRINT);
+    file_put_contents($fileName, $json);
 }
 
 //3 SendJSON function, message/httpcode argument
@@ -140,38 +139,40 @@ function updateUser($id, $data) {
     //Setting necessary variables
     $found = false;
     $foundUser = null;
+
     //Looping through users to find the one with given ID and change it's content
     foreach($json as $index => $user) {
         if($user["id"] == $id) {
             $found = true;
-            if(isset($requestData["username"])) {
-                $user["username"] = $requestData["username"];
+            if(isset($data["username"])) {
+                $user["username"] = $data["username"];
             }
             if(isset($requestData["password"])) {
-                $user["password"] = $requestData["password"];
+                $user["password"] = $data["password"];
             }
             if(isset($requestData["email"])) {
-                $user["email"] = $requestData["email"];
+                $user["email"] = $data["email"];
             }
             if(isset($requestData["avatar"])) {
-                $user["avatar"] = $requestData["avatar"];
+                $user["avatar"] = $data["avatar"];
             }
             $json[$index] = $user;
-            $foundUser = $user;
             break;
         }
     }
+
     //If the requested ID is invalid
     if($found === false) {
         sendJSON(
             ["message" => "This user $id does not exist"],
             404
-        );
+    );
+	exit();
     }
     //Saving new data to the database
     saveToJSON("databas/user.json", $json);
     //Giving the user a response that the information has been saved
-    sendJSON(["message" => "User with $id has been changed in user.json", $foundUser], 200);
+    sendJSON(["message" => "User with $id has been changed in user.json"], 200);
 }
 
 //9 authenticateUser function, username/password argument

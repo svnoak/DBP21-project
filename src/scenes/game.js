@@ -271,10 +271,6 @@ class GameScene extends Phaser.Scene{
         this.sword.mass = 2;
         //Makes sword unmovable
         this.sword.setImmovable(true);
-
-        // this.sword.x = -150;
-        // this.sword.y = -150;
-
         //Skapar eldbollar
         this.fireball = new Phaser.Class({
 

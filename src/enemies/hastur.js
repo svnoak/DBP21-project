@@ -7,7 +7,6 @@ let highestID=0;
 
 function enemyMove(obj, type){ // type == sprite name
     obj.direction = randomDirection(obj.direction);
-    console.log(obj);
     setAnimation(obj, type);
 
     function randomDirection(exclude){

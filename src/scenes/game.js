@@ -341,7 +341,7 @@ class GameScene extends Phaser.Scene{
 
         createHasturAnims(this.anims); //skapas i annan fil
 
-        const hasturs = this.physics.add.group({
+        this.hasturs = this.physics.add.group({
             classType: Hastur,
             createCallback: (gameObj) => { // hastur objects properties
                 gameObj.name = 'hastur';
@@ -375,8 +375,6 @@ class GameScene extends Phaser.Scene{
             }
         });
 
-        this.hasturs = hasturs;
-
         this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
         
         // SPAWN HASTURS CODE
@@ -397,7 +395,7 @@ class GameScene extends Phaser.Scene{
                 coordY = Phaser.Math.Between(0, config.height)
             }
 
-            hasturs.get( coordX, coordY, 'hastur');
+            this.hasturs.get( coordX, coordY, 'hastur');
         }
 
         //Skapar spawn coords for initial hasturs
@@ -419,10 +417,6 @@ class GameScene extends Phaser.Scene{
         ];
         for (let i = 0; i < coords.length; i++) {
             this.spawnAHastur( coords[i][0], coords[i][1] );
-        }
-        
-        for (let i = 0; i < 7; i++) {
-            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         }
         
         ////////////////////////////////////////////////////////////////////

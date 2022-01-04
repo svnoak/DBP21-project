@@ -25,7 +25,6 @@ require_once("utilities.php");
 $dataPHP = file_get_contents("php://input");
 $requestData = json_decode($dataPHP, true);
 
-
 contentType("application/json");
 $data = openJSON("databas/user.json");
 

@@ -38,8 +38,6 @@ requestMethod("POST");
 $id = $_SESSION["id"];
 //Checks if an ID is given in session
 if(isset($id)) {
-    //Saving the user information in a variable
-    $data = getEntryByID("databas/user.json", $id);
     $user = [
         "username" => $data["username"], 
         "email" => $data["email"],

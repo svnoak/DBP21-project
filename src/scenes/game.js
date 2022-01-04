@@ -573,10 +573,11 @@ class GameScene extends Phaser.Scene{
 
         //On press to ESC, pausing the game
         if(this.keyESC.isDown){
-            this.scene.launch('PauseScene', this.startData);
             this.scene.pause();
+            this.scene.launch('PauseScene', this.startData);
         }
 
+        //Updates sword position to not collide while not on use
         this.sword.x = -150;
         this.sword.y = -150;
     

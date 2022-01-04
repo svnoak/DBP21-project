@@ -212,7 +212,7 @@ class GameScene extends Phaser.Scene{
             {
                 this.setActive(true);
                 this.setVisible(true);
-                this.id = 'hasturProjectile';
+                this.name = 'hasturProjectile';
         
                 //  Bullets fire from the middle of the screen to the given x/y
                 this.setPosition(x1, y1);
@@ -243,22 +243,28 @@ class GameScene extends Phaser.Scene{
         
         
         });
-        
-        this.hasturProjectiles = this.add.group({
+
+        this.hasturProjectiles = this.physics.add.group({
             classType: HasturProjectile,
             createCallback:(gameObj) =>{
+
+                gameObj.body.onCollide = true;
                 
                 //creates collision between projectile and aganju
                 this.physics.add.collider(this.aganju, gameObj);
+                
 
             },
             maxSize: 50,
             runChildUpdate: true,
         });
 
-
         this.physics.world.on('collide', (objOne, objTwo)=>{
-            console.log(objOne.name + ' ' + objTwo.name);
+            let thisAganju = objOne;
+            let thisProjectile = objTwo;
+
+            thisProjectile.destroy();
+            thisAganju.health - 10;
             
         })
 

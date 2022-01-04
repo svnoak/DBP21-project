@@ -79,6 +79,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 
             }
 
+            // this.addPoints = false;
+
             if( objTwo.name == 'fireball' ){
                 let thisFireball = objTwo;
                 let thisHastur = objOne;
@@ -91,6 +93,39 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         hastur.destroy();
                     }
                 }
+            }
+
+            if( objOne.name == 'lightning' ){
+           
+                let thisLightning = objOne;
+                let thisHastur = objTwo;
+     
+                thisLightning.setBodySize(90,90, true);
+
+                if( thisHastur.id ==  hastur.id){
+                    hastur.health -= thisLightning.damage;
+
+                    //Sätter tint (blå)
+                    hastur.setTint(0xff00ff);
+
+                    setTimeout(() => {
+                        //Sätter tint (blå)
+                        hastur.clearTint();
+                    }, 1000);
+
+                    thisLightning.x = -150;
+                    thisLightning.y = -150;
+
+                    if(hastur.health <= 0){
+                        scene.startData.score = scene.startData.score + 10;
+                        scene.startData.totalCoins = scene.startData.totalCoins + 100;
+                     
+                        setTimeout(() => {
+                            hastur.destroy();
+                        }, 700);
+                    }
+                }
+                
             }
 
         })

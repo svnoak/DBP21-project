@@ -4,7 +4,6 @@ class PauseScene extends Phaser.Scene{
     }
 
     init(data){
-        console.log(data);
         this.startData = data;
         this.skillData = data;
     }

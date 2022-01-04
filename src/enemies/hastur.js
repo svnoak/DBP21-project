@@ -91,6 +91,8 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                     thisFireball.destroy();
                     if(hastur.health <= 0){
                         hastur.destroy();
+                        scene.shouldSpawnMore = true;
+                        scene.killedAmount++;
                     }
                 }
             }

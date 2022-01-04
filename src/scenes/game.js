@@ -413,7 +413,9 @@ class GameScene extends Phaser.Scene{
                 let thisProjectile = objTwo;
     
                 thisProjectile.destroy();
-                thisAganju.health - 10;
+                thisAganju.health -= 10;
+
+                console.log(this.aganju)
             }
             
         })

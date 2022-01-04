@@ -38,8 +38,19 @@ class MainMenuScene extends Phaser.Scene {
         aboutBtn.setInteractive();
         howToBtn.setInteractive();
 
+        //Data to start game with
+        let regenerationCoolDown = false;
+        let speedCoolDown = false;
+        let test = 100;
+    
+        this.data = {
+            regenerationCoolDown,
+            speedCoolDown,
+            test
+        }
+
         startGameBtn.on("pointerdown", ()=> {
-            this.scene.start("GameScene");
+            this.scene.start("GameScene", this.data);
         })
 
         signupBtn.on("pointerdown", ()=> {

@@ -501,7 +501,7 @@ class GameScene extends Phaser.Scene{
             this.hastur.health = this.hastur.health - this.sword.damage;
 
             if(this.hastur.health == 0){
-                this.hastur.destroy();
+        	killHastur();
                 this.score = this.score + 10;
                 this.totalCoins = this.totalCoins + 100;
             } 

@@ -29,7 +29,7 @@ contentType("application/json");
 $username = $requestData["username"];
 $password = $requestData["password"]; 
 $email = $requestData["email"];
-$avatar = $requestData["avatar"];
+$avatar = "Placeholder";
 
 if(!empty($username && $password && $email)) {
     createUser(

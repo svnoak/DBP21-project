@@ -30,10 +30,8 @@ class SignupScene extends Phaser.Scene{
             let password = document.querySelector("#password").value;
 
             await signup(username, email, password);
-            /* if(sessionStorage["userID"]) {
-                document.querySelector("form").remove();
-                this.scene.start("MainMenuScene");
-            } */
+            document.querySelector("form").remove();
+            this.scene.start("MainMenuScene");
         })
 
     }   
@@ -62,14 +60,6 @@ function createSignupForm(){
     password.type = "password";
     password.placeholder = "Password";
 
-/*     let button = document.createElement("button");
-    button.type = "button";
-    button.innerText = "Signup";
-    button.addEventListener("click", () => {
-        signup
-    }) */
-
-
     form.append(username, email, password);
 
     document.querySelector("#game").append(form);
@@ -83,9 +73,7 @@ async function signup(username, email, password){
         "password" : password
     }
     
-    //let signupForm = document.getElementById("signupForm");
-    
-    let rqst = new Request("/backend/createUser.php");
+    let rqst = new Request("http://localhost:7000/createuser.php");
     let options = {
         headers: {
             'Accept' : 'application/json',
@@ -95,57 +83,13 @@ async function signup(username, email, password){
         body : JSON.stringify(data)
     };
 
-/*     signupForm.addEventListener("submit", function() {
-        e.preventDefault(); */
-        //let formData = new FormData(this);
-        fetch(rqst, options)
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                console.log(data);
-            })
-/*             .catch(function(error) {
-                console.error(error);
-            }) */
-/*     }); */
-}
-
-/* let rqst = new Request("/backend/createuser.php");
-
-   let data = {
-        "username" : username,
-        "email" : email,
-        "password" : password
-    }
-
-    let options = {
-        headers: {
-            'Accept' : 'application/json',
-            'Content-Type' : 'application/json'
-        },
-        method : "POST",
-        body : JSON.stringify(data)
-    }
-
     fetch(rqst, options)
-    .then(response => {
-        if(response.status === 200) {
+        .then(function(response) {
             return response.json();
-        } else {
-            alert("Something went wrong, try again!");
-            return false;
-        }
-    })
-    .then(data => {
-        if(data != undefined) {
-            
-            return true;
-        }
-    }) */
-
-//-------------------------------------------------------------------------
-
-
+        })
+        .then(function(data) {
+            console.log(data);
+        })
+}
 
 export default SignupScene;

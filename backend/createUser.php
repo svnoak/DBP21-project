@@ -1,35 +1,49 @@
 <?php
-//Hämtar utilities.php
+
+// Allow from any origin
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+    exit(0);
+}
+
 require_once("utilities.php");
-//Info som skickats till servern
+
 $dataPHP = file_get_contents("php://input");
-//Gör JSON till en associativ array
 $requestData = json_decode($dataPHP, true);
 
-//Kollar så att contenttype är rätt
 contentType("application/json");
-//Kollar så att metoden är rätt
-requestMethod("POST");
 
-//Skapar variabler med innehåll från POST
 $username = $requestData["username"];
 $password = $requestData["password"]; 
 $email = $requestData["email"];
-$avatar = $requestData["avatar"];
+$avatar = "Placeholder";
 
-//Kollar så att inte något fält är tomt
-if(!empty($username && $password && $email && $avatar)) {
-    //Skapar den nya användaren
-    $data = createUser(
+if(!empty($username && $password && $email)) {
+    createUser(
         $username,
         $password,
         $email,
         $avatar
     );
-    sendJSON($data); //hm skickar inte tillbaka något men skapar en användare!
+    sendJSON("Created user", 200);
+    exit();
 } else {
-    //Error om det inte gick att skapa användaren
-    sendJSON("try again");
+    sendJSON("Something went wrong, try again!", 404);
+    exit();
 }
+
 
 ?>

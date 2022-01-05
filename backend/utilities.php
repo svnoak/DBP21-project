@@ -74,21 +74,12 @@ function getMaxID($fileName) {
 function getEntryByID($fileName, $id) {
     //Fetching data from database
     $data = openJSON($fileName);
-    //Looping through given data and returns the array with given ID
-    foreach($data as $user) {
-        $i = $user["id"];
-        $username = $user["username"];
-        $password = $user["password"];
-        $email = $user["email"];
-        $avatar = $user["avatar"];
-        if ($i == $id) {
-            echo "Username: $username </br>";
-            echo "Password: $password </br>";
-            echo "Email: $email </br>";
-            echo "Avatar: $avatar </br>";
-        }
+
+    $column = array_column($data, "id");
+    $index = array_search($id, $column);
+
+    return $data[$index];
     }
-}
 
 //6 getChars function, amount argument
 function getChars($amount){

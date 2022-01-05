@@ -9,3 +9,11 @@ form{
 form > button{
     margin-top: 50px;
 }
+
+#editForm {
+	position: absolute;
+	top: 14.5vh;
+	left: 35.5vw;
+	display: flex;
+	flex-direction: column;
+}

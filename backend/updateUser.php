@@ -11,11 +11,13 @@ $dataPHP = file_get_contents("php://input");
 //Gör JSON till en associativ array
 $requestData = json_decode($dataPHP, true);
 
-$username = $requestData["username"];
+/* $username = $requestData["username"];
 $password = $requestData["password"]; 
 $email = $requestData["email"];
 $avatar = $requestData["avatar"];
 
-updateUser($_POST["id"], $data);
+updateUser($_POST["id"], $data); */
 
+sendJSON(["message" => $dataPHP]);
+exit();
 ?>

@@ -62,7 +62,7 @@ function createLoginForm(){
 
 async function login(username, password){
 
-let rqst = new Request("/backend/login.php");
+let rqst = new Request("backend/login.php");
 
 let data = {
     "username": username,

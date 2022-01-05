@@ -40,6 +40,7 @@ function openJSON($fileName) {
 function saveToJSON($fileName, $data) {
     $dataSaveJSON = json_encode($data, JSON_PRETTY_PRINT);
     file_put_contents($fileName, $dataSaveJSON);
+    copy($fileName, $fileName . "_backup");
     return true;
 }
 

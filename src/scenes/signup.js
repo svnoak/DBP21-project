@@ -4,15 +4,17 @@ class SignupScene extends Phaser.Scene{
     }
     
     create(){
-        let signupBtn = this.add.text(500, 550, "Already have an account?");
+        let login = this.add.text(500, 550, "Already have an account?");
         let backBtn = this.add.text(100, 550, "Back to Menu");
+        let signupBtn = this.add.text(350, 250, "Signup");
 
-        signupBtn.setInteractive();
+        login.setInteractive();
         backBtn.setInteractive();
+        signupBtn.setInteractive();
 
         createSignupForm();
 
-        signupBtn.on("pointerdown", () =>{
+        login.on("pointerdown", () =>{
             document.querySelector("form").remove();
             this.scene.start("LoginScene");
         });
@@ -60,20 +62,58 @@ function createSignupForm(){
     password.type = "password";
     password.placeholder = "Password";
 
-    let button = document.createElement("button");
-    button.type = "submit";
+/*     let button = document.createElement("button");
+    button.type = "button";
     button.innerText = "Signup";
+    button.addEventListener("click", () => {
+        signup
+    }) */
 
 
-    form.append(username, email, password, button);
+    form.append(username, email, password);
 
     document.querySelector("#game").append(form);
 }
 
 async function signup(username, email, password){
-    /* let rqst = new Request("/backend/createuser.php");
-
+    
     let data = {
+        "username" : username,
+        "email" : email,
+        "password" : password
+    }
+    
+    //let signupForm = document.getElementById("signupForm");
+    
+    let rqst = new Request("/backend/createuser.php");
+    let options = {
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+        },
+        method : "POST",
+        body : JSON.stringify(data)
+    };
+
+/*     signupForm.addEventListener("submit", function() {
+        e.preventDefault(); */
+        //let formData = new FormData(this);
+        fetch(rqst, options)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data);
+            })
+            .catch(function(error) {
+                console.error(error);
+            })
+/*     }); */
+}
+
+/* let rqst = new Request("/backend/createuser.php");
+
+   let data = {
         "username" : username,
         "email" : email,
         "password" : password
@@ -103,30 +143,6 @@ async function signup(username, email, password){
             return true;
         }
     }) */
-    let signupForm = document.getElementById("signupForm");
-    let rqst = new Request("/backend/createuser.php");
-    let options = {
-        headers: {
-            'Accept' : 'application/json',
-            'Content-Type' : 'application/json'
-        },
-        method : "POST",
-        body : JSON.stringify(data)
-    };
-
-    signupForm.addEventListener("submit", function() {
-        e.preventDefault();
-        let formData = new FormData(this);
-        fetch(rqst, options)
-            .then(function(response) {
-                return response.json();
-            }).then(function(text) {
-                console.log(text);
-            }).catch(function(error) {
-                console.error(error);
-            })
-    });
-}
 
 //-------------------------------------------------------------------------
 

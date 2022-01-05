@@ -91,6 +91,12 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 }
             }
 
+            function killHastur(){
+                hastur.destroy();
+                scene.shouldSpawnMore = true;
+                scene.killedAmount++;
+            }
+
             if( objOne.name == 'sword' ){
            
                 let thisSword = objOne;
@@ -121,7 +127,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         scene.startData.score = scene.startData.score + 50;
                         scene.startData.totalCoins = scene.startData.totalCoins + 150;
                      
-                        hastur.destroy();
+                        killHastur();
                     }
                 }
                 
@@ -148,9 +154,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         scene.startData.score = scene.startData.score + 25;
                         scene.startData.totalCoins = scene.startData.totalCoins + 100;
                         
-                        hastur.destroy();
-                        scene.shouldSpawnMore = true;
-                        scene.killedAmount++;
+                        killHastur();
                     }
                 }
             }
@@ -181,7 +185,7 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         scene.startData.totalCoins = scene.startData.totalCoins + 50;
                      
                         setTimeout(() => {
-                            hastur.destroy();
+                            killHastur();
                         }, 700);
                     }
                 }

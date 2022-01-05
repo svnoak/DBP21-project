@@ -85,7 +85,7 @@ async function signup(username, email, password){
     
     //let signupForm = document.getElementById("signupForm");
     
-    let rqst = new Request("/backend/createuser.php");
+    let rqst = new Request("/backend/createUser.php");
     let options = {
         headers: {
             'Accept' : 'application/json',
@@ -105,9 +105,9 @@ async function signup(username, email, password){
             .then(function(data) {
                 console.log(data);
             })
-            .catch(function(error) {
+/*             .catch(function(error) {
                 console.error(error);
-            })
+            }) */
 /*     }); */
 }
 

@@ -15,15 +15,15 @@ class PauseScene extends Phaser.Scene{
         //Background image for Pause Scene 
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
 
-        let upgradeBtn = this.add.text(350, 200, "Skills");
-        let continueBtn = this.add.text(350, 250, "Resume");
-        let restartBtn = this.add.text(350, 300, "New Game");
-        let exitBtn = this.add.text(350, 350, "Save and Quit");
+        let upgradeBtn = this.add.text(350, 200, "Skills", {font: "50px arcade"});
+        let continueBtn = this.add.text(350, 250, "Resume", {font: "50px arcade"});
+        let restartBtn = this.add.text(350, 300, "New Game", {font: "50px arcade"});
+        let exitBtn = this.add.text(350, 350, "Quit", {font: "50px arcade"});
 
-        exitBtn.setInteractive();
-        continueBtn.setInteractive();
-        restartBtn.setInteractive();
-        upgradeBtn.setInteractive();
+        exitBtn.setInteractive({ cursor: 'pointer' });
+        continueBtn.setInteractive({ cursor: 'pointer' });
+        restartBtn.setInteractive({ cursor: 'pointer' });
+        upgradeBtn.setInteractive({ cursor: 'pointer' });
 
         exitBtn.on("pointerover", () => {
             exitBtn.style.setColor('black');

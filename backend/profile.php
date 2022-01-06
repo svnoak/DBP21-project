@@ -19,9 +19,8 @@ header("Access-Control-Allow-Origin: *");
 
 //Checks if the user is logged in by checking if there is a stored ID in session
 if (!isset($_SESSION["loggedInId"])) {
-    $userID = json_decode($_POST["userID"]);
     //header("Location: /login.php");
-    sendJSON($userID);
+    sendJSON("abort");
     exit();
 }
 

@@ -34,7 +34,7 @@ class ProfileScene extends Phaser.Scene{
 
 async function renderInfo(userID, that){
 
-    let rqst = new Request("http://localhost:7000/profile.php");
+    let rqst = new Request("backend/profile.php");
     let submit = {
         "userID": userID
     }
@@ -107,7 +107,7 @@ function submitChanges(userID,that){
     let password = document.querySelector("#password").value;
     let avatar = document.querySelector("#avatar").value;
 
-    let rqst = new Request("/backend/updateUser.php");
+    let rqst = new Request("backend/updateUser.php");
     let data = {
         "userID": userID,
         "username": username,

@@ -13,7 +13,7 @@
     header("Access-Control-Allow-Origin: *");
 
     session_start();
-    unset($_SESSION["userID"]);
+    unset($_SESSION["loggedInId"]);
     session_destroy();
     exit();
 ?>

@@ -29,11 +29,15 @@ class LoginScene extends Phaser.Scene{
             let password = document.querySelector("#password").value;
 
             await login(username, password);
-            if( sessionStorage["userID"] ){
-                document.querySelector("form").remove();
-                this.scene.start("MainMenuScene");
-            }
+            
         })
+    }
+
+    update(){
+        if( sessionStorage["userID"] ){
+            document.querySelector("form").remove();
+            this.scene.start("MainMenuScene");
+        }
     }
 }
 
@@ -88,6 +92,7 @@ fetch(rqst, {
     .then( data => {
         if( data["userID"] != undefined ){
             sessionStorage.setItem("userID", data["userID"]);
+            console.log(data);
             return true;
         }
     })

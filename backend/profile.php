@@ -1,28 +1,29 @@
 <?php
+session_start();
+
 $method = $_SERVER["REQUEST_METHOD"];
 
 //Fetching utilities.php
 require_once("utilities.php");
 
-/* // Den sk. preflight förfrågan ("får jag anropa dig")
+// Den sk. preflight förfrågan ("får jag anropa dig")
 if ($method === "OPTIONS") {
     // Tillåt alla (origins) och alla headers
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: *");
-    //exit(); 
-} */
+    exit(); 
+}
 
 // Alla är vällkommna
 header("Access-Control-Allow-Origin: *");
 
 //Checks if the user is logged in by checking if there is a stored ID in session
-if (!isset($_SESSION["id"])) {
+if (!isset($_SESSION["loggedInId"])) {
+    $userID = json_decode($_POST["userID"]);
     //header("Location: /login.php");
+    sendJSON($userID);
     exit();
 }
-
-//Starts session
-session_start();
 
 //Checks the contenttype
 contentType("application/json");
@@ -30,7 +31,7 @@ contentType("application/json");
 requestMethod("POST");
 
 //Saving the ID from sessions in a variable
-$id = $_SESSION["id"];
+$id = $_SESSION["loggedInId"];
 
 //Checks if an ID is given in session
 if(isset($id)) {
@@ -40,12 +41,10 @@ if(isset($id)) {
         "email" => $data["email"],
         "avatar" => $data["avatar"]
     ];
-    sendJSON("Success", 200);
+    sendJSON(["user"=>$user], 200);
     exit();
 } else {
     //Error if the user is not logged in
     sendJSON("You are not logged in", 400);
     exit();
 }
-
-?>

@@ -20,10 +20,9 @@ class ProfileScene extends Phaser.Scene{
             }else{
                 submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
-		renderInfo(userID, this);
+		        renderInfo(userID, this);
             }
-            toggleForm();
-            
+            toggleForm(); 
         })
 
         backBtn.setInteractive();
@@ -40,38 +39,24 @@ async function renderInfo(userID, that){
         "userID": userID
     }
 
-    let request = {
+    fetch(rqst, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         method: "POST",
-        body: JSON.stringify({
-            "userID": userID
-        }),
-    }
-
-    const res = await fetch("http://localhost:7000/profile.php", request);
-    var data = await res.text();
-    console.log(data);
-
-    /*fetch(rqst, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify(submit)
+        body: JSON.stringify(submit),
     })
-        .then( promise => promise )
         .then( response => response.json() )
-        .then( d =>  console.log(d) )
-            /* that.add.text(150, 150, "Username:");
+        .then( data => {
+            console.log(data);
+            let user = data["user"];
+            that.add.text(150, 150, "Username:");
             that.usernameDisplay = that.add.text(250, 150, user["username"]);
             that.add.text(150, 200, "Email:");
             that.emailDisplay = that.add.text(250, 200, user["email"]);
-            renderEditForm(user); */
-    }
+            renderEditForm(user); 
+    });
 
 function renderEditForm(user){
     let form = document.createElement("form");
@@ -153,6 +138,8 @@ function submitChanges(userID,that){
        that.usernameDisplay.text = username;
        that.emailDisplay.text = email;
     })
+}
+
 }
 
 export default ProfileScene;

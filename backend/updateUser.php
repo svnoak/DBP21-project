@@ -20,25 +20,23 @@ $id = $_SESSION["loggedInId"];
 
 $user = createSet($_POST);
 
-sendJSON($user);
-
-if ($method === "POST" && isset($_FILES["image"])) {
-    $file = $_FILES["image"];
+if ($method === "POST" && isset($_FILES["avatar"])) {
+    $file = $_FILES["avatar"];
     $filename = $file["name"];
     $tempname = $file["tmp_name"];
     $size = $file["size"];
     $error = $file["error"];
-    
+
     // Kontrollera att allt gick bra med PHP
     // (https://www.php.net/manual/en/features.file-upload.errors.php)
     if ($error !== 0) {
-        echo "Something went wrong, please try again!";
+        sendJSON("Something went wrong, please try again!", 400);
         exit();
     }
 
     // Filen får inte vara större än ~400kb
     if ($size > (0.4 * 1000 * 10000)) {
-        echo "Too large";
+        sendJSON("Please choose an image with a smaller size", 400);
         exit();
     }
 
@@ -69,7 +67,7 @@ if ($method === "POST" && isset($_FILES["image"])) {
     //echo json_encode(["message" => "Uploaded the file: $uniqueFilename"]);
     exit();
 }
-
+sendJSON("HELP");
 updateUser($id, $user);
 
 function createSet($data){

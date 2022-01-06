@@ -104,7 +104,7 @@ function toggleForm(){
 
 function submitChanges(userID,that){
 
-    const form = document.getElementById("form");
+    const form = document.getElementById("editForm");
     const formData = new FormData(form);
 
         const req = new Request("backend/updateUser.php", {

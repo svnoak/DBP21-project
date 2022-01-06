@@ -147,13 +147,13 @@ function updateUser($id, $data) {
             if(isset($data["username"])) {
                 $user["username"] = $data["username"];
             }
-            if(isset($requestData["password"])) {
+            if(isset($data["password"])) {
                 $user["password"] = $data["password"];
             }
-            if(isset($requestData["email"])) {
+            if(isset($data["email"])) {
                 $user["email"] = $data["email"];
             }
-            if(isset($requestData["avatar"])) {
+            if(isset($data["avatar"])) {
                 $user["avatar"] = $data["avatar"];
             }
             $json[$index] = $user;
@@ -169,6 +169,7 @@ function updateUser($id, $data) {
     );
 	exit();
     }
+
     //Saving new data to the database
     saveToJSON("databas/user.json", $json);
     //Giving the user a response that the information has been saved

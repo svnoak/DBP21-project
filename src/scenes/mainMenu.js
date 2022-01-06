@@ -24,8 +24,23 @@ class MainMenuScene extends Phaser.Scene {
 		let logoutBtn = this.add.text(450, 300, "Logout");
 		logoutBtn.setInteractive();
 		logoutBtn.on("pointerdown", () => {
-            sessionStorage.clear();
-            this.scene.start("MainMenuScene");
+            let rqst = new Request("http://localhost:7000/logout.php");
+            fetch(rqst, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "GET",
+                //body: JSON.stringify(data)
+            })
+            .then( response => {
+                if( response.status === 200 ){
+                    sessionStorage.clear();
+                    this.scene.start("MainMenuScene");
+                }
+            })
+            /* sessionStorage.clear();
+            this.scene.start("MainMenuScene"); */
 		})
         }else{
 		let signupBtn = this.add.text(450, 300, "Sign Up");

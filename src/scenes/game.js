@@ -295,7 +295,7 @@ class GameScene extends Phaser.Scene{
                 this.setActive(true);
                 this.setVisible(true);
 
-                this.angle = Phaser.Math.Angle.Between(this.scene.aganju.x, this.scene.aganju.y, x, y);
+                this.angle = Phaser.Math.Angle.Between(x, y, aganju.x, aganju.y);
 
                 //Räknar x vinkeln
                 this.incX = Math.cos(this.angle);
@@ -309,8 +309,8 @@ class GameScene extends Phaser.Scene{
             {
                 this.lifespan -= delta;
 
-                this.x -= -this.incX * (this.speed * delta);
-                this.y -= -this.incY * (this.speed * delta);
+                this.x += -this.incX * (this.speed * delta);
+                this.y += -this.incY * (this.speed * delta);
 
                 if (this.lifespan <= 0)
                 {
@@ -335,6 +335,97 @@ class GameScene extends Phaser.Scene{
             this.mouseX = activePointer.x;
             this.mouseY = activePointer.y;
         });
+
+
+
+
+        var HasturProjectile = new Phaser.Class({
+        
+            Extends: Phaser.GameObjects.Image,
+        
+            initialize:
+        
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
+
+                this.incX = 0;
+                this.incY = 0;
+                this.lifespan = 0;
+        
+                this.speed = Phaser.Math.GetSpeed(300, 1);
+            },
+        
+            fire: function (x1, y1, x2, y2)
+            {
+                this.setActive(true);
+                this.setVisible(true);
+                this.name = 'hasturProjectile';
+        
+                //  Bullets fire from the middle of the screen to the given x/y
+                this.setPosition(x1, y1);
+        
+                var angle = Phaser.Math.Angle.Between(x1, y1, x2, y2);
+        
+                this.setRotation(angle);
+        
+                this.incX = Math.cos(angle);
+                this.incY = Math.sin(angle);
+        
+                this.lifespan = 5000;
+            },
+        
+            update: function (time, delta)
+            {
+                this.lifespan -= delta;
+        
+                this.x += this.incX * (this.speed * delta);
+                this.y += this.incY * (this.speed * delta);
+        
+                if (this.lifespan <= 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
+            }
+        
+        
+        });
+
+        this.hasturProjectiles = this.physics.add.group({
+            classType: HasturProjectile,
+            createCallback:(gameObj) =>{
+
+                gameObj.body.onCollide = true;
+                
+                //creates collision between projectile and aganju
+                this.physics.add.collider(this.aganju, gameObj);
+                
+
+            },
+            maxSize: 50,
+            runChildUpdate: true,
+        });
+
+        this.physics.world.on('collide', (objOne, objTwo)=>{
+            if( objTwo.name == 'hasturProjectile' ){
+                let thisAganju = objOne;
+                let thisProjectile = objTwo;
+    
+                thisProjectile.destroy();
+                thisAganju.health -= 10;
+
+                console.log(this.aganju)
+            }
+            
+        })
+
+
+
+
+
+
+
 
         ////////////////////////////////////////////////////////////////////
         // Hastur

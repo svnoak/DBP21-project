@@ -303,6 +303,9 @@ class GameScene extends Phaser.Scene{
                 this.incY = Math.sin(this.angle);
 
                 this.lifespan = 1000;
+
+                console.log(this);
+
             },
 
             update: function (time, delta)
@@ -314,10 +317,9 @@ class GameScene extends Phaser.Scene{
 
                 if (this.lifespan <= 0)
                 {
-                    this.setActive(false);
-                    this.setVisible(false);
+                    this.destroy()
                 }
-        
+
             }
             
         });

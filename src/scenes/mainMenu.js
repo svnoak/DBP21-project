@@ -5,14 +5,18 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     init(){
-
+        let bg = this.load.image('bg', './assets/tilemap/menu.png');        
     }
 
     preload() {
-
+        
     }
 
     create(){
+        this.background = this.add.image(0, 0, "bg").setOrigin(0);
+        // Based on your game size, it may "stretch" and distort.
+        this.background.displayWidth = this.sys.canvas.width;
+        this.background.displayHeight = this.sys.canvas.height;
         let isLoggedIn = sessionStorage["userID"];
         if( isLoggedIn ) {
             let profileBtn = this.add.text(350, 450, "Profile");
@@ -21,22 +25,22 @@ class MainMenuScene extends Phaser.Scene {
                 this.scene.start("ProfileScene");
             })
 	
-		let logoutBtn = this.add.text(450, 300, "Logout");
-		logoutBtn.setInteractive();
-		logoutBtn.on("pointerdown", () => {
-		sessionStorage.clear();
-		this.scene.start("MainMenuScene")
-		})
+            let logoutBtn = this.add.text(450, 300, "Logout");
+            logoutBtn.setInteractive();
+            logoutBtn.on("pointerdown", () => {
+                sessionStorage.clear();
+                this.scene.start("MainMenuScene")
+		    })
         }else{
-		let signupBtn = this.add.text(450, 300, "Sign Up");
-	        let loginBtn = this.add.text(250, 300, "Login");
-		signupBtn.setInteractive();
-	        loginBtn.setInteractive();
-		signupBtn.on("pointerdown", ()=> {
+            let signupBtn = this.add.text(450, 300, "Sign Up");
+                let loginBtn = this.add.text(250, 300, "Login");
+            signupBtn.setInteractive();
+                loginBtn.setInteractive();
+            signupBtn.on("pointerdown", ()=> {
             	this.scene.start("SignupScene");
         	})
 	        loginBtn.on("pointerdown", ()=> {
-        	this.scene.start("LoginScene");
+        	    this.scene.start("LoginScene");
         	})
 	}
 

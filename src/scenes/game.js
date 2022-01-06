@@ -675,8 +675,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(0);
 
                 this.sword.setBodySize(30,125,true);
-                //Sätter X offset 14 och Y  offset 52 för att kunna skada fienden på x axeln(vänster sida)
-                this.sword.setOffset(14,55,true);
+                //Sätter X offset -10 och Y  offset 55 för att kunna skada fienden på x axeln(vänster sida)
+                this.sword.setOffset(-10,55,true);
 
                 //Gör svärden visible
                 this.sword.setVisible(true);
@@ -707,8 +707,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(1);
 
                 this.sword.setBodySize(30,125,true);
-                //Sätter X offset 210 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
-                this.sword.setOffset(210,55,true);
+                //Sätter X offset 230 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
+                this.sword.setOffset(230,55,true);
 
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX,this.aganjuY-10);
@@ -733,8 +733,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(0);
 
                 this.sword.setBodySize(125,30,true);
-                //Sätter X offset 20 och Y offset 200 för att kunna skada fienden på y axeln(ner)
-                this.sword.setOffset(20,200,true);
+                //Sätter X offset 20 och Y offset 220 för att kunna skada fienden på y axeln(ner)
+                this.sword.setOffset(20,220,true);
 
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
@@ -761,8 +761,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(1);
 
                 this.sword.setBodySize(125,30,true);
-                //Sätter X offset 105 och Y offset 60 för att kunna skada fienden på y axeln(upp)
-                this.sword.setOffset(105,60,true);
+                //Sätter X offset 105 och Y offset 40 för att kunna skada fienden på y axeln(upp)
+                this.sword.setOffset(105,40,true);
 
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);

@@ -68,7 +68,6 @@ function renderEditForm(user){
     let avatar = document.createElement("input");
     avatar.type = "file";
     avatar.name = "avatar";
-    avatar.placeholder = user["avatar"];
     avatar.id = "avatar";
 
     let username = document.createElement("input");

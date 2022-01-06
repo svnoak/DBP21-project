@@ -1,1 +1,30 @@
-[{"username":"bode","password":"bode123","email":"demo@demo.se","avatar":"","id":1},{"username":"hastur","password":"hastar123","email":"demo@demo.se","avatar":"","id":2},{"username":"sixten","password":"sixten123","email":"demo@demo.se","avatar":"","id":3},{"username":"tads","password":"12345","email":"buddy@email.com","avatar":"","id":4}]
+[
+    {
+        "username": "bode",
+        "password": "bode123",
+        "email": "demo@demo.se",
+        "avatar": "",
+        "id": 1
+    },
+    {
+        "username": "hastur",
+        "password": "hastar123",
+        "email": "demo@demo.se",
+        "avatar": "",
+        "id": 2
+    },
+    {
+        "username": "sixten",
+        "password": "sixten123",
+        "email": "demo@demo.se",
+        "avatar": "",
+        "id": 3
+    },
+    {
+        "username": "tads",
+        "password": "12345",
+        "email": "buddy@email.com",
+        "avatar": "4_avatarpng.png",
+        "id": 4
+    }
+]

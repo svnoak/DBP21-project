@@ -27,16 +27,10 @@ if ($method === "POST" && isset($_FILES["avatar"])) {
     $size = $file["size"];
     $error = $file["error"];
 
-    // Kontrollera att allt gick bra med PHP
-    // (https://www.php.net/manual/en/features.file-upload.errors.php)
-    if ($error !== 0) {
-        sendJSON("Something went wrong, please try again!", 400);
-        exit();
-    }
-
+    if( $error == 0) { 
     // Filen får inte vara större än ~400kb
     if ($size > (0.4 * 1000 * 10000)) {
-        sendJSON("Please choose an image with a smaller size", 400);
+        sendJSON("Please choose an image with a smaller size");
         exit();
     }
 
@@ -45,29 +39,29 @@ if ($method === "POST" && isset($_FILES["avatar"])) {
     // Hämta ut filändelsen (och gör om till gemener)
     $ext = strtolower($info["extension"]);
 
-    // Konvertera från int (siffra) till en sträng,
-    // så vi kan slå samman dom nedan.
-    $time = (string) time(); // Klockslaget i millisekunder
     // Skapa ett unikt filnamn
-    $uniqueFilename = sha1("$time$filename");
+    $uniqueFilename = $id."_avatar";
 
 	$info = getEntryByID("databas/user.json", $id);
 	if( isset($info["avatar"]) ){
 		unlink($info["avatar"]);
 	}
 
-	$user["avatar"] = "avatars/$uniqueFilename.$ext";
+	$user["avatar"] = "$uniqueFilename.$ext";
     // Samma filnamn som den som laddades upp
-    move_uploaded_file($tempname, "uploads/$uniqueFilename.$ext");
+    move_uploaded_file($tempname, "databas/avatars/$uniqueFilename.$ext");
 
     // echo "Uploaded the file!";
 
     // JSON-svar när vi testade med att skicka formuläret via JS
     //header("Content-Type: application/json");
     //echo json_encode(["message" => "Uploaded the file: $uniqueFilename"]);
-    exit();
+    }
+else{
+    sendJSON("Something went wrong, error: $error", 400);
 }
-sendJSON("HELP");
+}
+
 updateUser($id, $user);
 
 function createSet($data){

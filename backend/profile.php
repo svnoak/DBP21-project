@@ -9,6 +9,9 @@ if ($method === "OPTIONS") {
     exit();
 } 
 
+// Alla är vällkommna
+header("Access-Control-Allow-Origin: *");
+
 //Checks if the user is logged in by checking if there is a stored ID in session
 if (!isset($_SESSION["id"])) {
     //header("Location: /login.php");
@@ -25,9 +28,6 @@ contentType("application/json");
 //Checks the method
 requestMethod("POST");
 
-// Alla är vällkommna
-header("Access-Control-Allow-Origin: *");
-
 //Saving the ID from sessions in a variable
 $id = $_SESSION["id"];
 //Checks if an ID is given in session
@@ -38,7 +38,7 @@ if(isset($id)) {
         "email" => $data["email"],
         "avatar" => $data["avatar"]
     ];
-    sendJSON(["user" => $user]);
+    sendJSON(["user" => "test"]);
     exit();
 } else {
     //Error if the user is not logged in

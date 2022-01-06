@@ -17,6 +17,8 @@ class GameScene extends Phaser.Scene{
         this.load.image('background', './assets/tilemap/background.png');
         //Laddar pause icon
         this.load.image('pauseIcon', './assets/tilemap/pauseIcon.png');
+        //Laddar pause icon
+        this.load.image('skillIcon', './assets/tilemap/skillUpIcon.png');
 
         //Laddar Aganju 
         this.load.spritesheet('aganju', './assets/player/aganju.png', {frameWidth: 32, frameHeight: 32});
@@ -60,7 +62,7 @@ class GameScene extends Phaser.Scene{
         //Skapar spelplanen
         let bg = this.add.image(0,0,'background').setOrigin(0);
         bg.setScale(2.1);
-
+        //Creates pause icon
         this.pauseIcon = this.add.image(400,30, 'pauseIcon');
         this.pauseIcon.setScale(0.2);
         //Opacity = 0.3
@@ -80,6 +82,34 @@ class GameScene extends Phaser.Scene{
         this.pauseIcon.on('pointerdown', ()=>{
             this.scene.pause();
             this.scene.launch('PauseScene', this.startData);
+        });
+
+        //Creates skillUp icon
+        this.skillIcon = this.add.image(770,440, 'skillIcon');
+        this.skillIcon.setScale(0.2);
+        //Opacity = 0.3
+        this.skillIcon.setAlpha(0.3);
+        this.skillIcon.setInteractive();
+        this.skillIcon.setDepth(1);
+
+        this.textSkill = this.add.text(738,400, 'Skills', {fontSize: '15px', fill: 'black'});
+        this.textSkill.setDepth(1);
+        this.textSkill.setVisible(false);
+
+        //Mouse hover
+        this.skillIcon.on('pointerover', ()=>{
+            this.skillIcon.setAlpha(1);
+            this.textSkill.setVisible(true);
+        });
+        //Mouse out
+        this.skillIcon.on('pointerout', ()=>{
+            this.skillIcon.setAlpha(0.3);
+            this.textSkill.setVisible(false);
+        });
+        //Onclick opens the puase screen
+        this.skillIcon.on('pointerdown', ()=>{
+            this.scene.pause();
+            this.scene.launch('UpgradeScene', this.startData);
         });
         
         //Players lives
@@ -135,6 +165,9 @@ class GameScene extends Phaser.Scene{
         this.healthPotion = this.add.image(700,570,'healthPotion');
         this.healthPotion.setScale(0.45);
         this.healthPotion.setDepth(1);
+      
+        this.textR = this.add.text(675,580, 'R', {fontSize: '15px', fill: 'black'});
+        this.textR.setDepth(1);
 
         this.regenerationLocked = this.add.image(700, 571, 'locked');
         this.regenerationLocked.setScale(0.075);
@@ -144,6 +177,9 @@ class GameScene extends Phaser.Scene{
         this.speedPotion = this.add.image(720,524,'speedPotion');
         this.speedPotion.setScale(0.49);
         this.speedPotion.setDepth(1);
+       
+        this.textQ = this.add.text(700,495, 'Q', {fontSize: '15px', fill: 'black'});
+        this.textQ.setDepth(1);
 
         this.speedBoostLocked = this.add.image(720, 527, 'locked');
         this.speedBoostLocked.setScale(0.075);
@@ -154,6 +190,9 @@ class GameScene extends Phaser.Scene{
         this.fireballSkillIcon.setScale(1.50);
         this.fireballSkillIcon.setDepth(1);
 
+        this.textF = this.add.text(775,480, 'F', {fontSize: '15px', fill: 'black'});
+        this.textF.setDepth(1);
+
         this.fireballIconLocked = this.add.image(765, 510, 'locked');
         this.fireballIconLocked.setScale(0.075);
         this.fireballIconLocked.setDepth(1);
@@ -162,6 +201,9 @@ class GameScene extends Phaser.Scene{
         this.lightningSkillIcon = this.add.image(760, 565, 'lightningIcon');
         this.lightningSkillIcon.setScale(0.45);
         this.lightningSkillIcon.setDepth(1);
+
+        this.textE = this.add.text(785,585, 'E', {fontSize: '15px', fill: 'black'});
+        this.textE.setDepth(1);
 
         this.lightningIconLocked = this.add.image(760, 565, 'locked');
         this.lightningIconLocked.setScale(0.13);
@@ -217,7 +259,6 @@ class GameScene extends Phaser.Scene{
             frameRate: 6,
             repeat: 0
         })
-        // this.lightningExplosion.anims.play('explode');
 
         ////////////////////////////////////////////////////////////////////
         //Kontroller
@@ -234,10 +275,16 @@ class GameScene extends Phaser.Scene{
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         //Definierar variabeln keyS = "D"
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        //Definierar variabeln keyQ = "Q"
+        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        //Definierar variabeln keyE = "E"
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        //Definierar variabeln keyR = "R"
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        //Definierar variabeln keyF = "F"
+        this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         //Definierar variabeln keyESC = "ESC"
         this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        //Definierar variabeln keyShift = "SHIFT"
-        this.keyShift = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         ////////////////////////////////////////////////////////////////////
         //Player
@@ -585,62 +632,6 @@ class GameScene extends Phaser.Scene{
             repeat: 0
         });
 
-        ///////////////////////////////////////////////////////////////////////////
-        //Objects overlaps and functions
-
-        this.swordHasturCollider = this.physics.add.overlap(this.sword, this.hastur, null, hitEnemy,this);
-    
-        function hitEnemy(){
-            this.hastur.health = this.hastur.health - this.sword.damage;
-
-            if(this.hastur.health == 0){
-        	killHastur();
-                this.score = this.score + 10;
-                this.totalCoins = this.totalCoins + 100;
-            } 
-
-            //Unactives collide between sword and Hastur
-            this.swordHasturCollider.active = false;
-
-            //Stops propagation
-            this.spacebar.isDown = false;
-        }
-
-        // this.lightningHasturCollider = this.physics.add.overlap(this.lightning, this.hastur, null, shockEnemy, this);
-        // function shockEnemy(){
-        //     this.hastur.health = this.hastur.health - this.startData.lightningDamage;
-
-        //     //Sätter tint (blå)
-        //     this.hastur.setTint(0xff00ff);
-
-        //     setTimeout(() => {
-        //         //Sätter tint (blå)
-        //         this.hastur.setTint();
-        //     }, 1000);
-
-        //     if (this.hastur.health <= 0) {
-
-        //         setTimeout(() => {
-        //             this.lightningExplosion.setVisible(true);
-        //             this.lightningExplosion.x = this.hastur.x;
-        //             this.lightningExplosion.y = this.hastur.y+10;
-    
-        //             this.lightningExplosion.anims.play('explode');
-
-        //             setTimeout(() => {
-        //                 this.hastur.destroy();
-        //                 this.lightningExplosion.setVisible(false);
-        //             }, 1000);
-
-        //         }, 500);
-
-        //         this.score = this.score + 10;
-        //         this.totalCoins = this.totalCoins + 100;
-        //     }
-        //     //Unactives collide between lightning and hastur
-        //     this.lightningHasturCollider.active = false;
-        // }
-  
     }
 
     // Update gameplay 
@@ -888,7 +879,7 @@ class GameScene extends Phaser.Scene{
             this.regenerationLocked.destroy();
         }
         //Skill - Regeneration and Cooldown
-        if(this.cursors.left.isDown && this.keyShift.isUp){
+        if(this.keyR.isDown){
             if(this.startData.regenerationLearned == true){
                 if(this.startData.regenerationCoolDown == false){
                     //Ökar Aganjus health + 10
@@ -952,7 +943,7 @@ class GameScene extends Phaser.Scene{
             this.speedBoostLocked.destroy();
         }
         //Skill - SpeedBoost and Cooldown
-        if(this.cursors.up.isDown && this.keyShift.isUp){  
+        if(this.keyQ.isDown){  
             if(this.startData.speedBoostLearned == true){
                 if(this.startData.speedCoolDown == false){
                     //Höjer Aganju speed till 300
@@ -1012,10 +1003,10 @@ class GameScene extends Phaser.Scene{
         //Updates amount fireballs to shoot
         this.fireballs.maxSize = this.startData.amountFireballsToFire;
         //Skill - Eldbollar
-        if(this.cursors.down.isDown && this.keyShift.isUp){
+        if(this.keyF.isDown){
             if(this.startData.fireballSkillLearned == true){
                 if(this.startData.fireballSkillActive == true){
-                    this.downCurserPressed = true;
+                    this.keyEPressed = true;
 
                     //Shows skill in use (sets a blue tint)
                     this.fireballSkillIcon.setTint(0xff00ff);
@@ -1024,7 +1015,7 @@ class GameScene extends Phaser.Scene{
                     setTimeout(() => {
                        //Disable fireball skill for 5 sek
                        this.startData.fireballSkillActive = false;
-                       this.downCurserPressed = false;
+                       this.keyEPressed = false;
 
                        //Clears tint
                        this.fireballSkillIcon.clearTint();
@@ -1053,10 +1044,10 @@ class GameScene extends Phaser.Scene{
                     this.info.setVisible(false);;
                 }, 2000);
             }
-            this.cursors.down.isDown = false;
+            this.keyF.isDown = false;
         }
         //Skill - Eldbollar and Cooldown
-        if(this.input.activePointer.isDown && time > this.lastFired && this.startData.fireballSkillActive == true && this.downCurserPressed == true){
+        if(this.input.activePointer.isDown && time > this.lastFired && this.startData.fireballSkillActive == true && this.keyEPressed == true){
             this.fireball = this.fireballs.get();
 
             if (this.fireball){
@@ -1072,7 +1063,7 @@ class GameScene extends Phaser.Scene{
             this.lightningIconLocked.destroy();
         }
         //Skill - lightning skill and Cooldown
-        if(this.cursors.right.isDown && this.keyShift.isUp){
+        if(this.keyE.isDown){
             if(this.startData.lightningSkillLearned == true){
                 this.lightning.damage = this.startData.lightningDamage;
 

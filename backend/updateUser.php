@@ -4,20 +4,28 @@ require_once("utilities.php");
 contentType("application/json");
 requestMethod("PATCH");
 
-//NOT DONE
-
 //Info som skickats till servern
 $dataPHP = file_get_contents("php://input");
 //Gör JSON till en associativ array
-$requestData = json_decode($dataPHP, true);
+$data = json_decode($dataPHP, true);
 
-/* $username = $requestData["username"];
-$password = $requestData["password"]; 
-$email = $requestData["email"];
-$avatar = $requestData["avatar"];
+session_start();
 
-updateUser($_POST["id"], $data); */
+$id = $_SESSION["id"];
 
-sendJSON(["message" => $dataPHP]);
+$user = createSet($data);
+updateUser($id, $user);
 exit();
+
+function createSet($data){
+	$user = [];
+	foreach( $data as $key => $val) {
+		if( ! empty($data[$key]) ){
+			$user[$key] = $data[$key];
+		}
+	}
+	return $user;
+}
+
 ?>
+

@@ -18,8 +18,9 @@ class ProfileScene extends Phaser.Scene{
             if( form.style.display == "none" ){
                 editBtn.text = "Save";
             }else{
-                submitChanges(userID);
+                submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
+		renderInfo(userID, this);
             }
             toggleForm();
             
@@ -59,9 +60,9 @@ async function renderInfo(userID, that){
             let user = data["user"];
 	    console.log(user);
             that.add.text(150, 150, "Username:");
-            that.add.text(250, 150, user["username"]);
+            that.usernameDisplay = that.add.text(250, 150, user["username"]);
             that.add.text(150, 200, "Email:");
-            that.add.text(250, 200, user["email"]);
+            that.emailDisplay = that.add.text(250, 200, user["email"]);
             renderEditForm(user);
         })
     }
@@ -109,7 +110,7 @@ function toggleForm(){
         formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
 }
 
-function submitChanges(userID){
+function submitChanges(userID,that){
     let username = document.querySelector("#username").value;
     let email = document.querySelector("#email").value;
     let password = document.querySelector("#password").value;
@@ -136,11 +137,15 @@ function submitChanges(userID){
             return response.json();
         }else{
             alert("Something went wrong, please try again.");
-            return false;
+            return response.json();
         }
     })
-    .then( data => {
-        console.log(data);
+    .then( d => {
+       let username = document.querySelector("#username").value
+       let email = document.querySelector("#password").value
+
+       that.usernameDisplay.text = username;
+       that.emailDisplay.text = email;
     })
 }
 

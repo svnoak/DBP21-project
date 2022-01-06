@@ -1018,7 +1018,7 @@ var HasturProjectile = new Phaser.Class({
 
                         //Opacity = 1
                         this.healthPotion.setAlpha(1);
-                    }, 20000);
+                    }, 10000);
                 }else{
                     this.skillCoolingDown.setVisible(true);
                     setTimeout(() => {

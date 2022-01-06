@@ -70,7 +70,7 @@ class MainMenuScene extends Phaser.Scene {
         //Data to start game with // Data for skills
 
         //Total coins
-        let totalCoins = 150000;
+        let totalCoins = 0;
         //Score
         let score = 0;
         //Lives

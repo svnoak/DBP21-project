@@ -20,8 +20,10 @@ class MainMenuScene extends Phaser.Scene {
         bg.displayHeight = this.sys.canvas.height;
         let isLoggedIn = sessionStorage["userID"];
         if( isLoggedIn ) {
-            let profileBtn = this.add.text(350, 450, "Profile");
-            profileBtn.setInteractive();
+            let profileBtn = this.add.text(275, 300, "Profile", {font: "50px arcade"});
+            let logoutBtn = this.add.text(275, 375, "Logout", {font: "50px arcade"});
+
+            profileBtn.setInteractive({ cursor: 'pointer' });
             profileBtn.on("pointerdown", ()=> {
                 this.scene.start("ProfileScene");
             })
@@ -32,8 +34,7 @@ class MainMenuScene extends Phaser.Scene {
                 profileBtn.style.setColor('white');
             })
 
-            let logoutBtn = this.add.text(450, 300, "Logout");
-            logoutBtn.setInteractive();
+            logoutBtn.setInteractive({ cursor: 'pointer' });
             logoutBtn.on("pointerdown", () => {
                 sessionStorage.clear();
                 this.scene.start("MainMenuScene")
@@ -45,8 +46,10 @@ class MainMenuScene extends Phaser.Scene {
                 logoutBtn.style.setColor('white');
             })
         }else{
-            let signupBtn = this.add.text(450, 300, "Sign Up", {fontsize: 200});
-            signupBtn.setInteractive();
+            let signupBtn = this.add.text(275, 375, "Sign Up", {font: "50px arcade"});
+            let loginBtn = this.add.text(275, 300, "Login", {font: "50px arcade"});
+
+            signupBtn.setInteractive({ cursor: 'pointer' });
             signupBtn.on("pointerdown", ()=> {
                 this.scene.start("SignupScene");
             })
@@ -57,8 +60,7 @@ class MainMenuScene extends Phaser.Scene {
                 signupBtn.style.setColor('white');
             })
 
-            let loginBtn = this.add.text(250, 300, "Login");
-            loginBtn.setInteractive();
+            loginBtn.setInteractive({ cursor: 'pointer' });
 	        loginBtn.on("pointerdown", ()=> {
         	    this.scene.start("LoginScene");
         	})
@@ -71,16 +73,17 @@ class MainMenuScene extends Phaser.Scene {
 	}
 
 
-        let startGameBtn = this.add.text(350, 250, "Start Game");
-        let leaderboardBtn = this.add.text(100, 550, "Leaderboard");
-        let aboutBtn = this.add.text(650, 550, "About");
-        let howToBtn = this.add.text(375, 350, "How To");
+        let startGameBtn = this.add.text(275, 100, "Start Game", {font: "50px arcade"});
+        let leaderboardBtn = this.add.text(50, 520, "Leaderboard", {font: "50px arcade"});
+        let howToBtn = this.add.text(275, 225, "How To", {font: "50px arcade"});
 
-        startGameBtn.setInteractive();
-        leaderboardBtn.setInteractive();
+        let aboutBtn = this.add.text(600, 520, "About", {font: "50px arcade"});
+
+        startGameBtn.setInteractive({ cursor: 'pointer' });
+        leaderboardBtn.setInteractive({ cursor: 'pointer' });
         
-        aboutBtn.setInteractive();
-        howToBtn.setInteractive();
+        aboutBtn.setInteractive({ cursor: 'pointer' });
+        howToBtn.setInteractive({ cursor: 'pointer' });
 
         //Data to start game with // Data for skills
 

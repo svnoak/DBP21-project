@@ -300,10 +300,12 @@ class GameScene extends Phaser.Scene{
         this.aganju.body.mass = 2;
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
+        //Aganjus body size
+        this.aganju.setBodySize(23,30,true);
+        this.aganju.setOffset(5,1.5, true);
 
         //Aganjus health
         this.aganju.health = 100;
-
         //Aganjus start hastighet
         this.basicSpeed = 100;
 
@@ -393,6 +395,7 @@ class GameScene extends Phaser.Scene{
                 gameObj.body.collideWorldBounds = true;
                 gameObj.body.onWorldBounds = true;
                 gameObj.onOverlap = true;
+                gameObj.setBodySize(17.5,32,true);
 
                 gameObj.damage = 25;
 

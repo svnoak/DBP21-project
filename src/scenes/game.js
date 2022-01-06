@@ -774,6 +774,18 @@ class GameScene extends Phaser.Scene{
         else{
             this.aganju.setVelocity(0,0);
             this.aganju.anims.stop();
+            if(this.lastPressedButton == 'S'){
+                this.aganju.setFrame(1);
+            }
+            else if(this.lastPressedButton == 'A'){
+                this.aganju.setFrame(4);
+            }
+            else if(this.lastPressedButton == 'D'){
+                this.aganju.setFrame(7);
+            }
+            else if(this.lastPressedButton == 'W'){
+                this.aganju.setFrame(10);
+            }
         }
 
         //Om left och up pillarna trycks, 

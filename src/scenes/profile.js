@@ -57,6 +57,7 @@ async function renderInfo(userID, that){
             that.emailDisplay = that.add.text(250, 200, user["email"]);
             renderEditForm(user); 
     });
+}
 
 function renderEditForm(user){
     let form = document.createElement("form");
@@ -95,51 +96,32 @@ function renderEditForm(user){
 }
 
 function toggleForm(){
-        let form = document.querySelector("#editForm");
-        let formDisplay = form.style.display
-        console.log(formDisplay);
-        formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
+    let form = document.querySelector("#editForm");
+    let formDisplay = form.style.display
+    console.log(formDisplay);
+    formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
 }
 
 function submitChanges(userID,that){
-    let username = document.querySelector("#username").value;
-    let email = document.querySelector("#email").value;
-    let password = document.querySelector("#password").value;
-    let avatar = document.querySelector("#avatar").value;
 
-    let rqst = new Request("backend/updateUser.php");
-    let data = {
-        "userID": userID,
-        "username": username,
-        "email": email,
-        "password": password,
-        "avatar": avatar
-    }
-    fetch( rqst, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: "PATCH",
-        body: JSON.stringify(data)
-    })
-    .then( response => {
-        if( response.status === 200 ){
-            return response.json();
-        }else{
-            alert("Something went wrong, please try again.");
-            return response.json();
-        }
-    })
-    .then( d => {
-       let username = document.querySelector("#username").value
-       let email = document.querySelector("#password").value
+    const form = document.getElementById("form");
+    const formData = new FormData(form);
 
-       that.usernameDisplay.text = username;
-       that.emailDisplay.text = email;
-    })
-}
+        const req = new Request("backend/updateUser.php", {
+            method: "POST",
+            body: formData,
+        });
 
+        fetch(req)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .then( d => {
+                let username = document.querySelector("#username").value
+                let email = document.querySelector("#password").value
+
+                that.usernameDisplay.text = username;
+                that.emailDisplay.text = email;
+    })
 }
 
 export default ProfileScene;

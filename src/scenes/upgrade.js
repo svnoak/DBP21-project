@@ -81,7 +81,7 @@ class UpgradeScene extends Phaser.Scene{
         learnRegeneration.setScale(0.60);
         learnRegeneration.setAlpha(0.5);
 
-        learnRegeneration.setInteractive();
+        learnRegeneration.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.regenerationLearned == false){
             learnRegeneration.setAlpha(0.5);
@@ -168,7 +168,7 @@ class UpgradeScene extends Phaser.Scene{
         regeneration1.setScale(0.60);
         regeneration1.setAlpha(0.5);
 
-        regeneration1.setInteractive();
+        regeneration1.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.regenerationCurrentLevelFactor >= 20){
             regeneration1.setAlpha(1);
@@ -277,7 +277,7 @@ class UpgradeScene extends Phaser.Scene{
         regeneration2.setScale(0.60);
         regeneration2.setAlpha(0.5);
 
-        regeneration2.setInteractive();
+        regeneration2.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.regenerationCurrentLevelFactor >= 40){
             regeneration2.setAlpha(1);
@@ -388,7 +388,7 @@ class UpgradeScene extends Phaser.Scene{
         regeneration3.setScale(0.60);
         regeneration3.setAlpha(0.5);
 
-        regeneration3.setInteractive();
+        regeneration3.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.regenerationCurrentLevelFactor >= 80){
             regeneration3.setAlpha(1);
@@ -488,7 +488,7 @@ class UpgradeScene extends Phaser.Scene{
         learnSpeedBoost.setScale(0.7);
         learnSpeedBoost.setAlpha(0.5);
 
-        learnSpeedBoost.setInteractive();
+        learnSpeedBoost.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.speedBoostLearned == false){
             learnSpeedBoost.setAlpha(0.5);
@@ -571,7 +571,7 @@ class UpgradeScene extends Phaser.Scene{
         speedBoost1.setScale(0.7);
         speedBoost1.setAlpha(0.5);
 
-        speedBoost1.setInteractive();
+        speedBoost1.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.speedBoostCurrentLevelFactor >= 1.25){
             speedBoost1.setAlpha(1);
@@ -680,7 +680,7 @@ class UpgradeScene extends Phaser.Scene{
         speedBoost2.setScale(0.7);
         speedBoost2.setAlpha(0.5);
 
-        speedBoost2.setInteractive();
+        speedBoost2.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.speedBoostCurrentLevelFactor >= 3.75){
             speedBoost2.setAlpha(1);
@@ -789,7 +789,7 @@ class UpgradeScene extends Phaser.Scene{
         speedBoost3.setScale(0.7);
         speedBoost3.setAlpha(0.5);
 
-        speedBoost3.setInteractive();
+        speedBoost3.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.speedBoostCurrentLevelFactor >= 5){
             speedBoost3.setAlpha(1);
@@ -891,7 +891,7 @@ class UpgradeScene extends Phaser.Scene{
         learnFireballSkill.setScale(2.25);
         learnFireballSkill.setAlpha(0.5);
 
-        learnFireballSkill.setInteractive();
+        learnFireballSkill.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.fireballSkillLearned == false){
             learnFireballSkill.setAlpha(0.5);
@@ -976,7 +976,7 @@ class UpgradeScene extends Phaser.Scene{
         fireballSkill1.setScale(2.25);
         fireballSkill1.setAlpha(0.5);
 
-        fireballSkill1.setInteractive();
+        fireballSkill1.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.amountFireballsToFire > 1){
             fireballSkill1.setAlpha(1);
@@ -1085,7 +1085,7 @@ class UpgradeScene extends Phaser.Scene{
         fireballSkill2.setScale(2.25);
         fireballSkill2.setAlpha(0.5);
 
-        fireballSkill2.setInteractive();
+        fireballSkill2.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.amountFireballsToFire > 3){
             fireballSkill2.setAlpha(1);
@@ -1194,7 +1194,7 @@ class UpgradeScene extends Phaser.Scene{
         fireballSkill3.setScale(2.25);
         fireballSkill3.setAlpha(0.5);
 
-        fireballSkill3.setInteractive();
+        fireballSkill3.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.amountFireballsToFire > 5){
             fireballSkill3.setAlpha(1);
@@ -1295,7 +1295,7 @@ class UpgradeScene extends Phaser.Scene{
         let learnLightningSkill = this.add.image(693, 502, 'lightningIcon');
         learnLightningSkill.setScale(0.38);
 
-        learnLightningSkill.setInteractive();
+        learnLightningSkill.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.lightningSkillLearned == false){
             learnLightningSkill.setAlpha(0.5);
@@ -1375,7 +1375,7 @@ class UpgradeScene extends Phaser.Scene{
         lightningSkill1.setScale(0.38);
         lightningSkill1.setAlpha(0.5);
 
-        lightningSkill1.setInteractive();
+        lightningSkill1.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.lightningDamage > 50){
             lightningSkill1.setAlpha(1);
@@ -1484,7 +1484,7 @@ class UpgradeScene extends Phaser.Scene{
         lightningSkill2.setScale(0.38);
         lightningSkill2.setAlpha(0.5);
 
-        lightningSkill2.setInteractive();
+        lightningSkill2.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.lightningDamage > 100){
             lightningSkill2.setAlpha(1);
@@ -1593,7 +1593,7 @@ class UpgradeScene extends Phaser.Scene{
         lightningSkill3.setScale(0.38);
         lightningSkill3.setAlpha(0.5);
 
-        lightningSkill3.setInteractive();
+        lightningSkill3.setInteractive({ cursor: 'pointer' });
 
         if(this.skillData.lightningDamage > 150){
             lightningSkill3.setAlpha(1);
@@ -1687,7 +1687,7 @@ class UpgradeScene extends Phaser.Scene{
             }    
         });
 
-        backToPause.setInteractive();
+        backToPause.setInteractive({ cursor: 'pointer' });
 
         backToPause.on("pointerdown", () => {
             //Starts the menu scene

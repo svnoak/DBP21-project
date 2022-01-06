@@ -35,36 +35,42 @@ class ProfileScene extends Phaser.Scene{
 
 async function renderInfo(userID, that){
 
-    let rqst = new Request("/backend/profile.php");
-    let data = {
-        "userID": userID,
+    let rqst = new Request("http://localhost:7000/profile.php");
+    let submit = {
+        "userID": userID
     }
 
-    fetch(rqst, {
+    let request = {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         method: "POST",
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+            "userID": userID
+        }),
+    }
+
+    const res = await fetch("http://localhost:7000/profile.php", request);
+    var data = await res.json();
+    console.log(data);
+
+    /*fetch(rqst, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(submit)
     })
-        .then( response => {
-            if( response.status === 200 ){
-                return response.json();
-            }else{
-                alert( "Usernot found" );
-                return false;
-            }
-        })
-        .then( data => {
-            let user = data["user"];
-	    console.log(user);
-            that.add.text(150, 150, "Username:");
+        .then( promise => promise )
+        .then( response => response.json() )
+        .then( d =>  console.log(d) )
+            /* that.add.text(150, 150, "Username:");
             that.usernameDisplay = that.add.text(250, 150, user["username"]);
             that.add.text(150, 200, "Email:");
             that.emailDisplay = that.add.text(250, 200, user["email"]);
-            renderEditForm(user);
-        })
+            renderEditForm(user); */
     }
 
 function renderEditForm(user){

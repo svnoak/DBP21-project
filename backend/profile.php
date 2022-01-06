@@ -1,12 +1,15 @@
 <?php
 $method = $_SERVER["REQUEST_METHOD"];
 
+//Fetching utilities.php
+require_once("utilities.php");
+
 // Den sk. preflight förfrågan ("får jag anropa dig")
 if ($method === "OPTIONS") {
     // Tillåt alla (origins) och alla headers
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: *");
-    exit();
+    //exit();
 } 
 
 // Alla är vällkommna
@@ -20,8 +23,6 @@ if (!isset($_SESSION["id"])) {
 
 //Starts session
 session_start();
-//Fetching utilities.php
-require_once("utilities.php");
 
 //Checks the contenttype
 contentType("application/json");
@@ -30,6 +31,7 @@ requestMethod("POST");
 
 //Saving the ID from sessions in a variable
 $id = $_SESSION["id"];
+
 //Checks if an ID is given in session
 if(isset($id)) {
 	$data = getEntryByID("databas/user.json", $id);	
@@ -38,7 +40,7 @@ if(isset($id)) {
         "email" => $data["email"],
         "avatar" => $data["avatar"]
     ];
-    sendJSON(["user" => "test"]);
+    sendJSON("Success", 200);
     exit();
 } else {
     //Error if the user is not logged in

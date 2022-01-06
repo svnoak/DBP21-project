@@ -379,7 +379,98 @@ class GameScene extends Phaser.Scene{
             maxSize: this.startData.amountFireballsToFire,
             runChildUpdate: true
         });
+//När muspekaren är på
+this.input.on('pointerdown', function (activePointer) {
+    this.mouseDown = true;
+    this.mouseX = activePointer.x;
+    this.mouseY = activePointer.y;
+});
 
+
+
+
+var HasturProjectile = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Bullet (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
+
+        this.incX = 0;
+        this.incY = 0;
+        this.lifespan = 0;
+
+        this.speed = Phaser.Math.GetSpeed(300, 1);
+    },
+
+    fire: function (x1, y1, x2, y2)
+    {
+        this.setActive(true);
+        this.setVisible(true);
+        this.name = 'hasturProjectile';
+
+        //  Bullets fire from the middle of the screen to the given x/y
+        this.setPosition(x1, y1);
+
+        var angle = Phaser.Math.Angle.Between(x1, y1, x2, y2);
+
+        this.setRotation(angle);
+
+        this.incX = Math.cos(angle);
+        this.incY = Math.sin(angle);
+
+        this.lifespan = 5000;
+    },
+    update: function (time, delta)
+            {
+                this.lifespan -= delta;
+        
+                this.x += this.incX * (this.speed * delta);
+                this.y += this.incY * (this.speed * delta);
+        
+                if (this.lifespan <= 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
+            }
+        
+        
+        });
+
+        this.hasturProjectiles = this.physics.add.group({
+            classType: HasturProjectile,
+            createCallback:(gameObj) =>{
+
+                gameObj.body.onCollide = true;
+                
+                //creates collision between projectile and aganju
+                this.physics.add.collider(this.aganju, gameObj);
+                
+
+            },
+            maxSize: 50,
+            runChildUpdate: true,
+        });
+
+        this.physics.world.on('collide', (objOne, objTwo)=>{
+            if( objTwo.name == 'hasturProjectile' ){
+                let thisAganju = objOne;
+                let thisProjectile = objTwo;
+    
+                thisProjectile.destroy();
+                thisAganju.health -= parseInt(10);
+                console.log(toString(thisAganju.health))
+
+                console.log(thisAganju.health);
+
+                //console.log(this.aganju)
+            }
+            
+        })
         ////////////////////////////////////////////////////////////////////
         // Hastur
 
@@ -534,6 +625,26 @@ class GameScene extends Phaser.Scene{
             frameRate: 10,
             repeat: 0
         });
+        //////////////////////////////////////////////////////////////////////////
+        //Objects overlaps and functions
+
+        this.swordHasturCollider = this.physics.add.overlap(this.sword, this.hastur, null, hitEnemy,this);
+    
+        function hitEnemy(){
+            this.hastur.health = this.hastur.health - this.sword.damage;
+
+            if(this.hastur.health == 0){
+                this.hastur.destroy();
+                this.score = this.score + 10;
+                this.totalCoins = this.totalCoins + 100;
+            } 
+
+            //Unactives collide between sword and Hastur
+            this.swordHasturCollider.active = false;
+
+            //Stops propagation
+            this.spacebar.isDown = false;
+        }
 
         this.lastPressedButton = 'S';
     }

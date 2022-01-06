@@ -24,8 +24,8 @@ class MainMenuScene extends Phaser.Scene {
 		let logoutBtn = this.add.text(450, 300, "Logout");
 		logoutBtn.setInteractive();
 		logoutBtn.on("pointerdown", () => {
-		sessionStorage.clear();
-		this.scene.start("MainMenuScene")
+            sessionStorage.clear();
+            this.scene.start("MainMenuScene");
 		})
         }else{
 		let signupBtn = this.add.text(450, 300, "Sign Up");

@@ -150,7 +150,7 @@ class GameScene extends Phaser.Scene{
         this.scoreText.setDepth(1);
         
         //Skill notification
-        this.info = this.add.text(220,8, '', {fontSize: '25px', fill: 'white'});
+        this.info = this.add.text(235,75, '', {fontSize: '25px', fill: 'white'});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
         this.info.setDepth(1);
@@ -376,13 +376,6 @@ class GameScene extends Phaser.Scene{
             runChildUpdate: true
         });
 
-        //När muspekaren är på
-        this.input.on('pointerdown', function (activePointer) {
-            this.mouseDown = true;
-            this.mouseX = activePointer.x;
-            this.mouseY = activePointer.y;
-        });
-
         ////////////////////////////////////////////////////////////////////
         // Hastur
 
@@ -421,8 +414,6 @@ class GameScene extends Phaser.Scene{
 
             }
         });
-
-        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
         
         // SPAWN HASTURS CODE
         this.killedAmount = 0; // how many hasturs killed
@@ -539,6 +530,7 @@ class GameScene extends Phaser.Scene{
             repeat: 0
         });
 
+        this.lastPressedButton = 'S';
     }
 
     // Update gameplay 
@@ -594,6 +586,72 @@ class GameScene extends Phaser.Scene{
         ///////////////////////////////////////////////////////////////////////////
         //Player movement and animations
 
+        //När spacebar trycks
+        if(this.spacebar.isDown){
+            if(this.lastPressedButton == 'A'){
+                this.aganju.setDepth(0);
+
+                this.sword.setBodySize(30,125,true);
+                //Sätter X offset 14 och Y  offset 52 för att kunna skada fienden på x axeln(vänster sida)
+                this.sword.setOffset(14,55,true);
+    
+                //Gör svärden visible
+                this.sword.setVisible(true);
+                //Uppdaterar svärdens position
+                this.sword.setPosition(this.aganjuX,this.aganjuY-10);
+                //Ger z-index till svärden
+                this.sword.setDepth(1);
+                //Scalar ner svärden
+                this.sword.setScale(0.50);
+                //Spelar left animationen av svärd
+                this.sword.anims.play('sword_left', true);
+            }
+            
+            else if(this.lastPressedButton == 'D'){
+                this.aganju.setDepth(1);
+
+                this.sword.setBodySize(30,125,true);
+                //Sätter X offset 210 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
+                this.sword.setOffset(210,55,true);
+
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX,this.aganjuY-10);
+                this.sword.setDepth(0);
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_right', true);
+            }
+
+            else if(this.lastPressedButton == 'S'){
+                this.aganju.setDepth(0);
+
+                this.sword.setBodySize(125,30,true);
+                //Sätter X offset 20 och Y offset 200 för att kunna skada fienden på y axeln(ner)
+                this.sword.setOffset(20,200,true);
+
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
+                this.sword.setDepth(1);
+
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_down', true);
+            }
+
+            else if(this.lastPressedButton == 'W'){
+                this.aganju.setDepth(1);
+
+                this.sword.setBodySize(125,30,true);
+                //Sätter X offset 105 och Y offset 60 för att kunna skada fienden på y axeln(upp)
+                this.sword.setOffset(105,60,true);
+
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);
+                this.sword.setDepth(0);
+
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_up', true);
+            }
+        }
+
         //Om vänster pillen trycks, 
         //left animation spelas
         if (this.keyA.isDown)
@@ -626,6 +684,8 @@ class GameScene extends Phaser.Scene{
                 //Spelar left animationen av svärd
                 this.sword.anims.play('sword_left', true);
             }
+
+            this.lastPressedButton = 'A';
         }
 
         //Om höger pillen trycks, 
@@ -651,6 +711,7 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_right', true);
             }
+            this.lastPressedButton = 'D';
         }
 
         //Om up pillen trycks, 
@@ -677,6 +738,7 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_down', true);
             }
+            this.lastPressedButton = 'S';
         }
 
         //Om up pillen trycks, 
@@ -704,6 +766,7 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_up', true);
             }
+            this.lastPressedButton = 'W';
         }
 
         //Annars ingen rörelse

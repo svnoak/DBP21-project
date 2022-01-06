@@ -5,18 +5,19 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     init(){
-        let bg = this.load.image('bg', './assets/tilemap/menu.png');        
+            
     }
 
     preload() {
+        this.load.image('bg', './assets/tilemap/menu.png');    
         
     }
 
     create(){
-        this.background = this.add.image(0, 0, "bg").setOrigin(0);
+        let bg = this.background = this.add.image(0, 0, "bg").setOrigin(0);
         // Based on your game size, it may "stretch" and distort.
-        this.background.displayWidth = this.sys.canvas.width;
-        this.background.displayHeight = this.sys.canvas.height;
+        bg.displayWidth = this.sys.canvas.width;
+        bg.displayHeight = this.sys.canvas.height;
         let isLoggedIn = sessionStorage["userID"];
         if( isLoggedIn ) {
             let profileBtn = this.add.text(350, 450, "Profile");
@@ -24,24 +25,49 @@ class MainMenuScene extends Phaser.Scene {
             profileBtn.on("pointerdown", ()=> {
                 this.scene.start("ProfileScene");
             })
-	
+            profileBtn.on("pointerover", () => {
+                profileBtn.style.setColor('black');
+            })
+            profileBtn.on("pointerout", () => {
+                profileBtn.style.setColor('white');
+            })
+
             let logoutBtn = this.add.text(450, 300, "Logout");
             logoutBtn.setInteractive();
             logoutBtn.on("pointerdown", () => {
                 sessionStorage.clear();
                 this.scene.start("MainMenuScene")
 		    })
+            logoutBtn.on("pointerover", () => {
+                logoutBtn.style.setColor('black');
+            })
+            logoutBtn.on("pointerout", () => {
+                logoutBtn.style.setColor('white');
+            })
         }else{
-            let signupBtn = this.add.text(450, 300, "Sign Up");
-                let loginBtn = this.add.text(250, 300, "Login");
+            let signupBtn = this.add.text(450, 300, "Sign Up", {fontsize: 200});
             signupBtn.setInteractive();
-                loginBtn.setInteractive();
             signupBtn.on("pointerdown", ()=> {
-            	this.scene.start("SignupScene");
-        	})
+                this.scene.start("SignupScene");
+            })
+            signupBtn.on("pointerover", () => {
+                signupBtn.style.setColor('black');
+            })
+            signupBtn.on("pointerout", () => {
+                signupBtn.style.setColor('white');
+            })
+
+            let loginBtn = this.add.text(250, 300, "Login");
+            loginBtn.setInteractive();
 	        loginBtn.on("pointerdown", ()=> {
         	    this.scene.start("LoginScene");
         	})
+            loginBtn.on("pointerover", () => {
+                loginBtn.style.setColor('black');
+            })
+            loginBtn.on("pointerout", () => {
+                loginBtn.style.setColor('white');
+            })
 	}
 
 
@@ -131,17 +157,41 @@ class MainMenuScene extends Phaser.Scene {
         startGameBtn.on("pointerdown", ()=> {
             this.scene.start("GameScene", this.data);
         })
+        startGameBtn.on("pointerover", () => {
+            startGameBtn.style.setColor('black');
+        })
+        startGameBtn.on("pointerout", () => {
+            startGameBtn.style.setColor('white');
+        })
 
         leaderboardBtn.on("pointerdown", ()=> {
             this.scene.start("LeaderboardScene");
+        })
+        leaderboardBtn.on("pointerover", () => {
+            leaderboardBtn.style.setColor('black');
+        })
+        leaderboardBtn.on("pointerout", () => {
+            leaderboardBtn.style.setColor('white');
         })
 
         aboutBtn.on("pointerdown", ()=> {
             this.scene.start("AboutScene");
         })
+        aboutBtn.on("pointerover", () => {
+            aboutBtn.style.setColor('black');
+        })
+        aboutBtn.on("pointerout", () => {
+            aboutBtn.style.setColor('white');
+        })
 
         howToBtn.on("pointerdown", ()=> {
             this.scene.start("HowToScene");
+        })
+        howToBtn.on("pointerover", () => {
+            howToBtn.style.setColor('black');
+        })
+        howToBtn.on("pointerout", () => {
+            howToBtn.style.setColor('white');
         })
     }
 

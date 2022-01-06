@@ -49,8 +49,10 @@ async function renderInfo(userID, that){
     })
         .then( response => response.json() )
         .then( data => {
-            console.log(data);
             let user = data["user"];
+		console.log('/backend/databas/avatars/'+user["avatar"]);
+	    that.load.image('avatar', '/backend/databas/avatars/'+user["avatar"]);
+	    let avatar = that.add.image(100, 100, 'avatar');
             that.add.text(150, 150, "Username:");
             that.usernameDisplay = that.add.text(250, 150, user["username"]);
             that.add.text(150, 200, "Email:");

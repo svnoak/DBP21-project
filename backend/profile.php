@@ -4,13 +4,13 @@ $method = $_SERVER["REQUEST_METHOD"];
 //Fetching utilities.php
 require_once("utilities.php");
 
-// Den sk. preflight förfrågan ("får jag anropa dig")
+/* // Den sk. preflight förfrågan ("får jag anropa dig")
 if ($method === "OPTIONS") {
     // Tillåt alla (origins) och alla headers
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: *");
-    //exit();
-} 
+    //exit(); 
+} */
 
 // Alla är vällkommna
 header("Access-Control-Allow-Origin: *");

@@ -52,7 +52,7 @@ async function renderInfo(userID, that){
     }
 
     const res = await fetch("http://localhost:7000/profile.php", request);
-    var data = await res.json();
+    var data = await res.text();
     console.log(data);
 
     /*fetch(rqst, {

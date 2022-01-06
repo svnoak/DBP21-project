@@ -195,14 +195,19 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         thisHastur.damage = 25;
                     }, 2000);
 
-                    //Sätter tint (red)
-                    hastur.setTint(0xff00ff);
+                    if(hastur.health <= 30){
+                        //Sätter tint (black)
+                        hastur.setTint(0x8E8E8E);
+                    }else{
+                          //Sätter tint (black)
+                        hastur.setTint(0x8E8E8E);
 
-                    setTimeout(() => {
-                        //Clear tint
-                        hastur.clearTint();
-                    }, 1000);
-
+                        setTimeout(() => {
+                            //Clear tint
+                            hastur.clearTint();
+                        }, 1000);
+                    }
+                  
                     //Disables propogation
                     scene.spacebar.isDown = false;
 
@@ -222,16 +227,21 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 
                 if( thisHastur.id ==  hastur.id){
 
-                    //Sätter tint (red)
-                    hastur.setTint(0xff00ff);
-
-                    setTimeout(() => {
-                        //Clear tint
-                        hastur.clearTint();
-                    }, 1000);
-
                     hastur.health -= 10;
                     thisFireball.destroy();
+
+                    if(hastur.health <= 40){
+                        //Sätter tint (blue)
+                        hastur.setTint(0x990000);
+                    }else{
+                        //Sätter tint (red)
+                        hastur.setTint(0x990000);
+
+                        setTimeout(() => {
+                            //Clear tint
+                            hastur.clearTint();
+                        }, 1000);
+                    }
 
                     if(hastur.health <= 0){
                         scene.startData.score = scene.startData.score + 25;
@@ -252,14 +262,19 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 if( thisHastur.id ==  hastur.id){
                     hastur.health -= thisLightning.damage;
 
-                    //Sätter tint (red)
-                    hastur.setTint(0xff00ff);
+                    if(hastur.health < 50){
+                        //Sätter tint (blue)
+                        hastur.setTint(0x104FF4);
+                    }else{
+                        //Sätter tint (blue)
+                        hastur.setTint(0x104FF4);
 
-                    setTimeout(() => {
-                        //Clear tint
-                        hastur.clearTint();
-                    }, 1000);
-
+                        setTimeout(() => {
+                            //Clear tint
+                            hastur.clearTint();
+                        }, 1500);
+                    }
+                    
                     thisLightning.x = -150;
                     thisLightning.y = -150;
 

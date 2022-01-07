@@ -20,9 +20,9 @@ class HowToScene extends Phaser.Scene{
         this.load.image('lightningIcon', './assets/player/lightningSkillIcon.png');
     }
     create(){
-        let backBtn = this.add.text(150, 50, "Back to Menu");
+        let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade"});
 
-        backBtn.setInteractive();
+        backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
             this.scene.start("MainMenuScene");
         });

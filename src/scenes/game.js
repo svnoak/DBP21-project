@@ -89,7 +89,7 @@ class GameScene extends Phaser.Scene{
         this.skillIcon.setScale(0.2);
         //Opacity = 0.3
         this.skillIcon.setAlpha(0.3);
-        this.skillIcon.setInteractive();
+        this.skillIcon.setInteractive({ cursor: 'pointer' });
         this.skillIcon.setDepth(1);
 
         this.textSkill = this.add.text(738,400, 'Skills', {fontSize: '15px', fill: 'black'});

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "arcade";
+    src: url('../font/ARCADECLASSIC.TTF');
+}
+
 form{
     position: absolute;
     top: 20vh;

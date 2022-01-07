@@ -2,15 +2,20 @@ class SignupScene extends Phaser.Scene{
     constructor() {
         super('SignupScene');
     }
+
+    preload(){
+        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
+    }
     
     create(){
-        let login = this.add.text(500, 550, "Already have an account?");
-        let backBtn = this.add.text(100, 550, "Back to Menu");
-        let signupBtn = this.add.text(350, 250, "Signup");
+        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
+        let login = this.add.text(500, 550, "Already have an account?", { font: '25px arcade' });
+        let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
+        let signupBtn = this.add.text(350, 250, "Signup", { font: '25px arcade' });
 
-        login.setInteractive();
-        backBtn.setInteractive();
-        signupBtn.setInteractive();
+        login.setInteractive({ cursor: 'pointer' });
+        backBtn.setInteractive({ cursor: 'pointer' });
+        signupBtn.setInteractive({ cursor: 'pointer' });
 
         createSignupForm();
 
@@ -73,7 +78,7 @@ async function signup(username, email, password){
         "password" : password
     }
     
-    let rqst = new Request("http://localhost:7000/createuser.php");
+    let rqst = new Request("backend/createUser.php");
     let options = {
         headers: {
             'Accept' : 'application/json',

@@ -67,7 +67,7 @@ class GameScene extends Phaser.Scene{
         this.pauseIcon.setScale(0.2);
         //Opacity = 0.3
         this.pauseIcon.setAlpha(0.3);
-        this.pauseIcon.setInteractive();
+        this.pauseIcon.setInteractive({ cursor: 'pointer' });
         this.pauseIcon.setDepth(1);
 
         //Mouse hover
@@ -89,10 +89,10 @@ class GameScene extends Phaser.Scene{
         this.skillIcon.setScale(0.2);
         //Opacity = 0.3
         this.skillIcon.setAlpha(0.3);
-        this.skillIcon.setInteractive();
+        this.skillIcon.setInteractive({ cursor: 'pointer' });
         this.skillIcon.setDepth(1);
 
-        this.textSkill = this.add.text(738,400, 'Skills', {fontSize: '15px', fill: 'black'});
+        this.textSkill = this.add.text(738,400, 'Skills', {font: '15px arcade', fill: 'black'});
         this.textSkill.setDepth(1);
         this.textSkill.setVisible(false);
 
@@ -113,17 +113,17 @@ class GameScene extends Phaser.Scene{
         });
         
         //Players lives
-        this.livescounter = this.add.text(20,10, 'Lives: ', {fontSize: '20px', fill: 'deepskyblue'});
+        this.livescounter = this.add.text(20,10, 'Lives: ', {font: '25px arcade', fill: 'deepskyblue', });
         this.livescounter.setShadow(2, 2, '#000000', 0);
         this.livescounter.setDepth(1);
 
         //Players health
-        this.health =  this.add.text(690,10, '', {fontSize: '20px', fill: 'red'});
+        this.health =  this.add.text(690,5, '', {font: '25px arcade', fill: 'red'});
         this.health.setShadow(2, 2, '#000000', 0);
         this.health.setDepth(1);
 
         //Coins
-        this.coins =  this.add.text(690,50, '', {fontSize: '20px', fill: 'gold'});
+        this.coins =  this.add.text(690,50, '', {fill: 'gold', font: "25px arcade"});
         this.coins.setShadow(2, 2, '#000000', 0);
         this.coins.setDepth(1);
 
@@ -145,18 +145,18 @@ class GameScene extends Phaser.Scene{
         this.heart.anims.play('heartTurn');
 
         //Players score 
-        this.scoreText = this.add.text(20, 50, 'Score:', { fontSize: '20px', fill: '#ffffff'});
+        this.scoreText = this.add.text(20, 50, 'Score:', { font: '25px arcade', fill: '#ffffff'});
         this.scoreText.setShadow(2, 2, '#000000', 0);
         this.scoreText.setDepth(1);
         
         //Skill notification
-        this.info = this.add.text(235,75, '', {fontSize: '25px', fill: 'white'});
+        this.info = this.add.text(235,75, '', {font: '25px arcade', fill: 'white'});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
         this.info.setDepth(1);
 
         //Skill Recharging..
-        this.skillCoolingDown = this.add.text(290,565, 'Recharging...', {fontSize: '25px', fill: 'red'});
+        this.skillCoolingDown = this.add.text(290,565, 'Recharging...', {font: '25px arcade', fill: 'red'});
         this.skillCoolingDown.setShadow(2, 2, '#000000', 0);
         this.skillCoolingDown.setVisible(false);
         this.skillCoolingDown.setDepth(1);
@@ -166,7 +166,7 @@ class GameScene extends Phaser.Scene{
         this.healthPotion.setScale(0.45);
         this.healthPotion.setDepth(1);
       
-        this.textR = this.add.text(675,580, 'R', {fontSize: '15px', fill: 'black'});
+        this.textR = this.add.text(675,580, 'R', {font: '15px arcade', fill: 'black'});
         this.textR.setDepth(1);
 
         this.regenerationLocked = this.add.image(700, 571, 'locked');
@@ -178,7 +178,7 @@ class GameScene extends Phaser.Scene{
         this.speedPotion.setScale(0.49);
         this.speedPotion.setDepth(1);
        
-        this.textQ = this.add.text(700,495, 'Q', {fontSize: '15px', fill: 'black'});
+        this.textQ = this.add.text(700,495, 'Q', {font: '15px arcade', fill: 'black'});
         this.textQ.setDepth(1);
 
         this.speedBoostLocked = this.add.image(720, 527, 'locked');
@@ -190,7 +190,7 @@ class GameScene extends Phaser.Scene{
         this.fireballSkillIcon.setScale(1.50);
         this.fireballSkillIcon.setDepth(1);
 
-        this.textF = this.add.text(775,480, 'F', {fontSize: '15px', fill: 'black'});
+        this.textF = this.add.text(775,480, 'F', {font: '15px arcade', fill: 'black'});
         this.textF.setDepth(1);
 
         this.fireballIconLocked = this.add.image(765, 510, 'locked');
@@ -202,7 +202,7 @@ class GameScene extends Phaser.Scene{
         this.lightningSkillIcon.setScale(0.45);
         this.lightningSkillIcon.setDepth(1);
 
-        this.textE = this.add.text(785,585, 'E', {fontSize: '15px', fill: 'black'});
+        this.textE = this.add.text(785,585, 'E', {font: '15px arcade', fill: 'black'});
         this.textE.setDepth(1);
 
         this.lightningIconLocked = this.add.image(760, 565, 'locked');

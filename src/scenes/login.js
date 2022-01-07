@@ -3,16 +3,21 @@ class LoginScene extends Phaser.Scene{
         super('LoginScene');
     }
 
+    preload(){
+        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
+    }
+
     create(){
-        let signupBtn = this.add.text(500, 550, "Don't have an account?");
-        let backBtn = this.add.text(100, 550, "Back to Menu");
-        let loginBtn = this.add.text(250, 350, "Login");
+        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
+        let signupBtn = this.add.text(500, 550, "Don't have an account?", { font: '25px arcade' });
+        let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
+        let loginBtn = this.add.text(250, 350, "Login", { font: '25px arcade' });
 
         createLoginForm();
 
-        signupBtn.setInteractive();
-        backBtn.setInteractive();
-        loginBtn.setInteractive();
+        signupBtn.setInteractive({ cursor: 'pointer' });
+        backBtn.setInteractive({ cursor: 'pointer' });
+        loginBtn.setInteractive({ cursor: 'pointer' });
 
         signupBtn.on("pointerdown", () =>{
             document.querySelector("form").remove();

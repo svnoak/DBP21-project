@@ -18,19 +18,19 @@ class PauseScene extends Phaser.Scene{
         //Definierar variabeln keyESC = "ESC"
         this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-        let upgradeBtn = this.add.text(350, 200, "Skills");
+        let upgradeBtn = this.add.text(350, 200, "Skills", {font: "50px arcade", align: 'center'});
         upgradeBtn.setShadow(2, 2, 'black', 0);
-        let continueBtn = this.add.text(350, 250, "Resume");
+        let continueBtn = this.add.text(350, 250, "Resume", {font: "50px arcade", align: 'center'});
         continueBtn.setShadow(2, 2, 'black', 0);
-        let restartBtn = this.add.text(350, 300, "New Game");
+        let restartBtn = this.add.text(350, 300, "New Game", {font: "50px arcade", align: 'center'});
         restartBtn.setShadow(2, 2, 'black', 0);
-        let exitBtn = this.add.text(350, 350, "Save and Quit");
+        let exitBtn = this.add.text(350, 350, "Quit", {font: "50px arcade", align: 'center'});
         exitBtn.setShadow(2, 2, 'black', 0);
 
-        exitBtn.setInteractive();
-        continueBtn.setInteractive();
-        restartBtn.setInteractive();
-        upgradeBtn.setInteractive();
+        exitBtn.setInteractive({ cursor: 'pointer' });
+        continueBtn.setInteractive({ cursor: 'pointer' });
+        restartBtn.setInteractive({ cursor: 'pointer' });
+        upgradeBtn.setInteractive({ cursor: 'pointer' });
 
         exitBtn.on("pointerover", () => {
             exitBtn.style.setColor('black');

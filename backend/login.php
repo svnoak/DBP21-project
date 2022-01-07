@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $method = $_SERVER["REQUEST_METHOD"];
 
@@ -34,19 +35,17 @@ if(isset($requestData["username"], $requestData["password"])) {
     //Checks that foundUser has been given a user
     if($foundUser !== null) {
         //Starts a session and saves $foundUser ID in session ID
-        session_start();
-        $_SESSION["id"] = $foundUser["id"];
-        $userID = $_SESSION["id"];
-        sendJSON(["userID"=>$userID], 200);
+        $_SESSION["loggedInId"] = $foundUser["id"];
+        sendJSON(["userID"=>$_SESSION["loggedInId"]], 200);
         exit();
     } else {
         //Retuns a message that something when wrong when atempting to login
         sendJSON("User not found", 404);
+        session_destroy();
         exit();
     }
 } else{
     sendJSON("PASSWORD OR USERNAME MISSING", 400);
+    session_destroy();
     exit();
 }
-
-?>

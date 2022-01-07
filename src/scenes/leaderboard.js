@@ -18,7 +18,7 @@ class LeaderboardScene extends Phaser.Scene{
 
     async function renderLeaderboard(that){
 
-    let rqst = new Request("/backend/leaderboard.php");
+    let rqst = new Request("http://localhost:7000/leaderboard.php");
 
     fetch(rqst, {
         headers: {

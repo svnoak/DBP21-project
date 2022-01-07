@@ -20,10 +20,9 @@ class ProfileScene extends Phaser.Scene{
             }else{
                 submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
-		renderInfo(userID, this);
+		        renderInfo(userID, this);
             }
-            toggleForm();
-            
+            toggleForm(); 
         })
 
         backBtn.setInteractive();
@@ -35,9 +34,9 @@ class ProfileScene extends Phaser.Scene{
 
 async function renderInfo(userID, that){
 
-    let rqst = new Request("/backend/profile.php");
-    let data = {
-        "userID": userID,
+    let rqst = new Request("backend/profile.php");
+    let submit = {
+        "userID": userID
     }
 
     fetch(rqst, {
@@ -46,26 +45,22 @@ async function renderInfo(userID, that){
             'Content-Type': 'application/json'
         },
         method: "POST",
-        body: JSON.stringify(data)
+        body: JSON.stringify(submit),
     })
-        .then( response => {
-            if( response.status === 200 ){
-                return response.json();
-            }else{
-                alert( "Usernot found" );
-                return false;
-            }
-        })
+        .then( response => response.json() )
         .then( data => {
             let user = data["user"];
-	    console.log(user);
+	    let avatar = document.createElement("img");
+            avatar.src = '/backend/databas/avatars/'+user["avatar"];
+            avatar.className = "avatar";
+	    document.querySelector('#game').append(avatar);
             that.add.text(150, 150, "Username:");
             that.usernameDisplay = that.add.text(250, 150, user["username"]);
             that.add.text(150, 200, "Email:");
             that.emailDisplay = that.add.text(250, 200, user["email"]);
-            renderEditForm(user);
-        })
-    }
+            renderEditForm(user); 
+    });
+}
 
 function renderEditForm(user){
     let form = document.createElement("form");
@@ -76,7 +71,6 @@ function renderEditForm(user){
     let avatar = document.createElement("input");
     avatar.type = "file";
     avatar.name = "avatar";
-    avatar.placeholder = user["avatar"];
     avatar.id = "avatar";
 
     let username = document.createElement("input");
@@ -104,48 +98,31 @@ function renderEditForm(user){
 }
 
 function toggleForm(){
-        let form = document.querySelector("#editForm");
-        let formDisplay = form.style.display
-        console.log(formDisplay);
-        formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
+    let form = document.querySelector("#editForm");
+    let formDisplay = form.style.display
+    console.log(formDisplay);
+    formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
 }
 
 function submitChanges(userID,that){
-    let username = document.querySelector("#username").value;
-    let email = document.querySelector("#email").value;
-    let password = document.querySelector("#password").value;
-    let avatar = document.querySelector("#avatar").value;
 
-    let rqst = new Request("/backend/updateUser.php");
-    let data = {
-        "userID": userID,
-        "username": username,
-        "email": email,
-        "password": password,
-        "avatar": avatar
-    }
-    fetch( rqst, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: "PATCH",
-        body: JSON.stringify(data)
-    })
-    .then( response => {
-        if( response.status === 200 ){
-            return response.json();
-        }else{
-            alert("Something went wrong, please try again.");
-            return response.json();
-        }
-    })
-    .then( d => {
-       let username = document.querySelector("#username").value
-       let email = document.querySelector("#password").value
+    const form = document.getElementById("editForm");
+    const formData = new FormData(form);
 
-       that.usernameDisplay.text = username;
-       that.emailDisplay.text = email;
+        const req = new Request("backend/updateUser.php", {
+            method: "POST",
+            body: formData,
+        });
+
+        fetch(req)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .then( d => {
+                let username = document.querySelector("#username").value
+                let email = document.querySelector("#password").value
+
+                that.usernameDisplay.text = username;
+                that.emailDisplay.text = email;
     })
 }
 

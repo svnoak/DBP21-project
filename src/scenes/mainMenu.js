@@ -20,8 +20,8 @@ class MainMenuScene extends Phaser.Scene {
         bg.displayHeight = this.sys.canvas.height;
         let isLoggedIn = sessionStorage["userID"];
         if( isLoggedIn ) {
-            let profileBtn = this.add.text(275, 300, "Profile", {font: "50px arcade"});
-            let logoutBtn = this.add.text(275, 375, "Logout", {font: "50px arcade"});
+            let profileBtn = this.add.text(330, 300, "Profile", {font: "30px arcade"});
+            let logoutBtn = this.add.text(330, 375, "Logout", {font: "30px arcade"});
 
             profileBtn.setInteractive({ cursor: 'pointer' });
             profileBtn.on("pointerdown", ()=> {
@@ -46,8 +46,8 @@ class MainMenuScene extends Phaser.Scene {
                 logoutBtn.style.setColor('white');
             })
         }else{
-            let signupBtn = this.add.text(275, 375, "Sign Up", {font: "50px arcade"});
-            let loginBtn = this.add.text(275, 300, "Login", {font: "50px arcade"});
+            let signupBtn = this.add.text(342, 375, "Sign Up", {font: "30px arcade"});
+            let loginBtn = this.add.text(350, 300, "Login", {font: "30px arcade"});
 
             signupBtn.setInteractive({ cursor: 'pointer' });
             signupBtn.on("pointerdown", ()=> {
@@ -74,10 +74,10 @@ class MainMenuScene extends Phaser.Scene {
 
 
         let startGameBtn = this.add.text(275, 100, "Start Game", {font: "50px arcade"});
-        let leaderboardBtn = this.add.text(50, 520, "Leaderboard", {font: "50px arcade"});
-        let howToBtn = this.add.text(275, 225, "How To", {font: "50px arcade"});
+        let leaderboardBtn = this.add.text(100, 560, "Leaderboard", {font: "20px arcade"});
+        let howToBtn = this.add.text(350, 225, "How To", {font: "30px arcade"});
 
-        let aboutBtn = this.add.text(600, 520, "About", {font: "50px arcade"});
+        let aboutBtn = this.add.text(650, 560, "About", {font: "20px arcade"});
 
         startGameBtn.setInteractive({ cursor: 'pointer' });
         leaderboardBtn.setInteractive({ cursor: 'pointer' });

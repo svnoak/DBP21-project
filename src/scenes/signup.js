@@ -78,7 +78,7 @@ async function signup(username, email, password){
         "password" : password
     }
     
-    let rqst = new Request("http://localhost:7000/createuser.php");
+    let rqst = new Request("backend/createUser.php");
     let options = {
         headers: {
             'Accept' : 'application/json',

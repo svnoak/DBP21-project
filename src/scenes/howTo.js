@@ -18,8 +18,12 @@ class HowToScene extends Phaser.Scene{
         this.load.image('fireball', './assets/player/fireball.png');
         //Laddar lightnings skill icon
         this.load.image('lightningIcon', './assets/player/lightningSkillIcon.png');
+
+        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
     }
     create(){
+        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
+
         let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade"});
 
         backBtn.setInteractive({ cursor: 'pointer' });
@@ -154,10 +158,10 @@ class HowToScene extends Phaser.Scene{
                                             //Skills        
 
         this.skillInfos = this.add.text(375,330, 'Skills', {fontSize: '25px', fill: 'white'});
-        this.add.text(10,370, 'Aganju has 4 skills and they are locked in the beginning! All skills are upgradable and', {fontSize: '15px', fill: 'white'});
-        this.add.text(10,395, 'each skill has a uniqe damage and cost. Regenaration gives you health for every 10 sec.', {fontSize: '15px', fill: 'white'});
-        this.add.text(10,420, 'You can run faster with speedBoost ability. You can burn or shock the enemies with', {fontSize: '15px', fill: 'white'});
-        this.add.text(10,445, 'by throwing fireballs or calling lightnings. The choise is yours!', {fontSize: '15px', fill: 'white'});
+        this.add.text(10,370, 'Aganju has 4 skills and they are locked in the beginning! All skills are upgradable and', {fontSize: '15px', fill: 'black'});
+        this.add.text(10,395, 'each skill has a uniqe damage and cost. Regenaration gives you health for every 10 sec.', {fontSize: '15px', fill: 'black'});
+        this.add.text(10,420, 'You can run faster with speedBoost ability. You can burn or shock the enemies with', {fontSize: '15px', fill: 'black'});
+        this.add.text(10,445, 'by throwing fireballs or calling lightnings. The choise is yours!', {fontSize: '15px', fill: 'black'});
 
         //And cost of each skill multiples with 2 for every upgrade
         let regeneration = this.add.text(75, 550, "Regeneration");

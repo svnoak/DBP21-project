@@ -8,16 +8,13 @@ class MainMenuScene extends Phaser.Scene {
             
     }
 
-    preload() {
-        this.load.image('bg', './assets/tilemap/menu.png');    
-        
+    preload(){
+        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
     }
 
     create(){
-        let bg = this.background = this.add.image(0, 0, "bg").setOrigin(0);
+        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
         // Based on your game size, it may "stretch" and distort.
-        bg.displayWidth = this.sys.canvas.width;
-        bg.displayHeight = this.sys.canvas.height;
         let isLoggedIn = sessionStorage["userID"];
         if( isLoggedIn ) {
             let profileBtn = this.add.text(330, 300, "Profile", {font: "30px arcade"});

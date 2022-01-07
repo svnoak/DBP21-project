@@ -2,8 +2,13 @@ class SignupScene extends Phaser.Scene{
     constructor() {
         super('SignupScene');
     }
+
+    preload(){
+        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
+    }
     
     create(){
+        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
         let login = this.add.text(500, 550, "Already have an account?", { font: '25px arcade' });
         let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
         let signupBtn = this.add.text(350, 250, "Signup", { font: '25px arcade' });

@@ -36,9 +36,24 @@ class MainMenuScene extends Phaser.Scene {
 
             logoutBtn.setInteractive({ cursor: 'pointer' });
             logoutBtn.on("pointerdown", () => {
-                sessionStorage.clear();
-                this.scene.start("MainMenuScene")
-		    })
+                let rqst = new Request("backend/logout.php");
+                fetch(rqst, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: "GET",
+                    //body: JSON.stringify(data)
+                })
+                .then( response => {
+                    if( response.status === 200 ){
+                        sessionStorage.clear();
+                        this.scene.start("MainMenuScene");
+                    }
+                })
+                /* sessionStorage.clear();
+                this.scene.start("MainMenuScene"); */
+            })
             logoutBtn.on("pointerover", () => {
                 logoutBtn.style.setColor('black');
             })

@@ -17,6 +17,8 @@ class GameScene extends Phaser.Scene{
         this.load.image('background', './assets/tilemap/background.png');
         //Laddar pause icon
         this.load.image('pauseIcon', './assets/tilemap/pauseIcon.png');
+        //Laddar pause icon
+        this.load.image('skillIcon', './assets/tilemap/skillUpIcon.png');
 
         //Laddar Aganju 
         this.load.spritesheet('aganju', './assets/player/aganju.png', {frameWidth: 32, frameHeight: 32});
@@ -60,7 +62,7 @@ class GameScene extends Phaser.Scene{
         //Skapar spelplanen
         let bg = this.add.image(0,0,'background').setOrigin(0);
         bg.setScale(2.1);
-
+        //Creates pause icon
         this.pauseIcon = this.add.image(400,30, 'pauseIcon');
         this.pauseIcon.setScale(0.2);
         //Opacity = 0.3
@@ -80,6 +82,34 @@ class GameScene extends Phaser.Scene{
         this.pauseIcon.on('pointerdown', ()=>{
             this.scene.pause();
             this.scene.launch('PauseScene', this.startData);
+        });
+
+        //Creates skillUp icon
+        this.skillIcon = this.add.image(770,440, 'skillIcon');
+        this.skillIcon.setScale(0.2);
+        //Opacity = 0.3
+        this.skillIcon.setAlpha(0.3);
+        this.skillIcon.setInteractive();
+        this.skillIcon.setDepth(1);
+
+        this.textSkill = this.add.text(738,400, 'Skills', {fontSize: '15px', fill: 'black'});
+        this.textSkill.setDepth(1);
+        this.textSkill.setVisible(false);
+
+        //Mouse hover
+        this.skillIcon.on('pointerover', ()=>{
+            this.skillIcon.setAlpha(1);
+            this.textSkill.setVisible(true);
+        });
+        //Mouse out
+        this.skillIcon.on('pointerout', ()=>{
+            this.skillIcon.setAlpha(0.3);
+            this.textSkill.setVisible(false);
+        });
+        //Onclick opens the puase screen
+        this.skillIcon.on('pointerdown', ()=>{
+            this.scene.pause();
+            this.scene.launch('UpgradeScene', this.startData);
         });
         
         //Players lives
@@ -120,7 +150,7 @@ class GameScene extends Phaser.Scene{
         this.scoreText.setDepth(1);
         
         //Skill notification
-        this.info = this.add.text(220,8, '', {fontSize: '25px', fill: 'white'});
+        this.info = this.add.text(235,75, '', {fontSize: '25px', fill: 'white'});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
         this.info.setDepth(1);
@@ -135,6 +165,9 @@ class GameScene extends Phaser.Scene{
         this.healthPotion = this.add.image(700,570,'healthPotion');
         this.healthPotion.setScale(0.45);
         this.healthPotion.setDepth(1);
+      
+        this.textR = this.add.text(675,580, 'R', {fontSize: '15px', fill: 'black'});
+        this.textR.setDepth(1);
 
         this.regenerationLocked = this.add.image(700, 571, 'locked');
         this.regenerationLocked.setScale(0.075);
@@ -144,6 +177,9 @@ class GameScene extends Phaser.Scene{
         this.speedPotion = this.add.image(720,524,'speedPotion');
         this.speedPotion.setScale(0.49);
         this.speedPotion.setDepth(1);
+       
+        this.textQ = this.add.text(700,495, 'Q', {fontSize: '15px', fill: 'black'});
+        this.textQ.setDepth(1);
 
         this.speedBoostLocked = this.add.image(720, 527, 'locked');
         this.speedBoostLocked.setScale(0.075);
@@ -154,6 +190,9 @@ class GameScene extends Phaser.Scene{
         this.fireballSkillIcon.setScale(1.50);
         this.fireballSkillIcon.setDepth(1);
 
+        this.textF = this.add.text(775,480, 'F', {fontSize: '15px', fill: 'black'});
+        this.textF.setDepth(1);
+
         this.fireballIconLocked = this.add.image(765, 510, 'locked');
         this.fireballIconLocked.setScale(0.075);
         this.fireballIconLocked.setDepth(1);
@@ -162,6 +201,9 @@ class GameScene extends Phaser.Scene{
         this.lightningSkillIcon = this.add.image(760, 565, 'lightningIcon');
         this.lightningSkillIcon.setScale(0.45);
         this.lightningSkillIcon.setDepth(1);
+
+        this.textE = this.add.text(785,585, 'E', {fontSize: '15px', fill: 'black'});
+        this.textE.setDepth(1);
 
         this.lightningIconLocked = this.add.image(760, 565, 'locked');
         this.lightningIconLocked.setScale(0.13);
@@ -217,7 +259,6 @@ class GameScene extends Phaser.Scene{
             frameRate: 6,
             repeat: 0
         })
-        // this.lightningExplosion.anims.play('explode');
 
         ////////////////////////////////////////////////////////////////////
         //Kontroller
@@ -234,10 +275,16 @@ class GameScene extends Phaser.Scene{
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         //Definierar variabeln keyS = "D"
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        //Definierar variabeln keyQ = "Q"
+        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        //Definierar variabeln keyE = "E"
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        //Definierar variabeln keyR = "R"
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        //Definierar variabeln keyF = "F"
+        this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         //Definierar variabeln keyESC = "ESC"
         this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        //Definierar variabeln keyShift = "SHIFT"
-        this.keyShift = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         ////////////////////////////////////////////////////////////////////
         //Player
@@ -253,10 +300,12 @@ class GameScene extends Phaser.Scene{
         this.aganju.body.mass = 2;
         //Begränsar Aganju inom spethiss gränser
         this.aganju.setCollideWorldBounds(true);
+        //Aganjus body size
+        this.aganju.setBodySize(23,30,true);
+        this.aganju.setOffset(5,1.5, true);
 
         //Aganjus health
         this.aganju.health = 100;
-
         //Aganjus start hastighet
         this.basicSpeed = 100;
 
@@ -295,7 +344,7 @@ class GameScene extends Phaser.Scene{
                 this.setActive(true);
                 this.setVisible(true);
 
-                this.angle = Phaser.Math.Angle.Between(this.scene.aganju.x, this.scene.aganju.y, x, y);
+                this.angle = Phaser.Math.Angle.Between(x, y, aganju.x, aganju.y);
 
                 //Räknar x vinkeln
                 this.incX = Math.cos(this.angle);
@@ -303,21 +352,23 @@ class GameScene extends Phaser.Scene{
                 this.incY = Math.sin(this.angle);
 
                 this.lifespan = 1000;
+
+                console.log(this);
+
             },
 
             update: function (time, delta)
             {
                 this.lifespan -= delta;
 
-                this.x -= -this.incX * (this.speed * delta);
-                this.y -= -this.incY * (this.speed * delta);
+                this.x += -this.incX * (this.speed * delta);
+                this.y += -this.incY * (this.speed * delta);
 
                 if (this.lifespan <= 0)
                 {
-                    this.setActive(false);
-                    this.setVisible(false);
+                    this.destroy()
                 }
-        
+
             }
             
         });
@@ -328,20 +379,104 @@ class GameScene extends Phaser.Scene{
             maxSize: this.startData.amountFireballsToFire,
             runChildUpdate: true
         });
+//När muspekaren är på
+this.input.on('pointerdown', function (activePointer) {
+    this.mouseDown = true;
+    this.mouseX = activePointer.x;
+    this.mouseY = activePointer.y;
+});
 
-        //När muspekaren är på
-        this.input.on('pointerdown', function (activePointer) {
-            this.mouseDown = true;
-            this.mouseX = activePointer.x;
-            this.mouseY = activePointer.y;
+
+
+
+var HasturProjectile = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Bullet (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'fireball');
+
+        this.incX = 0;
+        this.incY = 0;
+        this.lifespan = 0;
+
+        this.speed = Phaser.Math.GetSpeed(300, 1);
+    },
+
+    fire: function (x1, y1, x2, y2)
+    {
+        this.setActive(true);
+        this.setVisible(true);
+        this.name = 'hasturProjectile';
+
+        //  Bullets fire from the middle of the screen to the given x/y
+        this.setPosition(x1, y1);
+
+        var angle = Phaser.Math.Angle.Between(x1, y1, x2, y2);
+
+        this.setRotation(angle);
+
+        this.incX = Math.cos(angle);
+        this.incY = Math.sin(angle);
+
+        this.lifespan = 5000;
+    },
+    update: function (time, delta)
+            {
+                this.lifespan -= delta;
+        
+                this.x += this.incX * (this.speed * delta);
+                this.y += this.incY * (this.speed * delta);
+        
+                if (this.lifespan <= 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
+            }
+        
+        
         });
 
+        this.hasturProjectiles = this.physics.add.group({
+            classType: HasturProjectile,
+            createCallback:(gameObj) =>{
+
+                gameObj.body.onCollide = true;
+                
+                //creates collision between projectile and aganju
+                this.physics.add.collider(this.aganju, gameObj);
+                
+
+            },
+            maxSize: 50,
+            runChildUpdate: true,
+        });
+
+        this.physics.world.on('collide', (objOne, objTwo)=>{
+            if( objTwo.name == 'hasturProjectile' ){
+                let thisAganju = objOne;
+                let thisProjectile = objTwo;
+    
+                thisProjectile.destroy();
+                thisAganju.health -= parseInt(10);
+                console.log(toString(thisAganju.health))
+
+                console.log(thisAganju.health);
+
+                //console.log(this.aganju)
+            }
+            
+        })
         ////////////////////////////////////////////////////////////////////
         // Hastur
 
         createHasturAnims(this.anims); //skapas i annan fil
 
-        const hasturs = this.physics.add.group({
+        this.hasturs = this.physics.add.group({
             classType: Hastur,
             createCallback: (gameObj) => { // hastur objects properties
                 gameObj.name = 'hastur';
@@ -351,6 +486,7 @@ class GameScene extends Phaser.Scene{
                 gameObj.body.collideWorldBounds = true;
                 gameObj.body.onWorldBounds = true;
                 gameObj.onOverlap = true;
+                gameObj.setBodySize(17.5,32,true);
 
                 gameObj.damage = 25;
 
@@ -374,10 +510,6 @@ class GameScene extends Phaser.Scene{
 
             }
         });
-
-        this.hasturs = hasturs;
-
-        this.hastur = this.physics.add.sprite(200, 100, 'hastur'); // old hastur, remove and code will give errors
         
         // SPAWN HASTURS CODE
         this.killedAmount = 0; // how many hasturs killed
@@ -397,7 +529,7 @@ class GameScene extends Phaser.Scene{
                 coordY = Phaser.Math.Between(0, config.height)
             }
 
-            hasturs.get( coordX, coordY, 'hastur');
+            this.hasturs.get( coordX, coordY, 'hastur');
         }
 
         //Skapar spawn coords for initial hasturs
@@ -419,10 +551,6 @@ class GameScene extends Phaser.Scene{
         ];
         for (let i = 0; i < coords.length; i++) {
             this.spawnAHastur( coords[i][0], coords[i][1] );
-        }
-        
-        for (let i = 0; i < 7; i++) {
-            hasturs.get(Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height), 'hastur');
         }
         
         ////////////////////////////////////////////////////////////////////
@@ -497,8 +625,7 @@ class GameScene extends Phaser.Scene{
             frameRate: 10,
             repeat: 0
         });
-
-        ///////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
         //Objects overlaps and functions
 
         this.swordHasturCollider = this.physics.add.overlap(this.sword, this.hastur, null, hitEnemy,this);
@@ -519,41 +646,7 @@ class GameScene extends Phaser.Scene{
             this.spacebar.isDown = false;
         }
 
-        // this.lightningHasturCollider = this.physics.add.overlap(this.lightning, this.hastur, null, shockEnemy, this);
-        // function shockEnemy(){
-        //     this.hastur.health = this.hastur.health - this.startData.lightningDamage;
-
-        //     //Sätter tint (blå)
-        //     this.hastur.setTint(0xff00ff);
-
-        //     setTimeout(() => {
-        //         //Sätter tint (blå)
-        //         this.hastur.setTint();
-        //     }, 1000);
-
-        //     if (this.hastur.health <= 0) {
-
-        //         setTimeout(() => {
-        //             this.lightningExplosion.setVisible(true);
-        //             this.lightningExplosion.x = this.hastur.x;
-        //             this.lightningExplosion.y = this.hastur.y+10;
-    
-        //             this.lightningExplosion.anims.play('explode');
-
-        //             setTimeout(() => {
-        //                 this.hastur.destroy();
-        //                 this.lightningExplosion.setVisible(false);
-        //             }, 1000);
-
-        //         }, 500);
-
-        //         this.score = this.score + 10;
-        //         this.totalCoins = this.totalCoins + 100;
-        //     }
-        //     //Unactives collide between lightning and hastur
-        //     this.lightningHasturCollider.active = false;
-        // }
-  
+        this.lastPressedButton = 'S';
     }
 
     // Update gameplay 
@@ -609,6 +702,72 @@ class GameScene extends Phaser.Scene{
         ///////////////////////////////////////////////////////////////////////////
         //Player movement and animations
 
+        //När spacebar trycks
+        if(this.spacebar.isDown){
+            if(this.lastPressedButton == 'A'){
+                this.aganju.setDepth(0);
+
+                this.sword.setBodySize(30,125,true);
+                //Sätter X offset 14 och Y  offset 52 för att kunna skada fienden på x axeln(vänster sida)
+                this.sword.setOffset(14,55,true);
+    
+                //Gör svärden visible
+                this.sword.setVisible(true);
+                //Uppdaterar svärdens position
+                this.sword.setPosition(this.aganjuX,this.aganjuY-10);
+                //Ger z-index till svärden
+                this.sword.setDepth(1);
+                //Scalar ner svärden
+                this.sword.setScale(0.50);
+                //Spelar left animationen av svärd
+                this.sword.anims.play('sword_left', true);
+            }
+            
+            else if(this.lastPressedButton == 'D'){
+                this.aganju.setDepth(1);
+
+                this.sword.setBodySize(30,125,true);
+                //Sätter X offset 210 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
+                this.sword.setOffset(210,55,true);
+
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX,this.aganjuY-10);
+                this.sword.setDepth(0);
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_right', true);
+            }
+
+            else if(this.lastPressedButton == 'S'){
+                this.aganju.setDepth(0);
+
+                this.sword.setBodySize(125,30,true);
+                //Sätter X offset 20 och Y offset 200 för att kunna skada fienden på y axeln(ner)
+                this.sword.setOffset(20,200,true);
+
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
+                this.sword.setDepth(1);
+
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_down', true);
+            }
+
+            else if(this.lastPressedButton == 'W'){
+                this.aganju.setDepth(1);
+
+                this.sword.setBodySize(125,30,true);
+                //Sätter X offset 105 och Y offset 60 för att kunna skada fienden på y axeln(upp)
+                this.sword.setOffset(105,60,true);
+
+                this.sword.setVisible(true);
+                this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);
+                this.sword.setDepth(0);
+
+                this.sword.setScale(0.50);
+                this.sword.anims.play('sword_up', true);
+            }
+        }
+
         //Om vänster pillen trycks, 
         //left animation spelas
         if (this.keyA.isDown)
@@ -627,8 +786,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(0);
 
                 this.sword.setBodySize(30,125,true);
-                //Sätter X offset 14 och Y  offset 52 för att kunna skada fienden på x axeln(vänster sida)
-                this.sword.setOffset(14,55,true);
+                //Sätter X offset -10 och Y  offset 55 för att kunna skada fienden på x axeln(vänster sida)
+                this.sword.setOffset(-10,55,true);
 
                 //Gör svärden visible
                 this.sword.setVisible(true);
@@ -641,6 +800,8 @@ class GameScene extends Phaser.Scene{
                 //Spelar left animationen av svärd
                 this.sword.anims.play('sword_left', true);
             }
+
+            this.lastPressedButton = 'A';
         }
 
         //Om höger pillen trycks, 
@@ -657,8 +818,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(1);
 
                 this.sword.setBodySize(30,125,true);
-                //Sätter X offset 210 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
-                this.sword.setOffset(210,55,true);
+                //Sätter X offset 230 och Y offset 52 för att kunna skada fienden på x axeln(höger sida)
+                this.sword.setOffset(230,55,true);
 
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX,this.aganjuY-10);
@@ -666,6 +827,7 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_right', true);
             }
+            this.lastPressedButton = 'D';
         }
 
         //Om up pillen trycks, 
@@ -682,8 +844,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(0);
 
                 this.sword.setBodySize(125,30,true);
-                //Sätter X offset 20 och Y offset 200 för att kunna skada fienden på y axeln(ner)
-                this.sword.setOffset(20,200,true);
+                //Sätter X offset 20 och Y offset 220 för att kunna skada fienden på y axeln(ner)
+                this.sword.setOffset(20,220,true);
 
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX+23,this.aganjuY-10);
@@ -692,6 +854,7 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_down', true);
             }
+            this.lastPressedButton = 'S';
         }
 
         //Om up pillen trycks, 
@@ -709,8 +872,8 @@ class GameScene extends Phaser.Scene{
                 this.aganju.setDepth(1);
 
                 this.sword.setBodySize(125,30,true);
-                //Sätter X offset 105 och Y offset 60 för att kunna skada fienden på y axeln(upp)
-                this.sword.setOffset(105,60,true);
+                //Sätter X offset 105 och Y offset 40 för att kunna skada fienden på y axeln(upp)
+                this.sword.setOffset(105,40,true);
 
                 this.sword.setVisible(true);
                 this.sword.setPosition(this.aganjuX-20,this.aganjuY-40);
@@ -719,6 +882,7 @@ class GameScene extends Phaser.Scene{
                 this.sword.setScale(0.50);
                 this.sword.anims.play('sword_up', true);
             }
+            this.lastPressedButton = 'W';
         }
 
         //Annars ingen rörelse
@@ -726,6 +890,18 @@ class GameScene extends Phaser.Scene{
         else{
             this.aganju.setVelocity(0,0);
             this.aganju.anims.stop();
+            if(this.lastPressedButton == 'S'){
+                this.aganju.setFrame(1);
+            }
+            else if(this.lastPressedButton == 'A'){
+                this.aganju.setFrame(4);
+            }
+            else if(this.lastPressedButton == 'D'){
+                this.aganju.setFrame(7);
+            }
+            else if(this.lastPressedButton == 'W'){
+                this.aganju.setFrame(10);
+            }
         }
 
         //Om left och up pillarna trycks, 
@@ -801,7 +977,7 @@ class GameScene extends Phaser.Scene{
             this.regenerationLocked.destroy();
         }
         //Skill - Regeneration and Cooldown
-        if(this.cursors.left.isDown && this.keyShift.isUp){
+        if(this.keyR.isDown){
             if(this.startData.regenerationLearned == true){
                 if(this.startData.regenerationCoolDown == false){
                     //Ökar Aganjus health + 10
@@ -842,7 +1018,7 @@ class GameScene extends Phaser.Scene{
 
                         //Opacity = 1
                         this.healthPotion.setAlpha(1);
-                    }, 20000);
+                    }, 10000);
                 }else{
                     this.skillCoolingDown.setVisible(true);
                     setTimeout(() => {
@@ -865,7 +1041,7 @@ class GameScene extends Phaser.Scene{
             this.speedBoostLocked.destroy();
         }
         //Skill - SpeedBoost and Cooldown
-        if(this.cursors.up.isDown && this.keyShift.isUp){  
+        if(this.keyQ.isDown){  
             if(this.startData.speedBoostLearned == true){
                 if(this.startData.speedCoolDown == false){
                     //Höjer Aganju speed till 300
@@ -925,10 +1101,10 @@ class GameScene extends Phaser.Scene{
         //Updates amount fireballs to shoot
         this.fireballs.maxSize = this.startData.amountFireballsToFire;
         //Skill - Eldbollar
-        if(this.cursors.down.isDown && this.keyShift.isUp){
+        if(this.keyF.isDown){
             if(this.startData.fireballSkillLearned == true){
                 if(this.startData.fireballSkillActive == true){
-                    this.downCurserPressed = true;
+                    this.keyEPressed = true;
 
                     //Shows skill in use (sets a blue tint)
                     this.fireballSkillIcon.setTint(0xff00ff);
@@ -937,7 +1113,7 @@ class GameScene extends Phaser.Scene{
                     setTimeout(() => {
                        //Disable fireball skill for 5 sek
                        this.startData.fireballSkillActive = false;
-                       this.downCurserPressed = false;
+                       this.keyEPressed = false;
 
                        //Clears tint
                        this.fireballSkillIcon.clearTint();
@@ -966,10 +1142,10 @@ class GameScene extends Phaser.Scene{
                     this.info.setVisible(false);;
                 }, 2000);
             }
-            this.cursors.down.isDown = false;
+            this.keyF.isDown = false;
         }
         //Skill - Eldbollar and Cooldown
-        if(this.input.activePointer.isDown && time > this.lastFired && this.startData.fireballSkillActive == true && this.downCurserPressed == true){
+        if(this.input.activePointer.isDown && time > this.lastFired && this.startData.fireballSkillActive == true && this.keyEPressed == true){
             this.fireball = this.fireballs.get();
 
             if (this.fireball){
@@ -985,7 +1161,7 @@ class GameScene extends Phaser.Scene{
             this.lightningIconLocked.destroy();
         }
         //Skill - lightning skill and Cooldown
-        if(this.cursors.right.isDown && this.keyShift.isUp){
+        if(this.keyE.isDown){
             if(this.startData.lightningSkillLearned == true){
                 this.lightning.damage = this.startData.lightningDamage;
 

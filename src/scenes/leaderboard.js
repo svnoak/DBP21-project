@@ -10,8 +10,8 @@ class LeaderboardScene extends Phaser.Scene{
         backBtn.on("pointerdown", () =>{
             this.scene.start("MainMenuScene");
         });
-	    this.add.text(150, 100, "NAME", { font: '40px arcade' });
-	    this.add.text(350, 100, "HIGHSCORE", { font: '40px arcade' });
+	    this.add.text(200, 50, "NAME", { font: '40px arcade' });
+	    this.add.text(400, 50, "HIGHSCORE", { font: '40px arcade' });
 	    renderLeaderboard(this);
     }
 }

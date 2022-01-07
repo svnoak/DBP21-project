@@ -20,18 +20,48 @@ class MainMenuScene extends Phaser.Scene {
             profileBtn.on("pointerdown", ()=> {
                 this.scene.start("ProfileScene");
             })
-        }
+	
+		let logoutBtn = this.add.text(450, 300, "Logout");
+		logoutBtn.setInteractive();
+		logoutBtn.on("pointerdown", () => {
+            let rqst = new Request("http://localhost:7000/logout.php");
+            fetch(rqst, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "GET",
+                //body: JSON.stringify(data)
+            })
+            .then( response => {
+                if( response.status === 200 ){
+                    sessionStorage.clear();
+                    this.scene.start("MainMenuScene");
+                }
+            })
+            /* sessionStorage.clear();
+            this.scene.start("MainMenuScene"); */
+		})
+        }else{
+		let signupBtn = this.add.text(450, 300, "Sign Up");
+	        let loginBtn = this.add.text(250, 300, "Login");
+		signupBtn.setInteractive();
+	        loginBtn.setInteractive();
+		signupBtn.on("pointerdown", ()=> {
+            	this.scene.start("SignupScene");
+        	})
+	        loginBtn.on("pointerdown", ()=> {
+        	this.scene.start("LoginScene");
+        	})
+	}
+
 
         let startGameBtn = this.add.text(350, 250, "Start Game");
-        let signupBtn = this.add.text(450, 300, "Sign Up");
-        let loginBtn = this.add.text(250, 300, "Login");
         let leaderboardBtn = this.add.text(100, 550, "Leaderboard");
         let aboutBtn = this.add.text(650, 550, "About");
         let howToBtn = this.add.text(375, 350, "How To");
 
         startGameBtn.setInteractive();
-        signupBtn.setInteractive();
-        loginBtn.setInteractive();
         leaderboardBtn.setInteractive();
         
         aboutBtn.setInteractive();
@@ -111,14 +141,6 @@ class MainMenuScene extends Phaser.Scene {
 
         startGameBtn.on("pointerdown", ()=> {
             this.scene.start("GameScene", this.data);
-        })
-
-        signupBtn.on("pointerdown", ()=> {
-            this.scene.start("SignupScene");
-        })
-
-        loginBtn.on("pointerdown", ()=> {
-            this.scene.start("LoginScene");
         })
 
         leaderboardBtn.on("pointerdown", ()=> {

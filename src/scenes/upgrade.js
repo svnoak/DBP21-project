@@ -27,20 +27,27 @@ class UpgradeScene extends Phaser.Scene{
         //Background image for Pause Scene 
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
 
+        //Definierar variabeln keyESC = "ESC"
+        this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
         //Creates back button
-        let backToPause = this.add.text(50, 50, "Back");
+        let backToPause = this.add.text(20, 10, "Back");
         backToPause.setShadow(2, 2, '#000000', 0);
 
+        //Creates back button
+        let resumeGameButton = this.add.text(720, 10, "Resume");
+        resumeGameButton.setShadow(2, 2, '#000000', 0);
+
         //Creates Title "Skills"
-        let skills = this.add.text(340, 15, "Skills", {font:'40px'});
+        let skills = this.add.text(300, 15, "Skills", {font:'60px'});
         skills.setShadow(2, 2, '#000000', 0);
 
         //Creates "Coins"
-        this.coins = this.add.text(650, 50);
+        this.coins = this.add.text(20, 40);
         this.coins.setShadow(2, 2, '#000000', 0);
 
         //Skill notification
-        this.info = this.add.text(230, 100, '', {fontSize: '20px', fill: 'white'});
+        this.info = this.add.text(230, 100, '', {fontSize: '25px', fill: 'white'});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
 
@@ -1689,15 +1696,50 @@ class UpgradeScene extends Phaser.Scene{
 
         backToPause.setInteractive();
 
+        backToPause.on("pointerover", () => {
+            backToPause.style.setColor('black');
+            backToPause.setShadow(2, 2, 'white', 0);
+        });
+        backToPause.on("pointerout", () => {
+            backToPause.style.setColor('white');
+            backToPause.setShadow(2, 2, 'black', 0);
+        });
         backToPause.on("pointerdown", () => {
             //Starts the menu scene
             this.scene.start("PauseScene", this.skillData);
+        });
+
+        resumeGameButton.setInteractive();
+
+        resumeGameButton.on("pointerover", () => {
+            resumeGameButton.style.setColor('black');
+            resumeGameButton.setShadow(2, 2, 'white', 0);
+        });
+        resumeGameButton.on("pointerout", () => {
+            resumeGameButton.style.setColor('white');
+            resumeGameButton.setShadow(2, 2, 'black', 0);
+        });
+        resumeGameButton.on("pointerdown", () => {
+            //Resumes game scene
+            this.scene.resume('GameScene', this.skillData);
+
+            //Stops pause scene
+            this.scene.stop();
         });
 
     }
 
     update(){
         this.coins.text = 'Coins: ' + this.skillData.totalCoins;
+
+        //On press to ESC, Resume the game
+        if(this.keyESC.isDown){
+            //Resumes game scene
+            this.scene.resume('GameScene', this.skillData);
+
+            //Stops pause scene
+            this.scene.stop();
+        }
     }
 
 }

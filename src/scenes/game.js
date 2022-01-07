@@ -113,17 +113,17 @@ class GameScene extends Phaser.Scene{
         });
         
         //Players lives
-        this.livescounter = this.add.text(20,10, 'Lives: ', {font: '30px arcade', fill: 'deepskyblue', font: "arcade"});
+        this.livescounter = this.add.text(20,10, 'Lives: ', {font: '25px arcade', fill: 'deepskyblue', });
         this.livescounter.setShadow(2, 2, '#000000', 0);
         this.livescounter.setDepth(1);
 
         //Players health
-        this.health =  this.add.text(690,10, '', {font: '30px arcade', fill: 'red', font: "arcade"});
+        this.health =  this.add.text(690,5, '', {font: '25px arcade', fill: 'red'});
         this.health.setShadow(2, 2, '#000000', 0);
         this.health.setDepth(1);
 
         //Coins
-        this.coins =  this.add.text(690,50, '', {fill: 'gold', font: "20px arcade"});
+        this.coins =  this.add.text(690,50, '', {fill: 'gold', font: "25px arcade"});
         this.coins.setShadow(2, 2, '#000000', 0);
         this.coins.setDepth(1);
 
@@ -145,7 +145,7 @@ class GameScene extends Phaser.Scene{
         this.heart.anims.play('heartTurn');
 
         //Players score 
-        this.scoreText = this.add.text(20, 50, 'Score:', { font: '20px arcade', fill: '#ffffff'});
+        this.scoreText = this.add.text(20, 50, 'Score:', { font: '25px arcade', fill: '#ffffff'});
         this.scoreText.setShadow(2, 2, '#000000', 0);
         this.scoreText.setDepth(1);
         

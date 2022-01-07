@@ -4,14 +4,14 @@ class LeaderboardScene extends Phaser.Scene{
     }
 
     create(){
-        let backBtn = this.add.text(100, 550, "Back to Menu");
+        let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
 
-        backBtn.setInteractive();
+        backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
             this.scene.start("MainMenuScene");
         });
-	    this.add.text(150, 100, "NAME");
-	    this.add.text(350, 100, "HIGHSCORE");
+	    this.add.text(150, 100, "NAME", { font: '40px arcade' });
+	    this.add.text(350, 100, "HIGHSCORE", { font: '40px arcade' });
 	    renderLeaderboard(this);
     }
 }

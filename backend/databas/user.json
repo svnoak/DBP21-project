@@ -26,5 +26,26 @@
         "email": "buddy@email.com",
         "avatar": "4_avatar.png",
         "id": 4
+    },
+    {
+        "username": "kim",
+        "password": "12345",
+        "email": "12@s.ck",
+        "avatar": "Placeholder",
+        "id": 5
+    },
+    {
+        "username": "kim",
+        "password": "hello",
+        "email": "m@m.com",
+        "avatar": "6_avatar.png",
+        "id": 6
+    },
+    {
+        "username": "Kim",
+        "password": "12345",
+        "email": "kim@demo.se",
+        "avatar": "Placeholder",
+        "id": 7
     }
 ]

@@ -20,13 +20,16 @@ class ProfileScene extends Phaser.Scene{
             }else{
                 submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
-		        renderInfo(userID, this);
+		document.querySelector('img').remove();
+	        renderInfo(userID, this);
             }
             toggleForm(); 
         })
 
         backBtn.setInteractive();
         backBtn.on("pointerdown", () => {
+	    document.querySelector('img').remove();
+	    document.querySelector('#editForm').remove();
             this.scene.start("MainMenuScene");
         });
     }

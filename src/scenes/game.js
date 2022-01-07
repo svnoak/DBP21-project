@@ -65,7 +65,7 @@ class GameScene extends Phaser.Scene{
         this.pauseIcon.setScale(0.2);
         //Opacity = 0.3
         this.pauseIcon.setAlpha(0.3);
-        this.pauseIcon.setInteractive();
+        this.pauseIcon.setInteractive({ cursor: 'pointer' });
         this.pauseIcon.setDepth(1);
 
         //Mouse hover

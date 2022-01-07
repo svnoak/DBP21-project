@@ -53,6 +53,7 @@ async function renderInfo(userID, that){
 	    let avatar = document.createElement("img");
             avatar.src = '/backend/databas/avatars/'+user["avatar"];
             avatar.className = "avatar";
+	    avatar.alt = "No avatar";
 	    document.querySelector('#game').append(avatar);
             that.add.text(150, 150, "Username:");
             that.usernameDisplay = that.add.text(250, 150, user["username"]);

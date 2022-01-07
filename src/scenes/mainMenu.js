@@ -24,7 +24,7 @@ class MainMenuScene extends Phaser.Scene {
 		let logoutBtn = this.add.text(450, 300, "Logout");
 		logoutBtn.setInteractive();
 		logoutBtn.on("pointerdown", () => {
-            let rqst = new Request("http://localhost:7000/logout.php");
+            let rqst = new Request("backend/logout.php");
             fetch(rqst, {
                 headers: {
                     'Accept': 'application/json',

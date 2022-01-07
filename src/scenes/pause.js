@@ -24,7 +24,7 @@ class PauseScene extends Phaser.Scene{
         continueBtn.setShadow(2, 2, 'black', 0);
         let restartBtn = this.add.text(350, 300, "New Game", {font: "50px arcade", align: 'center'});
         restartBtn.setShadow(2, 2, 'black', 0);
-        let exitBtn = this.add.text(350, 350, "Save and Quit", {font: "50px arcade", align: 'center'});
+        let exitBtn = this.add.text(350, 350, "Quit", {font: "50px arcade", align: 'center'});
         exitBtn.setShadow(2, 2, 'black', 0);
 
         exitBtn.setInteractive({ cursor: 'pointer' });

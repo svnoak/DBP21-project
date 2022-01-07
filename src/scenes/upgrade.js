@@ -31,11 +31,11 @@ class UpgradeScene extends Phaser.Scene{
         this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         //Creates back button
-        let backToPause = this.add.text(20, 10, "Back");
+        let backToPause = this.add.text(20, 10, "Back", {font: "20px arcade"});
         backToPause.setShadow(2, 2, '#000000', 0);
 
         //Creates back button
-        let resumeGameButton = this.add.text(720, 10, "Resume");
+        let resumeGameButton = this.add.text(720, 10, "Resume", {font: "20px arcade"});
         resumeGameButton.setShadow(2, 2, '#000000', 0);
 
         //Creates Title "Skills"
@@ -1709,7 +1709,7 @@ class UpgradeScene extends Phaser.Scene{
             this.scene.start("PauseScene", this.skillData);
         });
 
-        resumeGameButton.setInteractive();
+        resumeGameButton.setInteractive({ cursor: 'pointer' });
 
         resumeGameButton.on("pointerover", () => {
             resumeGameButton.style.setColor('black');

@@ -9,9 +9,9 @@ class AboutScene extends Phaser.Scene{
 
     create(){
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
-        let backBtn = this.add.text(150, 50, "Back to Menu");
+        let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
 
-        backBtn.setInteractive();
+        backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
             this.scene.start("MainMenuScene");
         });

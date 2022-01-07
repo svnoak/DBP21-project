@@ -39,28 +39,28 @@ class UpgradeScene extends Phaser.Scene{
         resumeGameButton.setShadow(2, 2, '#000000', 0);
 
         //Creates Title "Skills"
-        let skills = this.add.text(300, 15, "Skills", {font:'60px'});
+        let skills = this.add.text(300, 15, "Skills", {font:'60px arcade'});
         skills.setShadow(2, 2, '#000000', 0);
 
         //Creates "Coins"
-        this.coins = this.add.text(20, 40);
+        this.coins = this.add.text(20, 40, {font: "20px arcade"});
         this.coins.setShadow(2, 2, '#000000', 0);
 
         //Skill notification
-        this.info = this.add.text(230, 100, '', {fontSize: '25px', fill: 'white'});
+        this.info = this.add.text(230, 100, '', {fontSize: '25px', fill: 'white', font: "arcade"});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
 
-        let regeneration = this.add.text(75, 550, "Regeneration");
+        let regeneration = this.add.text(75, 550, "Regeneration", {font: "20px arcade"});
         regeneration.setShadow(2, 2, '#000000', 0);
 
-        let speedBoost = this.add.text(285, 550, "SpeedBoost");
+        let speedBoost = this.add.text(285, 550, "SpeedBoost", {font: "20px arcade"});
         speedBoost.setShadow(2, 2, '#000000', 0);
 
-        let fireball = this.add.text(475, 550, "Fireballs");
+        let fireball = this.add.text(475, 550, "Fireballs", {font: "20px arcade"});
         fireball.setShadow(2, 2, '#000000', 0);
 
-        let lightning = this.add.text(650, 550, "Lightning");
+        let lightning = this.add.text(650, 550, "Lightning", {font: "20px arcade"});
         lightning.setShadow(2, 2, '#000000', 0);
 
         //Creates up icon
@@ -71,12 +71,12 @@ class UpgradeScene extends Phaser.Scene{
         this.upIcon.setScale(0.025);
 
         //Information about the skill
-        let learnInfo = this.add.text(160,500, 'Info:');
+        let learnInfo = this.add.text(160,500, 'Info:', {font: "20px arcade"});
         learnInfo.setDepth(1);
         learnInfo.setVisible(false);
 
         //Cost of the skill
-        let skillCost = this.add.text(165,520, 'Cost:');
+        let skillCost = this.add.text(165,520, 'Cost:', {font: "20px arcade"});
         skillCost.setDepth(1);
         skillCost.setVisible(false);
 

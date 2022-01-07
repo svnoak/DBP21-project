@@ -446,28 +446,24 @@ var HasturProjectile = new Phaser.Class({
             createCallback:(gameObj) =>{
 
                 gameObj.body.onCollide = true;
-                
+                gameObj.damage = 5;
+
                 //creates collision between projectile and aganju
                 this.physics.add.collider(this.aganju, gameObj);
                 
-
             },
-            maxSize: 50,
+            maxSize: 1,
             runChildUpdate: true,
         });
 
         this.physics.world.on('collide', (objOne, objTwo)=>{
+       
             if( objTwo.name == 'hasturProjectile' ){
                 let thisAganju = objOne;
                 let thisProjectile = objTwo;
-    
+           
                 thisProjectile.destroy();
-                thisAganju.health -= parseInt(10);
-                console.log(toString(thisAganju.health))
-
-                console.log(thisAganju.health);
-
-                //console.log(this.aganju)
+                thisAganju.health -= thisProjectile.damage;
             }
             
         })

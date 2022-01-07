@@ -1,35 +1,43 @@
 <?php
-//Hämtar utilities.php
+
+$method = $_SERVER["REQUEST_METHOD"];
+
+// Den sk. preflight förfrågan ("får jag anropa dig")
+if ($method === "OPTIONS") {
+    // Tillåt alla (origins) och alla headers
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: *");
+    exit();
+} 
+
+// Alla är vällkommna
+header("Access-Control-Allow-Origin: *");
+
 require_once("utilities.php");
-//Info som skickats till servern
+
 $dataPHP = file_get_contents("php://input");
-//Gör JSON till en associativ array
 $requestData = json_decode($dataPHP, true);
 
-//Kollar så att contenttype är rätt
 contentType("application/json");
-//Kollar så att metoden är rätt
-requestMethod("POST");
 
-//Skapar variabler med innehåll från POST
 $username = $requestData["username"];
 $password = $requestData["password"]; 
 $email = $requestData["email"];
-$avatar = $requestData["avatar"];
+$avatar = "Placeholder";
 
-//Kollar så att inte något fält är tomt
-if(!empty($username && $password && $email && $avatar)) {
-    //Skapar den nya användaren
-    $data = createUser(
+if(!empty($username && $password && $email)) {
+    createUser(
         $username,
         $password,
         $email,
         $avatar
     );
-    sendJSON($data); //hm skickar inte tillbaka något men skapar en användare!
+    sendJSON("Created user", 200);
+    exit();
 } else {
-    //Error om det inte gick att skapa användaren
-    sendJSON("try again");
+    sendJSON("Something went wrong, try again!", 404);
+    exit();
 }
+
 
 ?>

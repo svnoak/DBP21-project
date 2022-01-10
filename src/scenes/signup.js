@@ -12,6 +12,7 @@ class SignupScene extends Phaser.Scene{
     
     create(){
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.scrltop = this.add.image(400,150,'scroll-top');
         this.scrltop.scale = 0.8;
         this.scrlcontent1 = this.add.image(400,220,'scroll-content');
@@ -33,12 +34,18 @@ class SignupScene extends Phaser.Scene{
 
         login.on("pointerdown", () =>{
             document.querySelector("form").remove();
-            this.scene.start("LoginScene");
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("LoginScene");
+            })
         });
         
         backBtn.on("pointerdown", () =>{
             document.querySelector("form").remove();
-            this.scene.start("MainMenuScene");
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("MainMenuScene");
+            })
         });
 
         signupBtn.on("pointerdown", async() => {
@@ -48,7 +55,10 @@ class SignupScene extends Phaser.Scene{
 
             await signup(username, email, password);
             document.querySelector("form").remove();
-            this.scene.start("MainMenuScene");
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("MainMenuScene");
+            })
         })
 
     }   
@@ -105,7 +115,10 @@ async function signup(username, email, password){
             return response.json();
         })
         .then(function(data) {
-            this.scene.start("LoginScene");
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("LoginScene");
+            })
         })
 }
 

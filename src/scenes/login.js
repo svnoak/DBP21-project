@@ -12,6 +12,7 @@ class LoginScene extends Phaser.Scene{
 
     create(){
         this.bg = this.add.image(0,0,'bg').setOrigin(0);
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.scrltop = this.add.image(400,150,'scroll-top');
         this.scrltop.scale = 0.8;
         this.scrlcontent1 = this.add.image(400,220,'scroll-content');
@@ -32,13 +33,20 @@ class LoginScene extends Phaser.Scene{
         loginBtn.setInteractive({ cursor: 'pointer' });
 
         signupBtn.on("pointerdown", () =>{
+            this.cameras.main.fadeOut(500, 0, 0, 0);
             document.querySelector("form").remove();
-            this.scene.start("SignupScene");
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("SignupScene");
+            })
         });
         
         backBtn.on("pointerdown", () =>{
+            this.cameras.main.fadeOut(500, 0, 0, 0);
             document.querySelector("form").remove();
-            this.scene.start("MainMenuScene");
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                
+                this.scene.start("MainMenuScene");
+            })
         });
 
         loginBtn.on("pointerdown", async () =>{
@@ -52,8 +60,11 @@ class LoginScene extends Phaser.Scene{
 
     update(){
         if( sessionStorage["userID"] ){
+            this.cameras.main.fadeOut(500, 0, 0, 0);
             document.querySelector("form").remove();
-            this.scene.start("MainMenuScene");
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("MainMenuScene");
+            })
         }
     }
 }
@@ -109,7 +120,12 @@ fetch(rqst, {
     .then( data => {
         if( data["userID"] != undefined ){
             sessionStorage.setItem("userID", data["userID"]);
-            console.log(data);
+            document.querySelector("form").remove();
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("MainMenuScene");
+            })
+            
             return true;
         }
     })

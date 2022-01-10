@@ -10,6 +10,7 @@ class UpgradeScene extends Phaser.Scene{
         //Laddar bakgrund bilden
         this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
 
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         //Laddar Health Potion icon
         this.load.image('healthPotion', './assets/player/health_potion.png');
         //Laddar Speed Potion icon
@@ -1706,7 +1707,10 @@ class UpgradeScene extends Phaser.Scene{
         });
         backToPause.on("pointerdown", () => {
             //Starts the menu scene
-            this.scene.start("PauseScene", this.skillData);
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("PauseScene", this.skillData);
+            })
         });
 
         resumeGameButton.setInteractive({ cursor: 'pointer' });

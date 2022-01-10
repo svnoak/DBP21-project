@@ -59,6 +59,7 @@ class GameScene extends Phaser.Scene{
     // Create game world 
     // Sätts igång när preload() är uppladdad
     create(){
+        this.cameras.main.fadeIn(100, 0, 0, 0);
         //Skapar spelplanen
         let bg = this.add.image(0,0,'background').setOrigin(0);
         bg.setScale(2.1);
@@ -672,7 +673,10 @@ var HasturProjectile = new Phaser.Class({
             this.scene.stop("GameScene");
             
             //Starts gameover scene
-            this.scene.start('GameoverScene', this.startData);
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start('GameoverScene', this.startData);
+            });
         }
         
         //Uppdaterar score

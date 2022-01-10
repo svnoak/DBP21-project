@@ -5,8 +5,14 @@ class LoadingScene extends Phaser.Scene{
         super('LoadingScene');
     }
 
-    async create(){
+    preload(){
+        this.load.image('bg', './assets/tilemap/backgroundPause.png');
+    }
 
+    async create(){
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
+        this.bg = this.add.image(0,0,'bg').setOrigin(0);
+        this.add.text(50, 50, "Aganjus Wrath", {font:"100px arcade"});
         let val = new Request("backend/validate.php");
     fetch(val, {
         headers: {
@@ -18,10 +24,14 @@ class LoadingScene extends Phaser.Scene{
     })
     .then( response => {
         if( response.status === 200 ){
-            this.add.text(20, 20, "Aganjus Wrath");
-            this.scene.start("MainMenuScene");
+            setTimeout( () => {
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                    this.scene.start("MainMenuScene");
+                })
+        }, 2000 )
         }else {
-            alert("Something went wrong, please try again later.");
+            this.add.text(50, 200, "Something went wrong, please try again later", {font:"100px arcade", color: 'red'});
         }
     } )
 }

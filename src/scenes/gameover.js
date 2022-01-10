@@ -13,6 +13,7 @@ class GameoverScene extends Phaser.Scene{
         //Background image for Pause Scene 
         this.bgGameOver = this.add.image(0,0,'backgroundGameover').setOrigin(0);
         this.bgGameOver.setScale(0.57);
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
 
         let gameOver = this.add.text(115, 100, "Game Over!", {font:'100px arcade'});
 
@@ -31,8 +32,11 @@ class GameoverScene extends Phaser.Scene{
             backToMenuBtn.style.setColor('white');
         });
         backToMenuBtn.on("pointerdown", ()=>{
+            this.cameras.main.fadeOut(500, 0, 0, 0);
             //Starts the menu scene
-            this.scene.start("MainMenuScene");
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("MainMenuScene");
+            })
         });
 
         ///////////////////////////////////////////////////////////////
@@ -118,7 +122,11 @@ class GameoverScene extends Phaser.Scene{
         });
         playAgainBtn.on("pointerdown", ()=>{
             //Restarts game scene
-            this.scene.start("GameScene", this.newGameData);
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("GameScene", this.newGameData);
+            })
+            
         });
     }
 }

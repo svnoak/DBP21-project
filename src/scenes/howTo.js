@@ -23,12 +23,15 @@ class HowToScene extends Phaser.Scene{
     }
     create(){
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
-
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade"});
 
         backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
-            this.scene.switch("MainMenuScene");
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.switch("MainMenuScene");
+            })
         });
 
         this.howToattack = this.add.text(520,80, 'How to attack?', {fontSize: '25px', fill: 'white'});

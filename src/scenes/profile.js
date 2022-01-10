@@ -27,39 +27,40 @@ class ProfileScene extends Phaser.Scene{
 
         let userID = sessionStorage["userID"];
 
-        let editBtn = this.add.text(500, 550, "Edit profile", {font: "20px arcade"});
-        let backBtn = this.add.text(100, 550, "Back to Menu", {font: "20px arcade"});
+        let editBtn = this.add.text(600, 450, "Edit profile", {font: "20px arcade", color: 'black'});
+        let backBtn = this.add.text(100, 450, "Back to Menu", {font: "20px arcade", color: 'black'});
 
         await renderInfo(userID, this);
 
-        let cancelBtn = this.add.text(600, 550, "Cancel", {font: "20px arcade"});
+        let cancelBtn = this.add.text(680, 450, "Cancel", {font: "20px arcade", color: 'black'});
         cancelBtn.setVisible(false);
 
         cancelBtn.setInteractive( { cursor: 'pointer' } );
         cancelBtn.on("pointerdown", () => {
-            toggleForm()
+            toggleForm();
             editBtn.text = "Edit Profile";
             cancelBtn.setVisible(false);
         });
 
         editBtn.setInteractive( {cursor:  'pointer' } );
-        editBtn.on("pointerdown", () => {
+        editBtn.on("pointerdown", async () => {
             let form = document.querySelector("#editForm");
             if( form.style.display == "none" ){
                 editBtn.text = "Save";
                 cancelBtn.setVisible(true);
             }else{
-                submitChanges(userID,this);
+                await submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
                 cancelBtn.setVisible(false);
 		document.querySelector('img').remove();
-	        renderInfo(userID, this);
+		renderInfo(userID, this);
             }
-            toggleForm(); 
+            toggleForm();
         })
 
         backBtn.setInteractive( { cursor: 'pointer' } );
         backBtn.on("pointerdown", () => {
+	    document.querySelector("img").remove();
 	    document.querySelector('#editForm').remove();
             this.scene.start("MainMenuScene");
         });
@@ -84,16 +85,19 @@ async function renderInfo(userID, that){
         .then( response => response.json() )
         .then( data => {
             let user = data["user"];
-	    let avatar = document.createElement("img");
+	    document.getElementById("user-avatar") ? document.getElementById("user-avatar").remove() : null;
+            that.add.text(150, 150, "Username:", {font: "20px arcade", color: "black"});
+            that.usernameDisplay = that.add.text(250, 150, user["username"], {font: "20px arcade", color: 'black'});
+            that.add.text(150, 200, "Email:", {font: "20px arcade", color: 'black'});
+            that.emailDisplay = that.add.text(250, 200, user["email"], {font: "20px arcade", color: 'black'});
+	    document.getElementById("editForm") ? null : renderEditForm(user);
+            let avatar = document.createElement("img");
+            avatar.id = "user-avatar";
             avatar.src = '/backend/databas/avatars/'+user["avatar"];
             avatar.className = "avatar";
-	    avatar.alt = "No avatar";
-	    document.querySelector('#game').append(avatar);
-            that.add.text(150, 150, "Username:", {font: "20px arcade"});
-            that.usernameDisplay = that.add.text(250, 150, user["username"], {font: "20px arcade"});
-            that.add.text(150, 200, "Email:", {font: "20px arcade"});
-            that.emailDisplay = that.add.text(250, 200, user["email"], {font: "20px arcade"});
-            renderEditForm(user); 
+            avatar.alt = "No avatar";
+            document.querySelector('#game').append(avatar);
+
     });
 }
 
@@ -151,10 +155,9 @@ function submitChanges(userID,that){
 
         fetch(req)
             .then(response => response.json())
-            .then(data => console.log(data))
             .then( d => {
-                let username = document.querySelector("#username").value
-                let email = document.querySelector("#password").value
+                let username = document.querySelector("#username").value;
+                let email = document.querySelector("#email").value;
 
                 that.usernameDisplay.text = username;
                 that.emailDisplay.text = email;

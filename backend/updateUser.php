@@ -27,7 +27,7 @@ if ($method === "POST" && isset($_FILES["avatar"])) {
     $size = $file["size"];
     $error = $file["error"];
 
-    if( $error == 0) { 
+    if( $error == 0 ) { 
     // Filen får inte vara större än ~400kb
     if ($size > (0.4 * 1000 * 10000)) {
         sendJSON("Please choose an image with a smaller size");
@@ -57,6 +57,9 @@ if ($method === "POST" && isset($_FILES["avatar"])) {
     //header("Content-Type: application/json");
     //echo json_encode(["message" => "Uploaded the file: $uniqueFilename"]);
     }
+    elseif(  $error == 4){
+    unlink($user["avatar"]);
+    } 
 else{
     sendJSON("Something went wrong, error: $error", 400);
 }

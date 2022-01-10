@@ -8,27 +8,42 @@ form > button{
 }
 
 #editForm {
-    display: flex;
+	display: flex;
 	flex-direction: column;
-    padding: 30px;
-    background-image: url("/assets/images/scrolls_content.png");
-    background-position: center;
-    background-size: contain;
-    background-repeat: repeat;
-    width: 300px;
+	padding-left: 10px;
+	background-image: url("/assets/images/scrolls_background.png");
+	background-position: center;
+	background-size: contain;
+	background-repeat: repeat;
+	width: 300px;
+	position: relative;
+	bottom: 544px;
+	left: 245px;
 }
 
-.scroll {
-	width: 100%;
-	position: absolute;
-	top: 10vh;
-	left: 30vw;
-    display: flex;
-    flex-direction: column;
+input {
+	width: 200px;
+	background-image: url("/assets/images/bar.png");
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: 0px solid transparent;
+	padding: 17px;
 }
 
-.scroll-top,
-.scroll-bottom{
-    width: 360px;
-    height: 100%;
+#avatar {
+	background-image: none;
+	position: relative;
+	left: 259px;
+	top: 164px;
+}
+
+.avatar {
+	height: 100px;
+	position: relative;
+	bottom: 430px;
+	left: 580px;
+	color: white;
+	color: black;
 }

@@ -6,10 +6,6 @@
     border: 1px solid black;
 }
 
-.avatar {
-	height: 100px;
-	position: relative;
-	top: -61vh;
-	right: -64vh;
-	color: white;
+html{
+    overflow: hidden;
 }

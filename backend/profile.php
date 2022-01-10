@@ -17,8 +17,6 @@ if ($method === "OPTIONS") {
 // Alla är vällkommna
 header("Access-Control-Allow-Origin: *");
 
-$_SESSION["loggedInId"] = 5;
-
 //Checks if the user is logged in by checking if there is a stored ID in session
 if (!isset($_SESSION["loggedInId"])) {
     //header("Location: /login.php");

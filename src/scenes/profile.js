@@ -3,16 +3,36 @@ class ProfileScene extends Phaser.Scene{
         super('ProfileScene');
     }
 
+    preload(){
+        this.load.image('background', './assets/tilemap/backgroundPause.png');
+        this.load.image('scroll-top', '/assets/images/scrolls_top.png');
+        this.load.image('scroll-content', '/assets/images/scrolls_content.png');
+        this.load.image('scroll-bottom', '/assets/images/scrolls_bottom.png');
+    }
+
     async create(){
+        this.bg = this.add.image(0,0,'background').setOrigin(0);
+        this.scrltop = this.add.image(400,50,'scroll-top');
+        this.scrltop.scale = 0.8;
+        this.scrlcontent1 = this.add.image(400,120,'scroll-content');
+        this.scrlcontent1.scale = 0.8;
+        this.scrlcontent2 = this.add.image(400,220,'scroll-content');
+        this.scrlcontent2.scale = 0.8;
+        this.scrlcontent3 = this.add.image(400,320,'scroll-content');
+        this.scrlcontent3.scale = 0.8;
+        this.scrlcontent4 = this.add.image(400,420,'scroll-content');
+        this.scrlcontent4.scale = 0.8;
+        this.scrlbottom = this.add.image(400, 500,'scroll-bottom');
+        this.scrlbottom.scale = 0.8;
 
         let userID = sessionStorage["userID"];
 
-        let editBtn = this.add.text(500, 550, "Edit profile");
-        let backBtn = this.add.text(100, 550, "Back to Menu");
+        let editBtn = this.add.text(500, 550, "Edit profile", {font: "20px arcade"});
+        let backBtn = this.add.text(100, 550, "Back to Menu", {font: "20px arcade"});
 
         await renderInfo(userID, this);
 
-        let cancelBtn = this.add.text(600, 550, "Cancel");
+        let cancelBtn = this.add.text(600, 550, "Cancel", {font: "20px arcade"});
         cancelBtn.setVisible(false);
 
         cancelBtn.setInteractive( { cursor: 'pointer' } );
@@ -24,13 +44,14 @@ class ProfileScene extends Phaser.Scene{
 
         editBtn.setInteractive( {cursor:  'pointer' } );
         editBtn.on("pointerdown", () => {
-            let form = document.querySelector(".scroll");
+            let form = document.querySelector("#editForm");
             if( form.style.display == "none" ){
                 editBtn.text = "Save";
                 cancelBtn.setVisible(true);
             }else{
                 submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
+                cancelBtn.setVisible(false);
 		document.querySelector('img').remove();
 	        renderInfo(userID, this);
             }
@@ -39,7 +60,7 @@ class ProfileScene extends Phaser.Scene{
 
         backBtn.setInteractive( { cursor: 'pointer' } );
         backBtn.on("pointerdown", () => {
-	    document.querySelector('.scroll').remove();
+	    document.querySelector('#editForm').remove();
             this.scene.start("MainMenuScene");
         });
     }
@@ -47,7 +68,7 @@ class ProfileScene extends Phaser.Scene{
 
 async function renderInfo(userID, that){
 
-    let rqst = new Request("http://localhost:7000/profile.php");
+    let rqst = new Request("backend/profile.php");
     let submit = {
         "userID": userID
     }
@@ -68,30 +89,20 @@ async function renderInfo(userID, that){
             avatar.className = "avatar";
 	    avatar.alt = "No avatar";
 	    document.querySelector('#game').append(avatar);
-            that.add.text(150, 150, "Username:");
-            that.usernameDisplay = that.add.text(250, 150, user["username"]);
-            that.add.text(150, 200, "Email:");
-            that.emailDisplay = that.add.text(250, 200, user["email"]);
+            that.add.text(150, 150, "Username:", {font: "20px arcade"});
+            that.usernameDisplay = that.add.text(250, 150, user["username"], {font: "20px arcade"});
+            that.add.text(150, 200, "Email:", {font: "20px arcade"});
+            that.emailDisplay = that.add.text(250, 200, user["email"], {font: "20px arcade"});
             renderEditForm(user); 
     });
 }
 
 function renderEditForm(user){
-    let wrapper = document.createElement("div");
-    wrapper.className = "scroll";
-    wrapper.style.display = "none";
-
-    let top = document.createElement("img");
-    top.className = "scroll-top";
-    top.src = "/assets/images/scrolls_top.png";
-
-    let bottom = document.createElement("img");
-    bottom.src = "/assets/images/scrolls_bottom.png";
-    bottom.className = "scroll-bottom";
 
     let form = document.createElement("form");
     form.id = "editForm";
     form.method = "POST";
+    form.style.display = "none";
 
     let avatar = document.createElement("input");
     avatar.type = "file";
@@ -119,13 +130,11 @@ function renderEditForm(user){
     password.id = "password";
     form.append(avatar, username, email, password);
 
-    wrapper.append(top, form, bottom);
-
-    document.querySelector("#game").append(wrapper);
+    document.querySelector("#game").append(form);
 }
 
 function toggleForm(){
-    let form = document.querySelector(".scroll");
+    let form = document.querySelector("#editForm");
     let formDisplay = form.style.display
     formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
 }
@@ -135,7 +144,7 @@ function submitChanges(userID,that){
     const form = document.getElementById("editForm");
     const formData = new FormData(form);
 
-        const req = new Request("http://localhost:7000/updateUser.php", {
+        const req = new Request("backend/updateUser.php", {
             method: "POST",
             body: formData,
         });

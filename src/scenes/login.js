@@ -4,11 +4,11 @@ class LoginScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
+        this.load.image('background', './assets/tilemap/backgroundPause.png');
     }
 
     create(){
-        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
+        this.bg = this.add.image(0,0,'background').setOrigin(0);
         let signupBtn = this.add.text(500, 550, "Don't have an account?", { font: '25px arcade' });
         let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
         let loginBtn = this.add.text(250, 350, "Login", { font: '25px arcade' });
@@ -71,7 +71,7 @@ function createLoginForm(){
 
 async function login(username, password){
 
-let rqst = new Request("http://localhost:7000/login.php");
+let rqst = new Request("backend/login.php");
 
 let data = {
     "username": username,

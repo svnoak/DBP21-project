@@ -158,13 +158,13 @@ function updateUser($id, $data) {
                 if(isset($data["username"])) {
                     $user["username"] = $data["username"];
                 }
-                if(isset($requestData["password"])) {
+                if(isset($data["password"])) {
                     $user["password"] = $data["password"];
                 }
-                if(isset($requestData["email"])) {
+                if(isset($data["email"])) {
                     $user["email"] = $data["email"];
                 }
-                if(isset($requestData["avatar"])) {
+                if(isset($data["avatar"])) {
                     $user["avatar"] = $data["avatar"];
                 }
                 $json[$index] = $user;

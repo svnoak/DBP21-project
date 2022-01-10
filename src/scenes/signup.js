@@ -93,7 +93,7 @@ async function signup(username, email, password){
             return response.json();
         })
         .then(function(data) {
-            console.log(data);
+            this.scene.start("LoginScene");
         })
 }
 

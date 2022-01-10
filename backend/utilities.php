@@ -38,8 +38,10 @@ function openJSON($fileName) {
 
 //2 SaveToJSON function, file/data argument
 function saveToJSON($fileName, $data) {
+    copy($fileName, $fileName . "_backup");
     $json = json_encode($data, JSON_PRETTY_PRINT);
     file_put_contents($fileName, $json);
+    return true;
 }
 
 //3 SendJSON function, message/httpcode argument

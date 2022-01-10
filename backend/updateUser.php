@@ -42,10 +42,10 @@ if ($method === "POST" && isset($_FILES["avatar"])) {
     // Skapa ett unikt filnamn
     $uniqueFilename = $id."_avatar";
 
-	$info = getEntryByID("databas/user.json", $id);
+	/*$info = getEntryByID("databas/user.json", $id);
 	if( isset($info["avatar"]) ){
 		unlink($info["avatar"]);
-	}
+	}*/
 
 	$user["avatar"] = "$uniqueFilename.$ext";
     // Samma filnamn som den som laddades upp

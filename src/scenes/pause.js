@@ -15,6 +15,8 @@ class PauseScene extends Phaser.Scene{
         //Background image for Pause Scene 
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
 
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
+
         //Definierar variabeln keyESC = "ESC"
         this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
@@ -45,7 +47,10 @@ class PauseScene extends Phaser.Scene{
             this.scene.stop("GameScene");
 
             //Starts the menu scene
-            this.scene.start("MainMenuScene");
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("MainMenuScene");
+            })
         });
 
         continueBtn.on("pointerover", () => {
@@ -147,7 +152,10 @@ class PauseScene extends Phaser.Scene{
         });
         restartBtn.on("pointerdown", ()=>{
             //Restarts game scene
-            this.scene.start("GameScene", this.restartData);
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("GameScene", this.restartData);
+            })
         });
 
         upgradeBtn.on("pointerover", ()=>{
@@ -160,8 +168,11 @@ class PauseScene extends Phaser.Scene{
         });
         upgradeBtn.on("pointerdown", ()=>{
             //Restarts game scene
-            this.scene.start("UpgradeScene", this.skillData);
-            this.scene.pause();
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("UpgradeScene", this.skillData);
+		this.scene.pause();
+            })
         });
     }
     update(){

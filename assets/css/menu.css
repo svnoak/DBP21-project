@@ -7,6 +7,15 @@ form > button{
     margin-top: 50px;
 }
 
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	bottom: 50px;
+}
+
 #editForm {
 	display: flex;
 	flex-direction: column;
@@ -15,12 +24,13 @@ form > button{
 	background-position: center;
 	background-size: contain;
 	background-repeat: repeat;
-	width: 300px;
+	/* width: 300px; */
 	position: relative;
-	top: 295px;
-	left: 245px;
+	top: -112px;
+	left: -33px;
 }
 
+#editForm > input,
 input {
 	width: 200px;
 	background-image: url("/assets/images/bar.png");
@@ -33,7 +43,7 @@ input {
 }
 
 #avatar {
-	background-image: none;
+	background-image: none !important;
 	position: relative;
 	left: 259px;
 	top: 164px;
@@ -42,8 +52,9 @@ input {
 .avatar {
 	width: 100px;
 	min-height: 100px;
+	max-height: 100px;
 	position: absolute;
-	top: 100px;
+	top: 200px;
 	right: 220px;
 	color: black;
 	border: 1px solid black;

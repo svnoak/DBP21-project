@@ -12,6 +12,7 @@ class ProfileScene extends Phaser.Scene{
 
     async create(){
         this.bg = this.add.image(0,0,'background').setOrigin(0);
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.scrltop = this.add.image(400,50,'scroll-top');
         this.scrltop.scale = 0.8;
         this.scrlcontent1 = this.add.image(400,120,'scroll-content');
@@ -62,7 +63,10 @@ class ProfileScene extends Phaser.Scene{
         backBtn.on("pointerdown", () => {
 	    document.querySelector("img").remove();
 	    document.querySelector('#editForm').remove();
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.scene.start("MainMenuScene");
+        })
         });
     }
 }

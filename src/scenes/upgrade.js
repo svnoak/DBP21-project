@@ -10,6 +10,7 @@ class UpgradeScene extends Phaser.Scene{
         //Laddar bakgrund bilden
         this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
 
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         //Laddar Health Potion icon
         this.load.image('healthPotion', './assets/player/health_potion.png');
         //Laddar Speed Potion icon
@@ -47,7 +48,7 @@ class UpgradeScene extends Phaser.Scene{
         this.coins.setShadow(2, 2, '#000000', 0);
 
         //Skill notification
-        this.info = this.add.text(230, 100, '', {fontSize: '25px', fill: 'white', font: "arcade"});
+        this.info = this.add.text(230, 100, '', {fill: 'white', font: "25px arcade"});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
 
@@ -1706,7 +1707,10 @@ class UpgradeScene extends Phaser.Scene{
         });
         backToPause.on("pointerdown", () => {
             //Starts the menu scene
-            this.scene.start("PauseScene", this.skillData);
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.scene.start("PauseScene", this.skillData);
+            })
         });
 
         resumeGameButton.setInteractive({ cursor: 'pointer' });

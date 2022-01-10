@@ -20,10 +20,26 @@ class HowToScene extends Phaser.Scene{
         this.load.image('lightningIcon', './assets/player/lightningSkillIcon.png');
 
         this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
+
+        this.load.image('scroll-top', '/assets/images/scrolls_top.png');
+        this.load.image('scroll-content', '/assets/images/scrolls_content.png');
+        this.load.image('scroll-bottom', '/assets/images/scrolls_bottom.png');
     }
     create(){
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
         this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+        this.scrltop = this.add.image(400,100,'scroll-top');
+        this.scrltop.scale = 0.8;
+        this.scrlcontent1 = this.add.image(400,170,'scroll-content');
+        this.scrlcontent1.scale = 0.8;
+        this.scrlcontent2 = this.add.image(400,270,'scroll-content');
+        this.scrlcontent2.scale = 0.8;
+        this.scrlcontent3 = this.add.image(400,370,'scroll-content');
+        this.scrlcontent3.scale = 0.8;
+        this.scrlbottom = this.add.image(400, 450,'scroll-bottom');
+        this.scrlbottom.scale = 0.8;
+
         let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade"});
 
         backBtn.setInteractive({ cursor: 'pointer' });

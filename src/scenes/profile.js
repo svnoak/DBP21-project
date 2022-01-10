@@ -12,7 +12,7 @@ class ProfileScene extends Phaser.Scene{
 
         await renderInfo(userID, this);
 
-        editBtn.setInteractive();
+        editBtn.setInteractive( {cursor:  'pointer' } );
         editBtn.on("pointerdown", () => {
             let form = document.querySelector("#editForm");
             if( form.style.display == "none" ){
@@ -26,7 +26,7 @@ class ProfileScene extends Phaser.Scene{
             toggleForm(); 
         })
 
-        backBtn.setInteractive();
+        backBtn.setInteractive( { cursor: 'pointer' } );
         backBtn.on("pointerdown", () => {
 	    document.querySelector('img').remove();
 	    document.querySelector('#editForm').remove();

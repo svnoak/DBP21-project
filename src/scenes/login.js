@@ -64,11 +64,8 @@ class LoginScene extends Phaser.Scene{
 
     update(){
         if( sessionStorage["userID"] ){
-            this.cameras.main.fadeOut(500, 0, 0, 0);
             document.querySelector("form").remove();
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                this.scene.start("MainMenuScene");
-            })
+            this.scene.start("MainMenuScene");
         }
     }
 }

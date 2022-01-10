@@ -136,46 +136,49 @@ function createUser($username, $password, $email, $avatar) {
 
 //8 updateUser function, id/data argument
 function updateUser($id, $data) {
-    //Fetching data from database
-    $json = openJSON("databas/user.json");
-    //Setting necessary variables
-    $found = false;
-    $foundUser = null;
+    $filePath = "databas/user.json";
+    if(file_exists($filePath)) {
+        $json = openJSON("$filePath");
 
-    //Looping through users to find the one with given ID and change it's content
-    foreach($json as $index => $user) {
-        if($user["id"] == $id) {
-            $found = true;
-            if(isset($data["username"])) {
-                $user["username"] = $data["username"];
+        $found = false;
+        $foundUser = null;
+
+        foreach($json as $index => $user) {
+            if($user["id"] == $id) {
+                $found = true;
+                if(isset($data["username"])) {
+                    $user["username"] = $data["username"];
+                }
+                if(isset($requestData["password"])) {
+                    $user["password"] = $data["password"];
+                }
+                if(isset($requestData["email"])) {
+                    $user["email"] = $data["email"];
+                }
+                if(isset($requestData["avatar"])) {
+                    $user["avatar"] = $data["avatar"];
+                }
+                $json[$index] = $user;
+                break;
             }
-            if(isset($data["password"])) {
-                $user["password"] = $data["password"];
-            }
-            if(isset($data["email"])) {
-                $user["email"] = $data["email"];
-            }
-            if(isset($data["avatar"])) {
-                $user["avatar"] = $data["avatar"];
-            }
-            $json[$index] = $user;
-            break;
         }
-    }
 
-    //If the requested ID is invalid
-    if($found === false) {
+        if($found === false) {
+            sendJSON(
+                ["message" => "This user $id does not exist"],
+                404
+        );
+        exit();
+        }
+
+        saveToJSON("databas/user.json", $json);
+        sendJSON(["message" => "User with $id has been changed in user.json"], 200);
+    } else {
         sendJSON(
-            ["message" => "This user $id does not exist"],
+            ["message" => "File does not exist"],
             404
-    );
-	exit();
+        );
     }
-
-    //Saving new data to the database
-    saveToJSON("databas/user.json", $json);
-    //Giving the user a response that the information has been saved
-    sendJSON(["message" => "User with $id has been changed in user.json"], 200);
 }
 
 //9 authenticateUser function, username/password argument

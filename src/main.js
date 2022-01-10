@@ -24,7 +24,7 @@ const config = {
         }
     },
     scene:[
-//        LoadingScene,
+        LoadingScene,
         MainMenuScene,
         ProfileScene,
         SigninScene,

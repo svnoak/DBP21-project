@@ -53,8 +53,13 @@ class LoginScene extends Phaser.Scene{
             let username = document.querySelector("#username").value;
             let password = document.querySelector("#password").value;
 
-            await login(username, password);
-            
+            let success = await login(username, password);
+            if (success){
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                    this.scene.start("MainMenuScene");
+                })
+            }
         })
     }
 
@@ -120,11 +125,11 @@ fetch(rqst, {
     .then( data => {
         if( data["userID"] != undefined ){
             sessionStorage.setItem("userID", data["userID"]);
-            document.querySelector("form").remove();
+            /* document.querySelector("form").remove();
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.scene.start("MainMenuScene");
-            })
+            }) */
             
             return true;
         }

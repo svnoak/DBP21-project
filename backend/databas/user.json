@@ -26,5 +26,19 @@
         "email": "buddy@email.com",
         "avatar": "4_avatar.png",
         "id": 4
+    },
+    {
+        "username": "kim",
+        "password": "12345",
+        "email": "kim@siebeneicher.se",
+        "avatar": "Placeholder",
+        "id": 5
+    },
+    {
+        "username": "torsten",
+        "password": "12345",
+        "email": "torsten@email.com",
+        "avatar": "Placeholder",
+        "id": 6
     }
 ]

@@ -29,16 +29,12 @@ class HowToScene extends Phaser.Scene{
         this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
-        this.scrltop = this.add.image(400,100,'scroll-top');
-        this.scrltop.scale = 0.8;
-        this.scrlcontent1 = this.add.image(400,170,'scroll-content');
-        this.scrlcontent1.scale = 0.8;
-        this.scrlcontent2 = this.add.image(400,270,'scroll-content');
-        this.scrlcontent2.scale = 0.8;
-        this.scrlcontent3 = this.add.image(400,370,'scroll-content');
-        this.scrlcontent3.scale = 0.8;
+        this.scrltop = this.add.image(400,340,'scroll-top');
+        this.scrltop.scale = 0.9;
+        this.scrlcontent1 = this.add.image(400,410,'scroll-content');
+        this.scrlcontent1.scaleX = 0.9;
         this.scrlbottom = this.add.image(400, 450,'scroll-bottom');
-        this.scrlbottom.scale = 0.8;
+        this.scrlbottom.scale = 0.9;
 
         let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade"});
 
@@ -175,7 +171,7 @@ class HowToScene extends Phaser.Scene{
         ////////////////////////////////////////////////////////////////////////////////
                                             //Skills        
 
-        this.skillInfos = this.add.text(375,330, 'Skills', {fontSize: '25px', fill: 'white'});
+        this.skillInfos = this.add.text(375,330, 'Skills', {font: '25px arcade', fill: 'black'});
         this.add.text(10,370, 'Aganju has 4 skills and they are locked in the beginning! All skills are upgradable and', {fontSize: '15px', fill: 'black'});
         this.add.text(10,395, 'each skill has a uniqe damage and cost. Regenaration gives you health for every 10 sec.', {fontSize: '15px', fill: 'black'});
         this.add.text(10,420, 'You can run faster with speedBoost ability. You can burn or shock the enemies with', {fontSize: '15px', fill: 'black'});

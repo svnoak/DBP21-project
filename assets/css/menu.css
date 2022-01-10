@@ -7,6 +7,15 @@ form > button{
     margin-top: 50px;
 }
 
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	bottom: 50px;
+}
+
 #editForm {
 	display: flex;
 	flex-direction: column;
@@ -21,6 +30,9 @@ form > button{
 	left: 245px;
 }
 
+
+
+#editForm > input,
 input {
 	width: 200px;
 	background-image: url("/assets/images/bar.png");

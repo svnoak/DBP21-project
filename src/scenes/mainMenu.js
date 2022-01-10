@@ -86,15 +86,15 @@ class MainMenuScene extends Phaser.Scene {
 
 
         let startGameBtn = this.add.text(275, 100, "Start Game", {font: "50px arcade"});
-        let leaderboardBtn = this.add.text(100, 560, "Leaderboard", {font: "20px arcade"});
+        //let leaderboardBtn = this.add.text(100, 560, "Leaderboard", {font: "20px arcade"});
         let howToBtn = this.add.text(350, 225, "How To", {font: "30px arcade"});
 
-        let aboutBtn = this.add.text(650, 560, "About", {font: "20px arcade"});
+        //let aboutBtn = this.add.text(650, 560, "About", {font: "20px arcade"});
 
         startGameBtn.setInteractive({ cursor: 'pointer' });
-        leaderboardBtn.setInteractive({ cursor: 'pointer' });
+        //leaderboardBtn.setInteractive({ cursor: 'pointer' });
         
-        aboutBtn.setInteractive({ cursor: 'pointer' });
+        //aboutBtn.setInteractive({ cursor: 'pointer' });
         howToBtn.setInteractive({ cursor: 'pointer' });
 
         //Data to start game with // Data for skills
@@ -179,7 +179,7 @@ class MainMenuScene extends Phaser.Scene {
             startGameBtn.style.setColor('white');
         })
 
-        leaderboardBtn.on("pointerdown", ()=> {
+        /* leaderboardBtn.on("pointerdown", ()=> {
             this.scene.start("LeaderboardScene");
         })
         leaderboardBtn.on("pointerover", () => {
@@ -187,9 +187,9 @@ class MainMenuScene extends Phaser.Scene {
         })
         leaderboardBtn.on("pointerout", () => {
             leaderboardBtn.style.setColor('white');
-        })
+        }) */
 
-        aboutBtn.on("pointerdown", ()=> {
+        /* aboutBtn.on("pointerdown", ()=> {
             this.scene.start("AboutScene");
         })
         aboutBtn.on("pointerover", () => {
@@ -197,7 +197,7 @@ class MainMenuScene extends Phaser.Scene {
         })
         aboutBtn.on("pointerout", () => {
             aboutBtn.style.setColor('white');
-        })
+        }) */
 
         howToBtn.on("pointerdown", ()=> {
             this.scene.start("HowToScene");

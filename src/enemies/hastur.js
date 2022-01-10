@@ -45,9 +45,92 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
         // | | | | | | |
         // v v v v v v v
 
-        this.interval = setInterval( () =>{
+        this.wallCollide = setInterval( () =>{
             enemyMove(hastur,'hastur');
         },Phaser.Math.Between(hastur.wallCollTime + 3000, hastur.wallCollTime + 16000) )
+
+
+        this.shoot = setInterval( () =>{
+
+            // amount of hasturs on playground
+            let amount = scene.hasturs.children.entries.length;
+
+            let frequency = amount <= 4 ? 1 : 2;
+            
+            let range = amount <= 5 ? 50 : 150;
+
+            // is hastur within range?
+            let withinX = hastur.x < scene.aganju.x + range 
+            && hastur.x > scene.aganju.x - range 
+            ? true : false; 
+    
+            let withinY = hastur.y < scene.aganju.y + range
+            ? true : false; 
+            
+            if(withinY && withinY){
+                // do not shoot
+            } else {
+
+                let shootProjectile = Phaser.Math.Between(0, frequency);
+                if(shootProjectile == 0){
+                    var projectileOne = scene.hasturProjectiles.get();
+                    // var projectileTwo = scene.hasturProjectiles.get();
+
+                    if(projectileOne){
+                        let projOneX = scene.aganju.x;
+                        let projTwoX = scene.aganju.x;
+                        let projOneY = scene.aganju.y;
+                        let projTwoY = scene.aganju.y;
+
+                        let inc = 50;
+                        let dubInc= inc * 2;
+
+                        // // if hastur is north-west of aganju
+                        // if(hastur.x <= scene.aganju.x && hastur.y < scene.aganju.y){
+                        //     projOneX += dubInc;
+                        //     projOneY -= inc;
+                        //     projTwoX -= dubInc;
+                        //     projTwoY += inc;
+                        // }
+
+                        // // if hastur is north-east of aganju
+                        // if(hastur.x >= scene.aganju.x && hastur.y < scene.aganju.y){
+                        //     projOneX += dubInc;
+                        //     projOneY -= inc;
+                        //     projTwoX -= dubInc;
+                        //     projTwoY -= inc;
+                        // }
+
+                        // //if hastur is south-east of aganju
+                        // if(hastur.x > scene.aganju.x && hastur.y >= scene.aganju.y){
+                        //     projOneX -= dubInc;
+                        //     projOneY += inc;
+                        //     projTwoX -= dubInc;
+                        //     projTwoY -= inc;
+                        // }
+                        
+                        // // if hastur is south-west of aganju
+                        // if(hastur.x < scene.aganju.x && hastur.y >= scene.aganju.y){
+                        //     projOneX += dubInc;
+                        //     projOneY += inc;
+                        //     projTwoX += dubInc;
+                        //     projTwoY -= inc;
+                        // }
+
+
+                        // projectile one
+                        projectileOne.fire(hastur.x, hastur.y, projOneX, projOneY);
+                        // console.log('shot one')
+                        // projectile two
+                        // projectileTwo.fire(hastur.x, hastur.y, projTwoX, projTwoY);
+
+
+                    }
+                } 
+            }
+
+        }, 700);
+
         
         scene.physics.world.on('worldbounds', (obj) =>{
             //only the hastur that collided will change direction
@@ -112,14 +195,19 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                         thisHastur.damage = 25;
                     }, 2000);
 
-                    //Sätter tint (red)
-                    hastur.setTint(0xff00ff);
+                    if(hastur.health <= 30){
+                        //Sätter tint (black)
+                        hastur.setTint(0x8E8E8E);
+                    }else{
+                          //Sätter tint (black)
+                        hastur.setTint(0x8E8E8E);
 
-                    setTimeout(() => {
-                        //Clear tint
-                        hastur.clearTint();
-                    }, 1000);
-
+                        setTimeout(() => {
+                            //Clear tint
+                            hastur.clearTint();
+                        }, 1000);
+                    }
+                  
                     //Disables propogation
                     scene.spacebar.isDown = false;
 
@@ -139,16 +227,21 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 
                 if( thisHastur.id ==  hastur.id){
 
-                    //Sätter tint (red)
-                    hastur.setTint(0xff00ff);
-
-                    setTimeout(() => {
-                        //Clear tint
-                        hastur.clearTint();
-                    }, 1000);
-
                     hastur.health -= 10;
                     thisFireball.destroy();
+
+                    if(hastur.health <= 40){
+                        //Sätter tint (blue)
+                        hastur.setTint(0x990000);
+                    }else{
+                        //Sätter tint (red)
+                        hastur.setTint(0x990000);
+
+                        setTimeout(() => {
+                            //Clear tint
+                            hastur.clearTint();
+                        }, 1000);
+                    }
 
                     if(hastur.health <= 0){
                         scene.startData.score = scene.startData.score + 25;
@@ -169,14 +262,19 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                 if( thisHastur.id ==  hastur.id){
                     hastur.health -= thisLightning.damage;
 
-                    //Sätter tint (red)
-                    hastur.setTint(0xff00ff);
+                    if(hastur.health < 50){
+                        //Sätter tint (blue)
+                        hastur.setTint(0x104FF4);
+                    }else{
+                        //Sätter tint (blue)
+                        hastur.setTint(0x104FF4);
 
-                    setTimeout(() => {
-                        //Clear tint
-                        hastur.clearTint();
-                    }, 1000);
-
+                        setTimeout(() => {
+                            //Clear tint
+                            hastur.clearTint();
+                        }, 1500);
+                    }
+                    
                     thisLightning.x = -150;
                     thisLightning.y = -150;
 
@@ -194,23 +292,12 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
 
         })
 
-        // CODE FROM TUTORIAL
-        // hastur.randMoveEvent = scene.time.addEvent({
-        //     // wallCollTime prevents hastur from randomly 
-        //     // changing direction immediately after bumping wall
-        //     delay: Phaser.Math.Between(wallCollTime + 4000, wallCollTime + 8000),
-        //     callback: () => {
-        //         enemyMove(hastur, 'hastur');
-        //         console.log('random turn');
-        //         // console.log( 'random direction change of hastur:' + hastur.id );
-        //     },
-        //     loop:true
-        // });
     }
 
     destroy(){
         console.log('hastur '+ this.id +' died');
-        clearInterval(this.interval);
+        clearInterval(this.wallCollide);
+        clearInterval(this.shoot);
         super.destroy(this);
     }
 
@@ -234,6 +321,15 @@ export default class Hastur extends Phaser.Physics.Arcade.Sprite{
                break 
         }
     }
+
+
+    
+
+
+
+    
 }
+
+
 
 

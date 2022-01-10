@@ -2,23 +2,28 @@ class LeaderboardScene extends Phaser.Scene{
     constructor() {
         super('LeaderboardScene');
     }
+    
+    preload(){
+        this.load.image('backgroundPause', './assets/tilemap/backgroundPause.png');
+    }
 
     create(){
-        let backBtn = this.add.text(100, 550, "Back to Menu");
+        this.bgPause = this.add.image(0,0,'backgroundPause').setOrigin(0);
+        let backBtn = this.add.text(100, 550, "Back to Menu", { font: '25px arcade' });
 
-        backBtn.setInteractive();
+        backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
             this.scene.start("MainMenuScene");
         });
-	    this.add.text(150, 100, "NAME");
-	    this.add.text(350, 100, "HIGHSCORE");
+	    this.add.text(200, 50, "NAME", { font: '40px arcade' });
+	    this.add.text(400, 50, "HIGHSCORE", { font: '40px arcade' });
 	    renderLeaderboard(this);
     }
 }
 
     async function renderLeaderboard(that){
 
-    let rqst = new Request("/backend/leaderboard.php");
+    let rqst = new Request("http://localhost:7000/leaderboard.php");
 
     fetch(rqst, {
         headers: {

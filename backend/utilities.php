@@ -177,7 +177,6 @@ function updateUser($id, $data) {
             404
         );
     }
-    
 }
 
 //9 authenticateUser function, username/password argument

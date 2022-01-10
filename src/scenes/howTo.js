@@ -28,7 +28,7 @@ class HowToScene extends Phaser.Scene{
 
         backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
-            this.scene.start("MainMenuScene");
+            this.scene.switch("MainMenuScene");
         });
 
         this.howToattack = this.add.text(520,80, 'How to attack?', {fontSize: '25px', fill: 'white'});
@@ -51,7 +51,7 @@ class HowToScene extends Phaser.Scene{
             repeat: 0
         });
 
-        setInterval(() => {
+        let interval = setInterval(() => {
             this.sword.anims.play("sword_right");
         }, 3000);
 
@@ -120,7 +120,7 @@ class HowToScene extends Phaser.Scene{
         //Plays Aganjus animations to show how to controll him
         setTimeout(() => {
             this.textW.setColor("red");
-            this.aganju.anims.play("up");
+            this.aganju.anims.play("up");  
             setTimeout(() => {
                 this.aganju.anims.stop();
 
@@ -128,7 +128,6 @@ class HowToScene extends Phaser.Scene{
                 this.textD.setColor("red");
 
                 this.aganju.anims.play("right");
-
                 setTimeout(() => {
                     this.aganju.anims.stop();
 
@@ -136,7 +135,6 @@ class HowToScene extends Phaser.Scene{
                     this.textS.setColor("red");
 
                     this.aganju.anims.play("down");
-
                     setTimeout(() => {
                         this.aganju.anims.stop();
                     
@@ -152,6 +150,7 @@ class HowToScene extends Phaser.Scene{
                     }, 5000);
                 }, 5000);
             }, 5000);
+        
         }, 1000);
 
         ////////////////////////////////////////////////////////////////////////////////

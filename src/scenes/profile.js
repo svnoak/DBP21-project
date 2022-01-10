@@ -12,11 +12,22 @@ class ProfileScene extends Phaser.Scene{
 
         await renderInfo(userID, this);
 
+        let cancelBtn = this.add.text(600, 550, "Cancel");
+        cancelBtn.setVisible(false);
+
+        cancelBtn.setInteractive( { cursor: 'pointer' } );
+        cancelBtn.on("pointerdown", () => {
+            toggleForm()
+            editBtn.text = "Edit Profile";
+            cancelBtn.setVisible(false);
+        });
+
         editBtn.setInteractive( {cursor:  'pointer' } );
         editBtn.on("pointerdown", () => {
-            let form = document.querySelector("#editForm");
+            let form = document.querySelector(".scroll");
             if( form.style.display == "none" ){
                 editBtn.text = "Save";
+                cancelBtn.setVisible(true);
             }else{
                 submitChanges(userID,this);
                 editBtn.text = "Edit Profile";
@@ -28,8 +39,7 @@ class ProfileScene extends Phaser.Scene{
 
         backBtn.setInteractive( { cursor: 'pointer' } );
         backBtn.on("pointerdown", () => {
-	    document.querySelector('img').remove();
-	    document.querySelector('#editForm').remove();
+	    document.querySelector('.scroll').remove();
             this.scene.start("MainMenuScene");
         });
     }
@@ -37,7 +47,7 @@ class ProfileScene extends Phaser.Scene{
 
 async function renderInfo(userID, that){
 
-    let rqst = new Request("backend/profile.php");
+    let rqst = new Request("http://localhost:7000/profile.php");
     let submit = {
         "userID": userID
     }
@@ -67,9 +77,20 @@ async function renderInfo(userID, that){
 }
 
 function renderEditForm(user){
+    let wrapper = document.createElement("div");
+    wrapper.className = "scroll";
+    wrapper.style.display = "none";
+
+    let top = document.createElement("img");
+    top.className = "scroll-top";
+    top.src = "/assets/images/scrolls_top.png";
+
+    let bottom = document.createElement("img");
+    bottom.src = "/assets/images/scrolls_bottom.png";
+    bottom.className = "scroll-bottom";
+
     let form = document.createElement("form");
     form.id = "editForm";
-    form.style.display = "none";
     form.method = "POST";
 
     let avatar = document.createElement("input");
@@ -98,13 +119,14 @@ function renderEditForm(user){
     password.id = "password";
     form.append(avatar, username, email, password);
 
-    document.querySelector("#game").append(form);
+    wrapper.append(top, form, bottom);
+
+    document.querySelector("#game").append(wrapper);
 }
 
 function toggleForm(){
-    let form = document.querySelector("#editForm");
+    let form = document.querySelector(".scroll");
     let formDisplay = form.style.display
-    console.log(formDisplay);
     formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
 }
 
@@ -113,7 +135,7 @@ function submitChanges(userID,that){
     const form = document.getElementById("editForm");
     const formData = new FormData(form);
 
-        const req = new Request("backend/updateUser.php", {
+        const req = new Request("http://localhost:7000/updateUser.php", {
             method: "POST",
             body: formData,
         });

@@ -171,8 +171,8 @@ class PauseScene extends Phaser.Scene{
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.scene.start("UpgradeScene", this.skillData);
+		this.scene.pause();
             })
-            this.scene.pause();
         });
     }
     update(){

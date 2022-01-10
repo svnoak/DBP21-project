@@ -36,7 +36,7 @@ class HowToScene extends Phaser.Scene{
         this.scrlbottom = this.add.image(400, 450,'scroll-bottom');
         this.scrlbottom.scale = 0.9;
 
-        let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade"});
+        let backBtn = this.add.text(150, 50, "Back to Menu", {font: "25px arcade", color: 'white'});
 
         backBtn.setInteractive({ cursor: 'pointer' });
         backBtn.on("pointerdown", () =>{
@@ -45,6 +45,13 @@ class HowToScene extends Phaser.Scene{
                 this.scene.switch("MainMenuScene");
             })
         });
+	backBtn.on("pointover", () => {
+		backBtn.style.setColor('black');
+	})
+	
+	backBtn.on("pointerout", () => {
+		backBtn.style.setColor('white');
+	})
 
         this.howToattack = this.add.text(520,80, 'How to attack?', {fontSize: '25px', fill: 'white'});
         this.swordAttack = this.add.text(450,130, 'Sword attack', {fontSize: '15px', fill: 'white'});

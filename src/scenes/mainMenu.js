@@ -31,9 +31,9 @@ class MainMenuScene extends Phaser.Scene {
         // Based on your game size, it may "stretch" and distort.
         let isLoggedIn = sessionStorage["userID"];
         if( isLoggedIn ) {
-            let profileBtn = this.add.text(330, 300, "Profile", {font: "30px arcade", color: 'black'});
+            let profileBtn = this.add.text(335, 300, "Profile", {font: "30px arcade", color: 'black'});
             profileBtn.setShadow(2, 2, 'white', 0);
-            let logoutBtn = this.add.text(330, 375, "Logout", {font: "30px arcade", color: 'black'});
+            let logoutBtn = this.add.text(345, 375, "Logout", {font: "30px arcade", color: 'black'});
             logoutBtn.setShadow(2, 2, 'white', 0);
 
             profileBtn.setInteractive({ cursor: 'pointer' });

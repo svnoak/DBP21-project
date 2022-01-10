@@ -21,7 +21,7 @@
         "id": 3
     },
     {
-        "username": "tads",
+        "username": "buddy",
         "password": "12345",
         "email": "buddy@email.com",
         "avatar": "4_avatar.png",
@@ -35,17 +35,10 @@
         "id": 5
     },
     {
-        "username": "kim",
-        "password": "hello",
-        "email": "m@m.com",
-        "avatar": "6_avatar.png",
-        "id": 6
-    },
-    {
-        "username": "Kim",
+        "username": "torsten",
         "password": "12345",
-        "email": "kim@demo.se",
+        "email": "torsten@email.com",
         "avatar": "Placeholder",
-        "id": 7
+        "id": 6
     }
 ]

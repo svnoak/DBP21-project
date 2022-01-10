@@ -47,7 +47,7 @@ class UpgradeScene extends Phaser.Scene{
         this.coins.setShadow(2, 2, '#000000', 0);
 
         //Skill notification
-        this.info = this.add.text(230, 100, '', {fontSize: '25px', fill: 'white', font: "arcade"});
+        this.info = this.add.text(230, 100, '', {fill: 'white', font: "25px arcade"});
         this.info.setShadow(2, 2, '#000000', 0);
         this.info.setVisible(false);
 

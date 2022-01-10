@@ -18,7 +18,7 @@ class LoadingScene extends Phaser.Scene{
     })
     .then( response => {
         if( response.status === 200 ){
-            this.add.text(20, 20, "Loading game");
+            this.add.text(20, 20, "Aganjus Wrath");
             this.scene.start("MainMenuScene");
         }else {
             alert("Something went wrong, please try again later.");

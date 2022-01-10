@@ -10,11 +10,18 @@
 	align-items: center;
 }
 
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 canvas{
 	position: absolute;
-	z-index: -1;
 }
 
 html{
     overflow: hidden;
+    background-color: black;
 }

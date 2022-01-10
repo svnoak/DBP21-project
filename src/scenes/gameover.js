@@ -7,20 +7,20 @@ class GameoverScene extends Phaser.Scene{
         this.endData = data;
     }
     preload(){
-        this.load.image('backgroundGameover', './assets/tilemap/backgroundGameover.png');
+        this.load.image('backgroundGameover', './assets/tilemap/backgroundGameOver.png');
     }
     create(){
         //Background image for Pause Scene 
         this.bgGameOver = this.add.image(0,0,'backgroundGameover').setOrigin(0);
         this.bgGameOver.setScale(0.57);
 
-        let gameOver = this.add.text(115, 100, "Game Over!", {font:'100px'});
+        let gameOver = this.add.text(115, 100, "Game Over!", {font:'100px arcade'});
 
-        let endScore = this.add.text(255, 250, "Your Score: ", {font:'30px'});
+        let endScore = this.add.text(255, 250, "Your Score: ", {font:'30px arcade'});
         endScore.text = 'Your Score: ' + this.endData.score;
 
-        let backToMenuBtn = this.add.text(325, 325, "Back to Menu", {font:'20px', color:'white'});
-        let playAgainBtn = this.add.text(339, 375, "Play Again", {font:'20px', color:'white'});
+        let backToMenuBtn = this.add.text(325, 325, "Back to Menu", {font:'20px arcade', color:'white'});
+        let playAgainBtn = this.add.text(339, 375, "Play Again", {font:'20px arcade', color:'white'});
         
         //Back to menu button
         backToMenuBtn.setInteractive();

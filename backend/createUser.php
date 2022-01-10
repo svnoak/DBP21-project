@@ -26,12 +26,12 @@ $email = $requestData["email"];
 $avatar = "Placeholder";
 
 if(!empty($username && $password && $email)) {
-    createUser(
+createUser(
         $username,
         $password,
         $email,
         $avatar
-    );
+);
     sendJSON("Created user", 200);
     exit();
 } else {

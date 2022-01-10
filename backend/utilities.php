@@ -40,8 +40,11 @@ function openJSON($fileName) {
 function saveToJSON($fileName, $data) {
     copy($fileName, $fileName . "_backup");
     $json = json_encode($data, JSON_PRETTY_PRINT);
-    file_put_contents($fileName, $json);
-    return true;
+    if (file_put_contents($fileName, $json) ) {
+    sendJSON("Successfully saved");
+    } else{
+    sendJSON("Writing to file failed", 500);
+    }
 }
 
 //3 SendJSON function, message/httpcode argument
@@ -120,7 +123,13 @@ function createUser($username, $password, $email, $avatar) {
         "password" => $password,
         "email" => $email,
         "avatar" => $avatar
-    ];
+];
+
+    foreach($data as $user) {
+	    if ($user["username"] == $username) {
+		    return false;
+	    }
+    }
     //Creating an ID for the new user
     $highestId = 0;
     foreach($data as $user) {

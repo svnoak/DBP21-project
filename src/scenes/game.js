@@ -671,12 +671,7 @@ var HasturProjectile = new Phaser.Class({
         if(this.startData.lives == -1){
             //Stops the game scene
             this.scene.stop("GameScene");
-            
-            //Starts gameover scene
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                this.scene.start('GameoverScene', this.startData);
-            });
+            this.scene.start('GameoverScene', this.startData);
         }
         
         //Uppdaterar score

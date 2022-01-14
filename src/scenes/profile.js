@@ -46,7 +46,7 @@ class ProfileScene extends Phaser.Scene{
         editBtn.setInteractive( {cursor:  'pointer' } );
         editBtn.on("pointerdown", async () => {
             let form = document.querySelector("#editForm");
-            if( form.style.display == "none" ){
+            if( form.style.zIndex == -10 ){
                 editBtn.text = "Save";
                 cancelBtn.setVisible(true);
             }else{
@@ -144,7 +144,7 @@ function renderEditForm(user){
 
 function toggleForm(){
     let form = document.querySelector("#editForm");
-    let formDisplay = form.style.zIndex
+    let formDisplay = form.style.zIndex;
     formDisplay == 0 ? form.style.zIndex = -10 : form.style.zIndex = 0;
 }
 

@@ -110,7 +110,8 @@ function renderEditForm(user){
     let form = document.createElement("form");
     form.id = "editForm";
     form.method = "POST";
-    form.style.display = "none";
+    form.style.display = "flex";
+    form.style.zIndex = -10;
 
     let avatar = document.createElement("input");
     avatar.type = "file";
@@ -143,8 +144,8 @@ function renderEditForm(user){
 
 function toggleForm(){
     let form = document.querySelector("#editForm");
-    let formDisplay = form.style.display
-    formDisplay == "none" ? form.style.display = "flex" : form.style.display = "none";
+    let formDisplay = form.style.zIndex
+    formDisplay == 0 ? form.style.zIndex = -10 : form.style.zIndex = 0;
 }
 
 function submitChanges(userID,that){

@@ -13,6 +13,7 @@ class LoadingScene extends Phaser.Scene{
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.bg = this.add.image(0,0,'bg').setOrigin(0);
         this.add.text(50, 50, "Aganjus Wrath", {font:"100px arcade"});
+        this.add.text(320, 250, "A Demo", {font:"50px arcade"});
         let val = new Request("backend/validate.php");
     fetch(val, {
         headers: {

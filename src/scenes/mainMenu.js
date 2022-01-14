@@ -136,11 +136,11 @@ class MainMenuScene extends Phaser.Scene {
         //Data to start game with // Data for skills
 
         //Total coins
-        let totalCoins = 0;
+        let totalCoins = 9001;
         //Score
         let score = 0;
         //Lives
-        let lives = 3;
+        let lives = 0;
 
         //Regeneration skill learned
         let regenerationLearned = false;

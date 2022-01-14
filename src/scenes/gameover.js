@@ -15,16 +15,16 @@ class GameoverScene extends Phaser.Scene{
         this.bgGameOver.setScale(0.57);
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
-        let gameOver = this.add.text(115, 100, "Game Over!", {font:'100px arcade'});
+        let gameOver = this.add.text(190, 100, "Game Over!", {font:'100px arcade'});
 
         let endScore = this.add.text(255, 250, "Your Score: ", {font:'30px arcade'});
         endScore.text = 'Your Score: ' + this.endData.score;
 
-        let backToMenuBtn = this.add.text(325, 325, "Back to Menu", {font:'20px arcade', color:'white'});
-        let playAgainBtn = this.add.text(339, 375, "Play Again", {font:'20px arcade', color:'white'});
+        let backToMenuBtn = this.add.text(350, 325, "Back to Menu", {font:'20px arcade', color:'white'});
+        let playAgainBtn = this.add.text(355, 375, "Play Again", {font:'20px arcade', color:'white'});
         
         //Back to menu button
-        backToMenuBtn.setInteractive();
+        backToMenuBtn.setInteractive({cursor: 'pointer'});
         backToMenuBtn.on("pointerover", ()=>{
             backToMenuBtn.style.setColor('black');
         });
@@ -113,7 +113,7 @@ class GameoverScene extends Phaser.Scene{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //Play again button
-        playAgainBtn.setInteractive();
+        playAgainBtn.setInteractive({cursor: 'pointer'});
         playAgainBtn.on("pointerover", ()=>{
             playAgainBtn.style.setColor('black');
         });
